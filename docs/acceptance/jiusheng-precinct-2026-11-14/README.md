@@ -29,6 +29,8 @@
 
 ## 提交与部署状态
 
-先将此前所有城区成果保存为 `e400133`，分支 `codex/shuyang-city-refinement-20261114`。当前唯一远程仍是原作者 `mrdoob/slop-newyork`，没有本项目托管配置，因此未向该远程推送，也未宣称已线上部署。部署目标已向用户询问，待给定目标后可直接使用静态包。
+先将此前所有城区成果保存为 `e400133`，细化代码保存为 `64b0900`，分支 `codex/shuyang-city-refinement-20261114`。用户随后指定发布到 `EvanGu-CN/evans-github-pages`，使用现有 `main` 分支根目录的 GitHub Pages 配置，子目录为 `slop-shuyang/`。源码仓库仍保留原作者远程，不向原作者仓库推送。
+
+站点入口：[沭阳漫游](https://evangu-cn.github.io/evans-github-pages/slop-shuyang/)。发布目录的 `deployment-manifest.json` 记录来源提交及运行文件 SHA-256，可用于确认线上版本。
 
 提交后运行 `python tools/package-static-site.py` 可从当前提交生成 `.releases/shuyang-<短SHA>.zip` 和 SHA-256 校验记录。压缩包含网页、运行脚本、建筑数据和许可，不含浏览器配置、研究原图或本地缓存；仍通过 jsDelivr 获取 Three.js。`release.json` 记录完整来源提交，上传到支持 HTTPS 的静态主机即可运行。

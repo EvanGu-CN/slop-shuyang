@@ -63,6 +63,8 @@
 
 ## 运行
 
+公开站点：[沭阳漫游](https://evangu-cn.github.io/evans-github-pages/slop-shuyang/)。部署仓库为 [EvanGu-CN/evans-github-pages](https://github.com/EvanGu-CN/evans-github-pages)，使用 `main` 分支下的 `slop-shuyang/` 目录。该目录的 `deployment-manifest.json` 记录来源提交及运行文件校验值。
+
 项目是纯静态页面，不需要构建：
 
 ```bash
