@@ -71,14 +71,14 @@ function createBusDestinationTexture() {
   ctx.fillStyle = '#090b10';
   ctx.fillRect(0, 0, 512, 512);
   const routes = [
-    ['M101', '3 AV / HARLEM', '#0058b8', '#ff9d1c'],
-    ['M15', '+SELECT BUS / SOUTH FERRY', '#009ad6', '#46d8ff'],
-    ['M42', '42 ST PIER / UN', '#0058b8', '#ff9d1c'],
-    ['M1', '5 AV / HARLEM', '#0058b8', '#ff9d1c'],
-    ['M7', 'COLUMBUS AV / 14 ST', '#0058b8', '#ff9d1c'],
-    ['M60', '+SBS / LAGUARDIA', '#009ad6', '#46d8ff'],
-    ['M4', 'MADISON AV / CLOISTERS', '#0058b8', '#ff9d1c'],
-    ['M104', 'BROADWAY / TIMES SQ', '#0058b8', '#ff9d1c']
+    ['1路', '人民路 / 沭阳站', '#1f6b3a', '#eaffd8'],
+    ['2路', '上海路 / 南湖公园', '#1f6b3a', '#eaffd8'],
+    ['3路', '北京路 / 虞姬生态园', '#1f6b3a', '#eaffd8'],
+    ['5路', '苏州路 / 梦溪植物园', '#1f6b3a', '#eaffd8'],
+    ['6路', '迎宾大道 / 县政府', '#1f6b3a', '#eaffd8'],
+    ['8路', '学院路 / 南部新城', '#1f6b3a', '#eaffd8'],
+    ['9路', '台州路 / 经济开发区', '#1f6b3a', '#eaffd8'],
+    ['10路', '淮河大道 / 南湖', '#1f6b3a', '#eaffd8']
   ];
   routes.forEach(([route, dest, badgeBg, textCol], idx) => {
     const y0 = idx * 64;
@@ -87,12 +87,12 @@ function createBusDestinationTexture() {
     ctx.fillStyle = badgeBg;
     ctx.fillRect(12, y0 + 11, 126, 42);
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 32px Inter, Arial, sans-serif';
+    ctx.font = '900 30px "Microsoft YaHei", "PingFang SC", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(route, 75, y0 + 33);
     ctx.fillStyle = textCol;
-    ctx.font = '800 25px JetBrains Mono, monospace';
+    ctx.font = '800 22px "Microsoft YaHei", "PingFang SC", sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(dest, 152, y0 + 33);
   });
@@ -106,7 +106,7 @@ const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
 function createTrafficSystem(scene, sidewalks, obstacles, signalIntersections) {
   const group = new THREE.Group();
-  group.name = 'ManhattanTrafficAndPedestrians';
+  group.name = 'ShuyangTrafficAndPedestrians';
   let collisionListener = null;
   const collisionEvent = { a: null, b: null, kind: 'vehicle', x: 0, y: 0, z: 0, nx: 0, ny: 0, nz: 0, speed: 0 };
 

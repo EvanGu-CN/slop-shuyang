@@ -1,15 +1,16 @@
 import * as THREE from 'three/webgpu';
 import { CROSSWALK } from './road-network.js';
 import { createRoadPaintMaterial } from './tsl-materials.js';
+import { isOnBridge } from './city-config.js';
 
 // Road markings generated from the drivable road network (js/road-network.js), so the paint matches where traffic
 // actually drives and stops: dashed lane lines, double yellow centre lines on two-way roads, stop bars at the stop
 // lines, continental crosswalks across every intersection approach and green bike lanes along wide one-way avenues.
 
-const WHITE = new THREE.Color(0xe6e2d6);
-const YELLOW = new THREE.Color(0xe8ad22);
+const WHITE = new THREE.Color(0xf4f5f1);
+const YELLOW = new THREE.Color(0xf7bd32);
 const GREEN = new THREE.Color(0x2a8a4e);
-const HEIGHT = 0.012; // above the asphalt
+const HEIGHT = 0.012; // offset above road y=.03 / bridge deck y=.08
 const PAINT_CELL_SIZE = 1200;
 const PAINT_CULL_DISTANCE = 1650;
 const PAINT_MAX_SEGMENT = 200;
@@ -111,7 +112,8 @@ function buildRoadPaint(scene, network, sharedBuilder = null) {
 
   // Flat strip w wide from a to b, with a dash pattern (period, duty cycle) running along it
   function strip(ax, az, bx, bz, w, col, period = 1, duty = 1, phase = 0, flow = 1) {
-    builder.strip3D(ax, HEIGHT, az, bx, HEIGHT, bz, w, col, period, duty, phase, flow);
+    const surface = isOnBridge((ax + bx) / 2, (az + bz) / 2) ? .08 : .03;
+    builder.strip3D(ax, surface + HEIGHT, az, bx, surface + HEIGHT, bz, w, col, period, duty, phase, flow);
   }
 
   // Edges run between stop lines; s is measured from the start one and o to the right of the centre line
@@ -147,6 +149,12 @@ function buildRoadPaint(scene, network, sharedBuilder = null) {
     if (back) for (const o of back.lanes) lanes.push({ o: -o, dir: -1 });
     lanes.sort((p, q) => p.o - q.o);
 
+    // Crisp outer edges distinguish the carriageway from contemporary paved sidewalks.
+    if (e.half >= 6) {
+      along(e, e.half - .35, .15, WHITE);
+      if (back || lanes.some((l) => l.o < 0)) along(e, -e.half + .35, .15, WHITE);
+    }
+
     // Dashed white between lanes going the same way, double yellow between opposing ones
     // (nothing across a median or a lane closed off by an obstacle)
     for (let k = 0; k + 1 < lanes.length; k++) {
@@ -155,10 +163,10 @@ function buildRoadPaint(scene, network, sharedBuilder = null) {
       const mid = (p.o + q.o) / 2;
       if (q.o - p.o > 4.5 && (p.dir === q.dir || !clearCentre(e, mid))) continue;
       if (p.dir === q.dir) {
-        along(e, mid, 0.13, WHITE, 12, 0.25);
+        along(e, mid, 0.15, WHITE, 9, 1 / 3);
       } else {
-        along(e, mid - 0.12, 0.11, YELLOW);
-        along(e, mid + 0.12, 0.11, YELLOW);
+        along(e, mid - 0.13, 0.15, YELLOW);
+        along(e, mid + 0.13, 0.15, YELLOW);
       }
     }
 

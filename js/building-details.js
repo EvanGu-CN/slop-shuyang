@@ -78,10 +78,6 @@ function addBuildingDetails(b, detail, { masonry, rand, neighbours }) {
       }
       return null;
     }
-    if (masonry && b.height >= 14 && rand() < 0.25) {
-      const spot = roofSpot(4, 4);
-      if (spot) detail.waterTowers.push(spot);
-    }
     if (rand() < 0.35) {
       const w = 2.4 + rand() * 2.6, d = 2.4 + rand() * 2.6, spot = roofSpot(w, d);
       if (spot) detail.hvacUnits.push({ ...spot, w, d, h: masonry ? 2.4 : 3.4 });
@@ -90,6 +86,7 @@ function addBuildingDetails(b, detail, { masonry, rand, neighbours }) {
 
   let count = 0;
   for (const e of edges) {
+    if (b.shopEdges && !b.shopEdges.some(([x, z]) => Math.hypot(e.x - x, e.z - z) < 1)) continue;
     const segments = Math.floor(e.length / 10);
     for (let i = 0; i < segments && count < 4; i++) {
       if (rand() > 0.22) continue;
@@ -98,15 +95,9 @@ function addBuildingDetails(b, detail, { masonry, rand, neighbours }) {
       // Keep storefronts out of courtyards and away from neighbouring walls or fire escapes.
       if (blocked(x + e.nx * 2.65, z + e.nz * 2.65, 5.2, d + 0.4, cs, sn)) continue;
       const ry = Math.atan2(sn, cs);
-      let item;
-      if (!detail.scaffoldSheds.length && rand() < 0.06) {
-        item = { x: x + e.nx * 2, y: 0.22, z: z + e.nz * 2, w: 3.8, d, ry };
-        detail.scaffoldSheds.push(item);
-      } else {
-        if (!b.storefronts) continue;
-        item = { x: x + e.nx, y: 3.8, z: z + e.nz, w: 1.8, d, colorIdx: Math.floor(rand() * 5), ry };
-        detail.awnings.push(item);
-      }
+      if (!b.storefronts) continue;
+      const item = { x: x + e.nx, y: 3.8, z: z + e.nz, w: 1.8, d, colorIdx: Math.floor(rand() * 5), ry };
+      detail.awnings.push(item);
       const outer = boxCorners(item.x, item.z, item.w, item.d, cs, sn);
       const xs = outer.map((p) => p.x), zs = outer.map((p) => p.z);
       const reserve = { x0: Math.min(...xs), x1: Math.max(...xs), z0: Math.min(...zs), z1: Math.max(...zs),

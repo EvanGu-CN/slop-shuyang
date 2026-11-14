@@ -26,6 +26,12 @@ function keyboardHarness(nyc = {}) {
   const config = {
     streetZ: () => 0,
     isTypingInField: (event) => ['INPUT', 'SELECT'].includes(event.target?.tagName),
+    CENTRAL_PARK_BOUNDS: { minX: Infinity, maxX: Infinity, minZ: Infinity, maxZ: Infinity },
+    ISLAND_BOUNDS: { minX: -1e6, maxX: 1e6, minZ: -1e6, maxZ: 1e6, sidewalkHeight: 0.22 },
+    getIslandBoundsAtZ: () => ({ westX: -1e6, eastX: 1e6 }),
+    blockAt: () => null,
+    isWater: () => false,
+    isOnBridge: () => false,
     ...nyc
   };
   const { ThirdPersonControllerManager } = loadModule(source, {
@@ -75,6 +81,27 @@ test('releasing one movement binding preserves another held binding', () => {
   assert.equal(controller.keys.forward, true);
   key('keyup', 'KeyW');
   assert.equal(controller.keys.forward, false);
+});
+
+test('temporary Shift acceleration and the persistent option remain independent', () => {
+  const { controller, key, window } = keyboardHarness();
+  assert.equal(controller.isBoosting(), false);
+  key('keydown', 'ShiftLeft');
+  key('keydown', 'ShiftRight');
+  key('keyup', 'ShiftLeft');
+  assert.equal(controller.isBoosting(), true);
+  key('keyup', 'ShiftRight');
+  assert.equal(controller.isBoosting(), false);
+  controller.setBoostEnabled(true);
+  key('keydown', 'ShiftLeft');
+  key('keyup', 'ShiftLeft');
+  assert.equal(controller.isBoosting(), true, 'releasing a key does not cancel the selected speed option');
+  controller.setBoostEnabled(false);
+  key('keydown', 'ShiftLeft');
+  window.dispatch('blur');
+  assert.equal(controller.isBoosting(), false, 'losing focus releases temporary acceleration');
+  key('keydown', 'ShiftLeft', 'INPUT');
+  assert.equal(controller.isBoosting(), false, 'typing never activates acceleration');
 });
 
 test('either jump binding stays active until both are released', () => {
@@ -154,7 +181,7 @@ for (const interruption of ['blur', 'hidden', 'reset']) {
   });
 }
 
-function advanceWithTouch(mode, strength, reverse) {
+function advanceWithTouch(mode, strength, reverse, boost = false, steps = 1) {
   const { controller } = keyboardHarness();
   const entity = { position: { x: 0, y: 0, z: 0 }, heading: 0, speed: 0 };
   if (mode === 'Person') Object.assign(entity, { verticalVel: 0 });
@@ -177,7 +204,8 @@ function advanceWithTouch(mode, strength, reverse) {
   controller.setTouchInput(reverse ? 'backward' : 'forward', strength);
   controller.setTouchInput(reverse ? 'right' : 'left', strength);
   if (mode === 'Helicopter') controller.setTouchInput(reverse ? 'down' : 'up', strength);
-  controller[`update${mode}`](0.1, 0);
+  controller.setBoostEnabled(boost);
+  for (let i = 0; i < steps; i++) controller[`update${mode}`](0.1, i * .1);
   return entity;
 }
 
@@ -225,6 +253,22 @@ function carDynamicsHarness(motion = {}) {
 function carVelocity(car) {
   return [Math.sin(car.heading) * car.speed + car.vx, Math.cos(car.heading) * car.speed + car.vz];
 }
+
+test('boosted driving accelerates faster and still brakes without gaining reverse speed', () => {
+  const normal = carDynamicsHarness(), fast = carDynamicsHarness();
+  fast.controller.setBoostEnabled(true);
+  for (const sim of [normal, fast]) {
+    sim.controller.keys.forward = true;
+    sim.advance(4);
+  }
+  assert.ok(fast.car.speed > normal.car.speed * 1.2);
+  fast.advance(30);
+  assert.equal(fast.car.speed, 48);
+  fast.controller.keys.forward = false;
+  fast.controller.keys.backward = true;
+  fast.advance(12);
+  assert.ok(fast.car.speed >= -10.5, 'boost does not multiply the reverse speed');
+});
 
 test('car accelerates gradually to full speed and preserves coasting and braking', () => {
   const acceleration = carDynamicsHarness();
@@ -852,3 +896,11 @@ test('cyclist braking stops briskly, pauses at zero before reversing, and suppor
   for (let i = 0; i < 120; i++) blocked.controller.updateCyclist(1 / 60);
   assert.ok(blocked.cyclist.speed < 0.05, `wall-blocked cyclist clamps phantom speed (got ${blocked.cyclist.speed})`);
 });
+
+for (const mode of ['Person', 'Cyclist', 'Helicopter']) {
+  test(`boost increases ${mode.toLowerCase()} travel speed with the same input`, () => {
+    const normal = advanceWithTouch(mode, 1, false, false, 100);
+    const fast = advanceWithTouch(mode, 1, false, true, 100);
+    assert.ok(fast.speed > normal.speed * 1.2);
+  });
+}

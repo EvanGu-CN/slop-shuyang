@@ -172,6 +172,7 @@ const { buildRoadPaint, createRoadPaintChunkBuilder } = loadModule(roadPaintSrc,
   imports: {
     'three/webgpu': THREE,
     './road-network.js': { CROSSWALK: 3.8 },
+    './city-config.js': { isOnBridge: (x) => x > 8000 },
     './tsl-materials.js': { createRoadPaintMaterial: () => sharedMat }
   }
 });
@@ -261,6 +262,22 @@ test('createRoadPaintChunkBuilder subdivides long strips across cells with conti
     assert.ok(Math.abs(quads[i].z0 - quads[i - 1].z1) < 1e-4, 'seamless Z join');
     assert.ok(Math.abs(quads[i].y0 - quads[i - 1].y1) < 1e-4, 'seamless Y ramp');
     assert.ok(Math.abs(quads[i].u0 - quads[i - 1].u1) < 1e-4, 'continuous dash phase');
+  }
+});
+
+test('city markings clear both asphalt and bridge decks instead of being buried underneath', () => {
+  const edge = (x, a, b) => ({
+    from: { id: a, shape: false }, to: { id: b, shape: false },
+    x0: x, z0: 0, sx: x, sz: 0, dx: 1, dz: 0, rx: 0, rz: 1,
+    len: 80, span: 80, half: 7, axis: 'ave', lanes: [-3.5, 0, 3.5]
+  });
+  const group = buildRoadPaint(new Scene(), { edges: [edge(100, 1, 2), edge(9000, 3, 4)], isRoadClear: () => true });
+  for (const chunk of group.children) {
+    const p = chunk.geometry.attributes.position.array;
+    for (let i = 0; i < p.length; i += 3) {
+      const surface = p[i] > 8000 ? .08 : .03;
+      assert.ok(p[i + 1] > surface && p[i + 1] < surface + .02, 'paint stays just above its actual road surface');
+    }
   }
 });
 

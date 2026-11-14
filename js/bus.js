@@ -487,11 +487,12 @@ function createLoftedBusMaterial() {
 
   // 4. Three Authentic MTA Liveries (Current Blue/Gold, Select Bus Service Cyan/Blue, Legacy White/Blue)
   const shadeY = smoothstep(0.34, 1.25, p.y).mul(0.16).add(0.84);
-  const mtaRoyalBlue = color(0x16358a);
-  const mtaSkyBlue = color(0x1a88e0);
-  const sbsCyan = color(0x1fb8d0);
-  const mtaGold = color(0xf0b21a);
-  const mtaWhite = color(0xedf1f6);
+  // 沭阳公交涂装：白底 + 绿色腰带/裙边（原来的 MTA 蓝金涂装替换为县城公交配色）
+  const mtaRoyalBlue = color(0x1f6b3a);
+  const mtaSkyBlue = color(0x38a45c);
+  const sbsCyan = color(0x7fd3a0);
+  const mtaGold = color(0xe8c34a);
+  const mtaWhite = color(0xf2f6f2);
 
   // Upper-front gold & sky-blue swoop arc (from z = 0.8..4.55 above the windows); filtered across its slope
   const uArc = p.z.sub(2.65).div(1.95);

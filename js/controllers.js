@@ -5,7 +5,9 @@ import {
   getIslandBoundsAtZ,
   isTypingInField,
   blockAt,
-  streetZ
+  isWater,
+  isOnBridge,
+  getParkFootbridgeHeight
 } from './city-config.js';
 import { cityUniforms, createCarPaintMaterial, createContactShadowMaterial } from './tsl-materials.js';
 import {
@@ -30,8 +32,9 @@ import { polygonContact } from './building-collision.js';
 
 // Player models, animation and movement for walking, driving, cycling and flying.
 
-// Spawn on 5th Ave at 37th St, facing south down the avenue toward the Empire State Building (34th St)
-const SPAWN_Z = streetZ(37);
+// 出生点：人民中路 & 上海中路路口西侧，面向东沿人民中路行驶
+const SPAWN_Z = 0;
+const SPAWN_X = -36;
 const groundCollider = { type: 'ground' };
 
 const CAR_DRIVE = {
@@ -45,6 +48,8 @@ const BICYCLE_DRIVE = {
   powerSpeed: 10.5, // Above 38 km/h, rider power limits acceleration.
   rolling: 0.1, drag: 0.004, coast: 0.45, brake: 10.5
 };
+const CAR_FAST_DRIVE = { ...CAR_DRIVE, speed: 48, acceleration: 6.5, powerSpeed: 22 };
+const BICYCLE_FAST_DRIVE = { ...BICYCLE_DRIVE, speed: 25, acceleration: 8.5, powerSpeed: 14 };
 
 function driveSpeed(speed, throttle, dt, drive) {
   // Turning can project tiny sideways motion back into speed after braking to zero.
@@ -150,16 +155,16 @@ function createTaxiDoorDecalTexture() {
   ctx.font = '900 32px Inter, Arial, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('T', 58, 66);
-  // NYC TAXI typography & Fare Rate
+  ctx.fillText('沭', 58, 66);
+  // 沭阳出租车标识与运价
   ctx.fillStyle = '#111317';
   ctx.textAlign = 'left';
-  ctx.font = '900 26px Inter, Arial, sans-serif';
-  ctx.fillText('NYC TAXI', 112, 42);
-  ctx.font = '700 15px JetBrains Mono, monospace';
-  ctx.fillText('7Y48 · MEDALLION', 112, 68);
-  ctx.font = '600 13px Inter, Arial, sans-serif';
-  ctx.fillText('$3.00 INITIAL FARE', 112, 90);
+  ctx.font = '900 24px "Microsoft YaHei", "PingFang SC", sans-serif';
+  ctx.fillText('沭阳出租', 112, 44);
+  ctx.font = '700 15px "Microsoft YaHei", monospace';
+  ctx.fillText('苏N·T1234', 112, 70);
+  ctx.font = '600 13px "Microsoft YaHei", sans-serif';
+  ctx.fillText('起步价 8 元 · 2 千米', 112, 92);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   // The decals are mostly seen at grazing angles from the chase camera
@@ -177,14 +182,14 @@ function createNYLicensePlateTexture() {
   ctx.fillStyle = '#0d2244';
   ctx.fillRect(6, 6, 244, 24);
   ctx.fillStyle = '#ffb81c';
-  ctx.font = '800 15px Inter, Arial, sans-serif';
+  ctx.font = '800 15px "Microsoft YaHei", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('NEW YORK', 128, 23);
+  ctx.fillText('苏 N', 128, 23);
   ctx.fillStyle = '#0d2244';
-  ctx.font = '900 48px JetBrains Mono, monospace';
-  ctx.fillText('7Y48A', 128, 82);
-  ctx.font = '700 13px Inter, Arial, sans-serif';
-  ctx.fillText('NYC T&LC', 128, 114);
+  ctx.font = '900 44px "Microsoft YaHei", monospace';
+  ctx.fillText('T1234', 128, 82);
+  ctx.font = '700 13px "Microsoft YaHei", sans-serif';
+  ctx.fillText('沭阳客运', 128, 114);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = 16;
@@ -204,7 +209,8 @@ class ThirdPersonControllerManager {
       left: false,
       right: false,
       up: false,
-      down: false
+      down: false,
+      boost: false
     };
 
     this.entities = {
@@ -255,7 +261,8 @@ class ThirdPersonControllerManager {
       left: ['KeyA', 'ArrowLeft'],
       right: ['KeyD', 'ArrowRight'],
       up: ['Space', 'KeyE'],
-      down: ['KeyQ', 'KeyC']
+      down: ['KeyQ', 'KeyC'],
+      boost: ['ShiftLeft', 'ShiftRight']
     };
     const actionsByCode = new Map(Object.entries(bindings).flatMap(([action, codes]) => codes.map((code) => [code, action])));
     this._pressedCodes = new Set();
@@ -299,6 +306,14 @@ class ThirdPersonControllerManager {
 
   setTouchInput(action, value) {
     this._setAnalogInput(this._touchKeys, action, value);
+  }
+
+  setBoostEnabled(enabled) {
+    this.boostEnabled = Boolean(enabled);
+  }
+
+  isBoosting() {
+    return Boolean(this.boostEnabled || this.keys.boost);
   }
 
   setGamepadInput(action, value) {
@@ -430,6 +445,7 @@ class ThirdPersonControllerManager {
     };
     const clear = (p) => {
       if (!p) return false;
+      if (!heli && isWater(p.x, p.z) && !isOnBridge(p.x, p.z,this.activeMode)) return false;
       const baseY = heli ? altitude : this.getGroundHeight(p.x, p.z, this.activeMode);
       // Keep other player models out of both the arrival and its default chase view. A corridor also prevents a
       // parked car between camera and character from hiding the character even when the camera itself is outside it.
@@ -484,15 +500,15 @@ class ThirdPersonControllerManager {
 
     return {
       type: 'person',
-      label: 'Pedestrian',
+      label: '行人',
       mesh: root,
       shadow: pedShadow,
       crowd,
       rig,
-      position: new THREE.Vector3(-11.6, ISLAND_BOUNDS.sidewalkHeight, SPAWN_Z + 12),
-      prevX: -11.6,
-      prevZ: SPAWN_Z + 12,
-      heading: 0,
+      position: new THREE.Vector3(SPAWN_X, ISLAND_BOUNDS.sidewalkHeight, SPAWN_Z + 7),
+      prevX: SPAWN_X,
+      prevZ: SPAWN_Z + 7,
+      heading: Math.PI / 2,
       speed: 0,
       verticalVel: 0,
       jumping: false,
@@ -596,16 +612,16 @@ class ThirdPersonControllerManager {
 
     return {
       type: 'car',
-      label: 'NYC Yellow Taxi',
+      label: '沭阳出租车',
       mesh: root,
       chassisPivot,
       carState,
       headLights,
       wheels,
-      position: new THREE.Vector3(3.6, 0.0, SPAWN_Z + 12),
-      prevX: 3.6,
-      prevZ: SPAWN_Z + 12,
-      heading: 0,
+      position: new THREE.Vector3(SPAWN_X, 0.0, SPAWN_Z),
+      prevX: SPAWN_X,
+      prevZ: SPAWN_Z,
+      heading: Math.PI / 2,
       speed: 0,
       vx: 0,
       vz: 0,
@@ -759,7 +775,7 @@ class ThirdPersonControllerManager {
 
     return {
       type: 'cyclist',
-      label: 'NYC Bike Lane Cyclist',
+      label: '骑行者',
       mesh: root,
       leanPivot,
       frontWheel,
@@ -771,8 +787,8 @@ class ThirdPersonControllerManager {
       riderRig,
       helmet,
       headLight,
-      position: new THREE.Vector3(5.2, 0.0, SPAWN_Z - 8),
-      heading: 0,
+      position: new THREE.Vector3(SPAWN_X + 2.4, 0.0, SPAWN_Z + 2.4),
+      heading: Math.PI / 2,
       speed: 0,
       leanAngle: 0,
       pedalPhase: 0,
@@ -850,12 +866,12 @@ class ThirdPersonControllerManager {
 
     return {
       type: 'helicopter',
-      label: 'Sightseeing Helicopter',
+      label: '观光直升机',
       mesh: root,
       tiltPivot,
       mainRotorPivot,
       tailRotorPivot,
-      position: new THREE.Vector3(-110, 96, SPAWN_Z - 60),
+      position: new THREE.Vector3(SPAWN_X - 60, 96, SPAWN_Z - 50),
       heading: 0.62,
       speed: 0,
       verticalSpeed: 0,
@@ -874,10 +890,14 @@ class ThirdPersonControllerManager {
   }
 
   getGroundHeight(x, z, mode = 'person') {
-    // Inside Central Park (5th Ave to Central Park West, 59th St to 110th St)
+    if(mode==='person'||mode==='cyclist'){
+      const bridge=getParkFootbridgeHeight?.(x,z);
+      if(bridge!==null&&bridge!==undefined)return bridge;
+    }
+    // 城市公园：铺装/草坪顶面
     const cp = CENTRAL_PARK_BOUNDS;
     if (x > cp.minX && x < cp.maxX && z > cp.minZ && z < cp.maxZ) {
-      return 1.24;
+      return 0.24;
     }
     // Inside Bryant Park's Great Lawn (west of the New York Public Library, 40th-42nd St)
     const lawn = bryantParkLawn;
@@ -929,9 +949,22 @@ class ThirdPersonControllerManager {
   }
 
   resolveHorizontalCollision(pos, radius, carEntity = null, entity = carEntity) {
-    // The detailed island (the helicopter may roam out over the harbour & the boroughs)
+    // 陆地与水面：除直升机外，车辆/行人不能驶入河湖（桥面除外）
     const mode = entity?.type || this.activeMode;
     const heli = mode === 'helicopter';
+    if (!heli && isWater(pos.x, pos.z) && !isOnBridge(pos.x, pos.z,mode)) {
+      const px = entity?.prevX;
+      const pz = entity?.prevZ;
+      if (Number.isFinite(px) && Number.isFinite(pz)) {
+        pos.x = px;
+        pos.z = pz;
+      } else {
+        const h = entity?.heading || 0;
+        pos.x -= Math.sin(h) * 2;
+        pos.z -= Math.cos(h) * 2;
+      }
+      if (carEntity && carEntity.speed) carEntity.speed *= 0.25;
+    }
     const m = heli ? 6000 : 0;
     pos.x = Math.max(ISLAND_BOUNDS.minX - m, Math.min(ISLAND_BOUNDS.maxX + m, pos.x));
     pos.z = Math.max(ISLAND_BOUNDS.minZ + (heli ? -6000 : 30), Math.min(ISLAND_BOUNDS.maxZ + m, pos.z));
@@ -1157,7 +1190,7 @@ class ThirdPersonControllerManager {
   updatePerson(dt) {
     if (dt <= 0) return;
     const p = this.entities.person;
-    const maxSpeed = 8.2;
+    const maxSpeed = this.isBoosting() ? 12.3 : 8.2;
     const turnRate = 2.6;
 
     let targetSpeed = 0;
@@ -1228,6 +1261,7 @@ class ThirdPersonControllerManager {
   updateCar(dt) {
     if (dt <= 0) return;
     const c = this.entities.car;
+    const drive = this.isBoosting() ? CAR_FAST_DRIVE : CAR_DRIVE;
 
     let throttle = 0;
     if (this.keys.forward) throttle = this.keys.forward;
@@ -1254,7 +1288,7 @@ class ThirdPersonControllerManager {
       const vx = sin * c.speed + c.vx, vz = cos * c.speed + c.vz;
       const forward = vx * sin + vz * cos;
       const sideways = vx * cos - vz * sin;
-      const speed = driveSpeed(forward, throttle, step, CAR_DRIVE);
+      const speed = driveSpeed(forward, throttle, step, drive);
       const acceleration = (speed - forward) / step;
       // Braking and cornering share tire grip; air resistance does not use it.
       const tireAcceleration = acceleration + CAR_DRIVE.drag * forward * Math.abs(forward);
@@ -1321,6 +1355,7 @@ class ThirdPersonControllerManager {
   updateCyclist(dt) {
     if (dt <= 0) return;
     const b = this.entities.cyclist;
+    const drive = this.isBoosting() ? BICYCLE_FAST_DRIVE : BICYCLE_DRIVE;
 
     const handbrake = b.speed > 0 ? +this.keys.up : 0;
     let throttle = 0;
@@ -1330,7 +1365,7 @@ class ThirdPersonControllerManager {
 
     // Pause briefly at zero after braking from forward travel so holding S stops cleanly before backing up
     if (b.speed > 0 && throttle < 0) {
-      b.speed = driveSpeed(b.speed, throttle, dt, BICYCLE_DRIVE);
+      b.speed = driveSpeed(b.speed, throttle, dt, drive);
       if (b.speed < 0.05) {
         b.speed = 0;
         if (!handbrake) b._brakeHold = 0.25;
@@ -1340,7 +1375,7 @@ class ThirdPersonControllerManager {
       b.speed = 0;
     } else {
       b._brakeHold = 0;
-      b.speed = driveSpeed(b.speed, throttle, dt, BICYCLE_DRIVE);
+      b.speed = driveSpeed(b.speed, throttle, dt, drive);
     }
 
     let turnInput = 0;
@@ -1387,8 +1422,9 @@ class ThirdPersonControllerManager {
 
   updateHelicopter(dt, elapsed) {
     const h = this.entities.helicopter;
-    const maxHorizSpeed = 52.0;
-    const maxVertSpeed = 16.0;
+    const boost = this.isBoosting() ? 1.5 : 1;
+    const maxHorizSpeed = 52.0 * boost;
+    const maxVertSpeed = 16.0 * boost;
 
     let fwdInput = 0;
     if (this.keys.forward) fwdInput = this.keys.forward;
@@ -1403,14 +1439,14 @@ class ThirdPersonControllerManager {
     else if (this.keys.down) vertInput = -this.keys.down;
 
     if (fwdInput !== 0) {
-      h.speed += fwdInput * 24.0 * dt;
+      h.speed += fwdInput * 24.0 * boost * dt;
       h.speed = Math.max(-maxHorizSpeed * 0.6, Math.min(maxHorizSpeed, h.speed));
     } else {
       h.speed *= Math.max(0, 1 - dt * 1.8);
     }
 
     if (vertInput !== 0) {
-      h.verticalSpeed += vertInput * 22.0 * dt;
+      h.verticalSpeed += vertInput * 22.0 * boost * dt;
       h.verticalSpeed = Math.max(-maxVertSpeed, Math.min(maxVertSpeed, h.verticalSpeed));
     } else {
       h.verticalSpeed *= Math.max(0, 1 - dt * 3.5);

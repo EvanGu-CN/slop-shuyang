@@ -54,6 +54,23 @@ const record = (outer, extra = {}) => {
 const build = (records, getNeighbours) => { triangulations = []; return createBuildingFootprints({}, records, getNeighbours); };
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-5, `${actual} != ${expected}`);
 
+test('raised source footprints preserve clearance and source floor counts', () => {
+  const mesh = build([record(square(), { height: 24, baseHeight: 6, levels: 6 })]).children[0];
+  const attrs = mesh.geometry.attributes;
+  close(attrs.position.array[1], 6.22);
+  close(attrs.position.array[7], 24.22);
+  close(attrs.buildingInfo.array[0], 6);
+  close(attrs.buildingInfo.array[1], 3);
+});
+
+test('commercial courtyards and non-street walls never inherit shopfronts', () => {
+  const mesh = build([record(square(), { shopEdges: [[5, 0]] })]).children[0];
+  const kinds = mesh.geometry.attributes.facadeWall.array;
+  let shops = 0;
+  for (let i = 0; i < 16; i += 4) if (kinds[i*3+2] === 0) shops++;
+  assert.equal(shops, 1);
+});
+
 test('arbitrary wall angles preserve dimensions, outward normals and facade attributes', () => {
   const angle = 0.43, c = Math.cos(angle), s = Math.sin(angle);
   const outer = square().map(({ x, z }) => p(x * c - z * s, x * s + z * c));
@@ -123,6 +140,24 @@ test('nearby buildings share a merged batch while distant chunks reuse its pipel
   assert.equal(far.geometry.index.length, 30);
   assert.equal(far.userData.sharesPipelineWith, near);
   assert.ok(near.geometry.bounded && far.geometry.bounded);
+});
+
+test('hipped roof has a real ridge within the recorded total height and outward-facing slopes',()=>{
+  const angle=.41,cs=Math.cos(angle),sn=Math.sin(angle);
+  const outer=[[0,0],[40,0],[40,12],[0,12]].map(([x,z])=>p(x*cs-z*sn,x*sn+z*cs));
+  const geometry=build([record(outer,{height:21,roofShape:'hipped',roofHeight:2.5})]).children[0].geometry;
+  const pos=geometry.attributes.position.array,normals=geometry.attributes.normal.array;
+  close(Math.max(...Array.from({length:pos.length/3},(_,i)=>pos[i*3+1])),21.22);
+  let projectedArea=0,slopes=0;
+  for(let i=0;i<geometry.index.length;i+=3){
+    const [a,b,c]=geometry.index.slice(i,i+3).map(i=>i*3);
+    const u=[0,1,2].map(k=>pos[b+k]-pos[a+k]),v=[0,1,2].map(k=>pos[c+k]-pos[a+k]);
+    const n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];
+    assert.ok(n.reduce((sum,q,k)=>sum+q*normals[a+k],0)>0,'triangle winding agrees with slope normal');
+    if(normals[a+1]>.1){slopes++;assert.ok(normals[a+1]<1);projectedArea+=n[1]/2;
+      for(const q of [a,b,c])assert.ok(pos[q+1]>=18.719&&pos[q+1]<=21.221)}
+  }
+  assert.equal(slopes,6);assert.ok(Math.abs(projectedArea-480)<.001,'roof covers precisely the source quadrilateral');
 });
 
 const reserve = b => {

@@ -1306,10 +1306,10 @@ function carPlateTexture() {
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
   const rows = [
-    { bg: '#f2b718', bar: '#14233c', fg: '#14233c', label: 'KBM-4728' },
-    { bg: '#e8edf2', bar: '#162b4c', fg: '#162b4c', label: 'JTR-8319' },
-    { bg: '#f2b718', bar: '#14233c', fg: '#14233c', label: 'HXL-2506' },
-    { bg: '#f0b416', bar: '#14233c', fg: '#14233c', label: 'T748219C' }
+    { bg: '#f2b718', bar: '#14233c', fg: '#14233c', label: '苏N·A4728' },
+    { bg: '#e8edf2', bar: '#162b4c', fg: '#162b4c', label: '苏N·B8319' },
+    { bg: '#f2b718', bar: '#14233c', fg: '#14233c', label: '苏N·C2506' },
+    { bg: '#f0b416', bar: '#14233c', fg: '#14233c', label: '苏N·T1234' }
   ];
   rows.forEach(({ bg, bar, fg, label }, row) => {
     const y0 = row * 64;
@@ -1322,7 +1322,7 @@ function carPlateTexture() {
     ctx.font = 'bold 9px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('NEW YORK', 64, y0 + 7);
+    ctx.fillText('江苏沭阳', 64, y0 + 7);
     ctx.fillStyle = fg;
     ctx.font = 'bold 21px monospace';
     ctx.fillText(label, 64, y0 + 35);

@@ -80,17 +80,15 @@ test('roof accessories avoid a taller overlapping building section', () => {
   assert.ok(checked > 5);
 });
 
-test('non-retail buildings lose shop awnings but retain rooftop details and construction sheds', () => {
+test('non-retail buildings lose shop awnings but retain rooftop details', () => {
   const b = building(square(0, 0, 40));
-  let sheds = 0;
   for (let seed = 1; seed <= 40; seed++) {
     const retail = details(b, seed * 104729);
     const residential = details({ ...b, storefronts: false }, seed * 104729);
     assert.equal(residential.awnings.length, 0);
     for (const key of ['cornices', 'waterTowers', 'hvacUnits']) assert.deepEqual(residential[key], retail[key]);
-    sheds += residential.scaffoldSheds.length;
+    assert.equal(residential.scaffoldSheds.length, 0, 'Shuyang buildings have no NYC sidewalk sheds');
   }
-  assert.ok(sheds > 0);
 });
 
 test('seeded decoration is deterministic, bounded and leaves surveyed geometry untouched', () => {
@@ -100,9 +98,10 @@ test('seeded decoration is deterministic, bounded and leaves surveyed geometry u
   assert.equal(JSON.stringify(b), original);
   for (let seed = 1; seed <= 40; seed++) {
     const d = details(b, seed * 104729);
-    assert.ok(d.waterTowers.length <= 1 && d.hvacUnits.length <= 1);
-    assert.ok(d.awnings.length + d.scaffoldSheds.length <= 4);
-    assert.ok(d.scaffoldSheds.length <= 1);
+    assert.equal(d.waterTowers.length, 0);
+    assert.ok(d.hvacUnits.length <= 1);
+    assert.ok(d.awnings.length <= 4);
+    assert.equal(d.scaffoldSheds.length, 0);
     for (const item of Object.values(d).flat()) assert.ok(Number.isFinite(item.x + item.y + item.z + item.ry));
   }
 });

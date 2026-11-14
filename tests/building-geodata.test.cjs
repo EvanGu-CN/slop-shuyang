@@ -4,17 +4,22 @@ const { join } = require('node:path');
 const test = require('node:test');
 const { Script } = require('node:vm');
 const { gunzipSync, gzipSync } = require('node:zlib');
+const {createHash,webcrypto} = require('node:crypto');
 
 const compressed = readFileSync(join(__dirname, '../js/building-geodata.bin.gz'));
+const dataVersion=createHash('sha256').update(gunzipSync(compressed)).digest('hex');
+const enriched = JSON.parse(gunzipSync(readFileSync(join(__dirname, '../tools/data/shuyang/buildings-enriched.json.gz'))));
 const source = readFileSync(join(__dirname, '../js/building-geodata.js'), 'utf8')
+  .replace(/^import \{GEO\} from '\.\/shuyang-geodata\.js';$/m,'')
   .replace('import.meta.url', JSON.stringify('https://example.test/city/js/building-geodata.js'))
   .replace('export const REAL_BUILDINGS', 'const REAL_BUILDINGS');
 const script = new Script(`(async () => { ${source}\nreturn REAL_BUILDINGS; })()`);
 
-function loadBuildings(bytes = compressed, status = 200) {
-  return script.runInNewContext({ URL, Response, DecompressionStream,
-    fetch: async url => {
-      assert.equal(url.href, 'https://example.test/city/js/building-geodata.bin.gz');
+function loadBuildings(bytes = compressed, status = 200,version=dataVersion) {
+  return script.runInNewContext({ URL, Response, DecompressionStream,crypto:webcrypto,GEO:{buildingDataVersion:version,buildingAudit:enriched.report},
+    fetch: async (url,options) => {
+      assert.equal(url.href, 'https://example.test/city/js/building-geodata.bin.gz?v='+version);
+      assert.equal(options.cache,'no-store');
       return new Response(bytes, { status });
     }
   });
@@ -29,19 +34,23 @@ function area(ring) {
   return sum / 2;
 }
 
-test('the compressed survey retains every footprint, courtyard and quantized dimension', async () => {
+test('the compressed survey retains every footprint and quantized dimension', async () => {
   const REAL_BUILDINGS = await buildings;
-  assert.equal(REAL_BUILDINGS.length, 37353);
-  let holes = 0;
-  for (const building of REAL_BUILDINGS) {
-    assert.ok(Number.isInteger(building.height) && building.height >= 1 && building.height <= 472);
-    assert.ok(building.year === 0 || (building.year >= 1600 && building.year <= 2100 && building.year % 10 === 0));
+  assert.equal(REAL_BUILDINGS.length, enriched.buildings.length);
+  assert.ok(REAL_BUILDINGS.length > 7000, 'the missing satellite-derived footprints are included');
+  for (const [index, building] of REAL_BUILDINGS.entries()) {
+    const original = enriched.buildings[index];
+    for (const key of ['height', 'baseHeight', 'category', 'heightSource', 'source', 'levels', 'roofShape', 'roofHeight']) {
+      assert.equal(building[key], original[key], `attribute ${key} retained for ${original.id}`);
+    }
+    assert.ok(building.height >= 2 && building.height <= 200);
+    assert.equal(building.year, 0, 'OSM buildings carry no construction decade');
     const points = [];
+    assert.equal(building.polygons.length, original.polygons.length, 'multi-part outlines are retained');
     assert.ok(building.polygons.length > 0);
     for (const polygon of building.polygons) {
-      holes += polygon.holes.length;
       assert.ok(area(polygon.outer) > 0, 'Exterior winds counterclockwise in x/z.');
-      for (const hole of polygon.holes) assert.ok(area(hole) < 0, 'Courtyards wind clockwise.');
+      for (const hole of polygon.holes) assert.ok(area(hole) < 0, 'courtyards wind opposite to exteriors');
       for (const ring of [polygon.outer, ...polygon.holes]) {
         assert.ok(ring.length >= 3);
         for (let i = 0; i < ring.length; i++) {
@@ -59,26 +68,27 @@ test('the compressed survey retains every footprint, courtyard and quantized dim
     assert.equal(building.cx, (building.minX + building.maxX) / 2);
     assert.equal(building.cz, (building.minZ + building.maxZ) / 2);
   }
-  assert.equal(holes, 661);
 });
 
-test('survey buildings align with the existing city coordinate frame', async () => {
+test('survey buildings sit inside the Shuyang city frame', async () => {
   const REAL_BUILDINGS = await buildings;
-  for (const [name, x, z, height, year] of [
-    ['Empire State Building', -90.5, 685.5, 378, 1930],
-    ['Chrysler Building', 510, -45.75, 289, 1930],
-    ['One World Trade Center', -203.25, 5253.25, 429, 2010]
-  ]) {
-    const building = REAL_BUILDINGS.find(b => b.cx === x && b.cz === z);
-    assert.ok(building, `${name} remains in the measured position.`);
-    assert.equal(building.height, height);
-    assert.equal(building.year, year);
+  assert.ok(REAL_BUILDINGS.length > 1000);
+  const near = REAL_BUILDINGS.filter((b) => Math.hypot(b.cx, b.cz) < 600);
+  assert.ok(near.length > 50, 'the county seat has surveyed buildings');
+  for (const building of REAL_BUILDINGS) {
+    assert.ok(building.minX > -8000 && building.maxX < 10000, 'x within the city extent');
+    assert.ok(building.minZ > -7000 && building.maxZ < 9000, 'z within the city extent');
+    assert.ok(building.height > 0);
   }
 });
 
 test('building data reports HTTP and gzip failures', async () => {
   await assert.rejects(loadBuildings(compressed, 404), /Building data request failed: 404/);
   await assert.rejects(loadBuildings(Buffer.from('not gzip')));
+});
+
+test('a stale binary with a valid format and count cannot silently mix with another geography version',async()=>{
+  await assert.rejects(loadBuildings(compressed,200,'0'.repeat(64)),/建筑数据版本未同步/);
 });
 
 test('building data rejects damaged headers, truncated streams and trailing bytes', async () => {

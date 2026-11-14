@@ -23,18 +23,21 @@ import {
   CENTRAL_PARK_BOUNDS,
   ISLAND_BOUNDS,
   LANDMARK_SITES,
+  nearestRoads,
   streetZ,
   avenueX
 } from './city-config.js';
+// 城市已切换到沭阳：GEO 来自新的 OSM 数据集
 import {
-  createPreWarBuildingMaterial,
-  createCurtainWallMaterial,
   createBillboardMaterial,
   filteredPulse
 } from './tsl-materials.js';
-import { GEO } from './nyc-geodata.js';
+import { GEO } from './shuyang-geodata.js';
+import { PHOTO_LANDMARK_SITES } from './landmark-data.js';
+import { preserveBuildingCoverage } from './building-coverage.js';
 import { REAL_BUILDINGS } from './building-geodata.js';
 import { createBuildingFootprints } from './building-footprints.js';
+import { BUILDING_STYLES, buildingStyleIndex, createBuildingMaterials } from './building-materials.js';
 import { polygonContains, polygonBoxOverlaps } from './building-collision.js';
 import { pavedPlazaRects, parkTreeSites, sidewalkBlocks } from './city-grid.js';
 
@@ -147,7 +150,7 @@ class Quadtree {
 
 function buildCityBlocks(scene, landmarkColliders = []) {
   const group = new THREE.Group();
-  group.name = 'ManhattanCityBlocks';
+  group.name = 'ShuyangCityBlocks';
   const colliders = [];
 
   // Stream nearby architectural details.
@@ -159,65 +162,8 @@ function buildCityBlocks(scene, landmarkColliders = []) {
   }, 6, 9);
   const allBlocks = [];
 
-  const facades = [
-    // 0: Pre-War Limestone & Buff Brick (5th Ave / Madison Ave / Upper East Side style)
-    [createPreWarBuildingMaterial, {
-      stoneColor: 0xd8cdb8,
-      trimColor: 0x9e937f,
-      windowGlassColor: 0x1a2836,
-      windowWidth: 2.6,
-      floorHeight: 3.7,
-      litProbability: 0.54,
-      warmth: 0.80,
-      seed: 12.4
-    }],
-    // 1: Historic Warm Red/Terracotta Brick (Garment District / Chelsea / SoHo / Upper West Side)
-    [createPreWarBuildingMaterial, {
-      stoneColor: 0xa45a45,
-      trimColor: 0xcab9a0,
-      windowGlassColor: 0x16222e,
-      windowWidth: 2.4,
-      floorHeight: 3.5,
-      litProbability: 0.56,
-      warmth: 0.86,
-      seed: 27.8
-    }],
-    // 2: Blue-Teal Curtain-Wall Glass (Park Ave / 6th Ave / Financial District modernism)
-    [createCurtainWallMaterial, {
-      glassTint: 0x1a3a52,
-      frameTint: 0x3b4c5b,
-      windowWidth: 2.7,
-      floorHeight: 3.9,
-      litProbability: 0.60,
-      warmth: 0.52,
-      reflectivity: 0.92,
-      seed: 63.5
-    }],
-    // 3: Dark Bronze / Charcoal Miesian Glass (Avenue of the Americas / Midtown West)
-    [createCurtainWallMaterial, {
-      glassTint: 0x242220,
-      frameTint: 0x3c3631,
-      windowWidth: 2.5,
-      floorHeight: 3.8,
-      litProbability: 0.64,
-      warmth: 0.72,
-      reflectivity: 0.88,
-      seed: 81.9
-    }],
-    // 4: Silver / Ice-Blue Contemporary Supertall Glass (Billionaires' Row / Hudson Yards / WTC)
-    [createCurtainWallMaterial, {
-      glassTint: 0x264664,
-      frameTint: 0xb0bcc8,
-      windowWidth: 2.9,
-      floorHeight: 4.1,
-      litProbability: 0.58,
-      warmth: 0.48,
-      reflectivity: 0.95,
-      seed: 94.3
-    }]
-  ];
-  const materials = facades.map(([create, opts]) => create({ ...opts, footprintLocal: true }));
-  const storeys = facades.map(([, opts]) => opts.floorHeight);
+  const materials = createBuildingMaterials();
+  const storeys = BUILDING_STYLES.map((s) => s.floor);
 
   const broadwayBillboards = [];
 
@@ -239,22 +185,23 @@ function buildCityBlocks(scene, landmarkColliders = []) {
   })();
   const inBowtie = (x, z) => !!TS && z > TS.zN && z < TS.zS && (Math.abs(x - TS.xAt(z)) < TS.halfB || Math.abs(x - TS.x7) < TS.half7);
 
-  // Keep authored landmarks clear of surveyed buildings and architectural details.
+  // 保留给地标模型的地块，避免程序化楼栋压上去
   const LANDMARK_RESERVE = [
-    ['Empire State Building'], ['Chrysler Building'], ['One Vanderbilt'], ['Grand Central Terminal'], ['MetLife Building'],
-    ['Stephen A. Schwarzman Building'], ['One Times Square'], ['30 Rockefeller Plaza'], ['Citigroup Center'],
-    ['Seagram Building', { x0: avenueX('park') + 20 }], ['Flatiron Building'], ['One World Trade Center'], ['New York Stock Exchange']
+    ['中央城市广场'], ['沭阳县政府'], ['沭阳文化中心'], ['沭阳体育中心'],
+    ['沭阳站'], ['虞姬生态园'], ['南湖公园'], ['蓝天国际商贸城'],
+    ['万达广场'], ['吴印咸故居'], ['老服装厂城市休闲街区'], ['沭水之阳']
   ].map(([name, o]) => {
     const t = LANDMARK_SITES[name];
     if (!t) return null;
-    return { height: Infinity, x: t.x, z: t.z, x0: t.x - t.w / 2 - 3, x1: t.x + t.w / 2 + 3, z0: t.z - t.d / 2 - 3, z1: t.z + t.d / 2 + 3, ...(o || {}) };
+    const w = t.w || 60;
+    const d = t.d || 60;
+    return { height: Infinity, x: t.x, z: t.z, x0: t.x - w / 2 - 3, x1: t.x + w / 2 + 3, z0: t.z - d / 2 - 3, z1: t.z + d / 2 + 3, ...(o || {}) };
   }).filter(Boolean);
   // Keep the authored landmark models; the survey supplies the surrounding buildings.
-  const surveyedBuildings = REAL_BUILDINGS.filter((b) => !LANDMARK_RESERVE.some((h) =>
-    b.polygons.some((p) => polygonContains({ outer: p.outer, holes: [] }, h.x, h.z)))
-    && !landmarkColliders.some((c) => b.minX < c.maxX && b.maxX > c.minX && b.minZ < c.maxZ && b.maxZ > c.minZ
-      && b.polygons.some((p) => polygonBoxOverlaps(p, (c.minX + c.maxX) / 2, (c.minZ + c.maxZ) / 2,
-        (c.maxX - c.minX) / 2, (c.maxZ - c.minZ) / 2))));
+  const sourceReplacements = new Set(Object.values(PHOTO_LANDMARK_SITES).flatMap(s => s.sourceBuildingIndices || []).map(i => REAL_BUILDINGS[i]));
+  const coverage=preserveBuildingCoverage(REAL_BUILDINGS,sourceReplacements,landmarkColliders);
+  const surveyedBuildings=coverage.rendered;
+  group.userData.buildingCounts=coverage.audit;
   const landmarkReserves = [...LANDMARK_RESERVE, ...landmarkColliders.map((c) =>
     ({ x0: c.minX, x1: c.maxX, z0: c.minZ, z1: c.maxZ, height: c.maxY ?? Infinity }))];
   const hitR = (a, x0, x1, z0, z1) => a.x0 < x1 && a.x1 > x0 && a.z0 < z1 && a.z1 > z0;
@@ -341,17 +288,42 @@ function buildCityBlocks(scene, landmarkColliders = []) {
   }
 
   const surveyedBuckets = materials.map(() => []);
+  const housingStyles = new Map();
+  const housingPhotoStyles = new Map();
+  const campusBuildings = new Set(Object.values(PHOTO_LANDMARK_SITES).flatMap(s=>s.campusBuildingIndices||[]).map(i => REAL_BUILDINGS[i]));
+  for (const n of GEO.neighborhoods || []) for (const i of n.buildings) {
+    housingStyles.set(REAL_BUILDINGS[i], n.paletteVariant);
+    if(n.photoStyle)housingPhotoStyles.set(REAL_BUILDINGS[i],n.photoStyle);
+  }
   const detailsToPlace = [];
   for (const b of surveyedBuildings) {
-    const seed = Math.round(b.cx * 31 + b.cz * 17);
+    const seed = b.seed ?? Math.round(b.cx * 31 + b.cz * 17);
     const rand = mulberry32(seed);
     const tone = rand();
-    const mat = b.year && b.year < 1945 ? (tone < 0.8 ? 0 : 1)
-      : b.year && b.year < 1980 ? (tone < 0.55 ? 0 : 3)
-        : tone < 0.6 ? 2 : 4;
-    // The survey has no building-use data; choose retail independently of facade style and roof details.
-    const storefronts = b.height >= 6 && mulberry32(seed ^ 0x53544f52)() < 0.55;
-    const record = { ...b, tone, storefronts };
+    const sourceRecord=b.sourceRecord||b;
+    const mat = campusBuildings.has(sourceRecord) ? 9 : buildingStyleIndex({ ...b, styleVariant: housingStyles.get(sourceRecord),photoStyle:housingPhotoStyles.get(sourceRecord) });
+    // Only tagged commercial buildings receive shopfronts, on walls facing a nearby public street.
+    const shopEdges = [];
+    if (b.category === 'commercial') for (const p of b.polygons) {
+      let area = 0;
+      p.outer.forEach((a, i, ring) => { const c = ring[(i + 1) % ring.length]; area += a.x*c.z-c.x*a.z; });
+      p.outer.forEach((a, i, ring) => {
+        const c = ring[(i + 1) % ring.length], dx = c.x-a.x, dz = c.z-a.z, length = Math.hypot(dx,dz);
+        if (length < 5) return;
+        const x = (a.x+c.x)/2, z = (a.z+c.z)/2, side = area > 0 ? 1 : -1;
+        const nx = side*dz/length, nz = -side*dx/length;
+        for (const {road} of nearestRoads(x,z,28)) {
+          if (road.kind === 'service') continue;
+          for (let j=1;j<road.pts.length;j++) {
+            const v=road.pts[j-1], w=road.pts[j], rx=w.x-v.x, rz=w.z-v.z;
+            const t=Math.max(0,Math.min(1,((x-v.x)*rx+(z-v.z)*rz)/(rx*rx+rz*rz||1)));
+            const vx=v.x+t*rx-x, vz=v.z+t*rz-z, d=Math.hypot(vx,vz);
+            if (d>1 && d<road.w/2+12 && (vx*nx+vz*nz)/d>.5) { shopEdges.push([x,z]); return; }
+          }
+        }
+      });
+    }
+    const record = { ...b, tone, storefronts: shopEdges.length > 0, shopEdges };
     surveyedBuckets[mat].push(record);
     const detail = {
       cx: b.cx, cz: b.cz, minX: b.minX, maxX: b.maxX, minZ: b.minZ, maxZ: b.maxZ,
@@ -361,12 +333,12 @@ function buildCityBlocks(scene, landmarkColliders = []) {
     for (const polygon of b.polygons) {
       const xs = polygon.outer.map((p) => p.x), zs = polygon.outer.map((p) => p.z);
       const minX = Math.min(...xs), maxX = Math.max(...xs), minZ = Math.min(...zs), maxZ = Math.max(...zs);
-      colliders.push({ minX, maxX, minZ, maxZ, minY: 0, maxY: top, polygon });
+      colliders.push({ minX, maxX, minZ, maxZ, minY: b.baseHeight || 0, maxY: top, polygon });
       detail.footprints.push({ h: top, pts: polygon.outer, holes: polygon.holes });
     }
     const neighbours = nearbyReserves(b, 6);
     addSurveyedFireEscapes(b, detail, storeys[mat], neighbours);
-    detailsToPlace.push({ b: record, detail, masonry: mat < 2, rand });
+    detailsToPlace.push({ b: record, detail, masonry: !['industrial','garage'].includes(b.category), rand });
     allBlocks.push(detail);
   }
   // Reserve every fire escape before placing storefronts on neighbouring buildings.
@@ -377,7 +349,7 @@ function buildCityBlocks(scene, landmarkColliders = []) {
   }
   surveyedBuckets.forEach((items, i) => {
     if (!items.length) return;
-    group.add(createBuildingFootprints(materials[i], items, i < 2 ? b => nearbyReserves(b, 2) : undefined));
+    group.add(createBuildingFootprints(materials[i], items, b => nearbyReserves(b, 2)));
   });
 
   // Narrow empty lots become sitting areas with trees.
@@ -614,11 +586,11 @@ function buildCityBlocks(scene, landmarkColliders = []) {
   group.add(awningInst);
 
   const signThemes = [
-    { bg: '#161210', border: '#c89d54', text: 'FIFTH AVE BISTRO · EST. 1928', color: '#ffe4a8' },
-    { bg: '#0c2244', border: '#38b6ff', text: 'DUANE READE · PHARMACY', color: '#ffffff' },
-    { bg: '#142b20', border: '#d4af37', text: 'MANHATTAN BOOKS & ESPRESSO', color: '#fff2cc' },
-    { bg: '#280a10', border: '#ff5252', text: 'BROADWAY DELI & GRILL · 24HR', color: '#ffd180' },
-    { bg: '#101318', border: '#e0e6ed', text: 'EMPIRE WATCHES · NEW YORK', color: '#f5f9ff' }
+    { bg: '#7a1414', border: '#ffd166', text: '沭阳宾馆 · 餐饮住宿', color: '#ffe9b0' },
+    { bg: '#0c2244', border: '#38b6ff', text: '苏果超市 · 便利生活', color: '#ffffff' },
+    { bg: '#14301f', border: '#d4af37', text: '人民路小吃 · 早点夜市', color: '#fff2cc' },
+    { bg: '#2b1a08', border: '#ff9f43', text: '沭阳建材 · 五金电料', color: '#ffd9a0' },
+    { bg: '#101318', border: '#e0e6ed', text: '中国移动 · 营业厅', color: '#f5f9ff' }
   ];
   const MAX_SIGNS_PER_THEME = Math.ceil(MAX_AWNINGS / signThemes.length) + 32;
   const signInsts = signThemes.map((st) => {
@@ -632,7 +604,7 @@ function buildCityBlocks(scene, landmarkColliders = []) {
     ctx.lineWidth = 6;
     ctx.strokeRect(6, 6, 500, 84);
     ctx.fillStyle = st.color;
-    ctx.font = '800 26px Inter, Arial, sans-serif';
+    ctx.font = '800 26px "Microsoft YaHei", "PingFang SC", Inter, Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(st.text, 256, 50);
@@ -899,8 +871,8 @@ function buildCityBlocks(scene, landmarkColliders = []) {
     }
   }
 
-  // Initial Quadtree stream centered at Midtown 5th Ave & 42nd St
-  update(0, 62, true);
+  // 初始流式加载以人民中路 & 上海中路为中心
+  update(0, 0, true);
 
   scene.add(group);
   return {

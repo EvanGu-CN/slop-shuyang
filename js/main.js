@@ -3,10 +3,13 @@ import { pass, mrt, output, normalView, positionView, metalness, roughness, vec2
 import { ssr } from 'three/addons/tsl/display/SSRNode.js';
 import { createPostProcessing } from './post-processing.js';
 import { ClusteredLighting } from 'three/addons/lighting/ClusteredLighting.js';
-import { getLocationLabel, isTypingInField, ROADS, NYC_LANDMARKS, TELEPORT_LOCATIONS } from './city-config.js';
+import { getLocationLabel, isTypingInField, ROADS, LANDMARKS, TELEPORT_LOCATIONS } from './city-config.js';
 import { buildCityGrid } from './city-grid.js';
+import { buildUrbanContext } from './urban-context.js';
 import { buildBoroughs } from './boroughs.js';
 import { buildLandmarks } from './landmarks.js';
+import { installLandmarkGallery } from './landmark-gallery.js';
+import { buildCommunityEntrances } from './community-entrances.js';
 import { buildCityBlocks } from './buildings.js';
 import { buildStreetDetails } from './street-details.js';
 import { createTrafficSystem, createHighwayTraffic } from './traffic.js';
@@ -16,7 +19,7 @@ import { TouchControls } from './touch-controls.js';
 import { GamepadControls } from './gamepad-controls.js';
 import { CameraSystem, CAMERA_PRESETS } from './cameras.js';
 import { LightingSystem } from './lighting.js';
-import { NYCMapSystem } from './nyc-map.js';
+import { CityMapSystem } from './city-map.js';
 import { setupSceneCulling, updateSceneCulling } from './scene-culling.js';
 import { CityAudioSystem } from './audio-system.js';
 
@@ -75,7 +78,7 @@ async function initApp() {
     });
   }
 
-  await showLoadingStage('Initializing graphics...', 'renderer');
+  await showLoadingStage('正在初始化图形...', 'renderer');
 
   // 1. Initialize Three.js WebGPURenderer with 32-bit float reversedDepthBuffer.
   // Firefox WebGL2 incurs a heavy renderbufferStorageMultisample + blitFramebuffer stall
@@ -105,30 +108,33 @@ async function initApp() {
   markInit('renderer');
 
   // 2. Scene, atmosphere and lighting
-  await showLoadingStage('Creating sky and environment lighting...', 'lighting');
+  await showLoadingStage('正在创建天空与环境光照...', 'lighting');
   const scene = new THREE.Scene();
   const lightingSystem = new LightingSystem(scene, renderer);
   markInit('lighting');
 
   // 3. Build Manhattan Geography, Iconic Landmarks, Blocks, Street Details & Traffic
-  await showLoadingStage('Building streets, parks and waterfronts...', 'cityGrid');
+  await showLoadingStage('正在构建沭阳街道、公园与滨水空间...', 'cityGrid');
   const cityGrid = buildCityGrid(scene);
   markInit('cityGrid');
-  await showLoadingStage('Building bridges and surrounding boroughs...', 'boroughs');
+  await showLoadingStage('正在构建外围郊野与桥梁...', 'boroughs');
   const boroughs = buildBoroughs(scene, { sidewalks: cityGrid.sidewalks });
   markInit('boroughs');
-  await showLoadingStage('Building landmarks...', 'landmarks');
+  await showLoadingStage('正在构建沭阳地标...', 'landmarks');
   const { colliders: landmarkColliders } = buildLandmarks(scene);
+  const communityEntrances=buildCommunityEntrances(scene);
+  const modelColliders=[...landmarkColliders,...communityEntrances.colliders];
   markInit('landmarks');
-  await showLoadingStage('Generating building footprints and facades...', 'blocks');
-  const cityBlocks = buildCityBlocks(scene, landmarkColliders);
+  await showLoadingStage('正在生成建筑轮廓与立面...', 'blocks');
+  const cityBlocks = buildCityBlocks(scene, modelColliders);
+  const urbanContext = buildUrbanContext(scene);
   markInit('blocks');
-  const allColliders = [...landmarkColliders, ...cityBlocks.colliders, ...boroughs.colliders, ...(cityGrid.colliders || [])];
+  const allColliders = [...modelColliders, ...cityBlocks.colliders, ...boroughs.colliders, ...(cityGrid.colliders || [])];
 
-  await showLoadingStage('Placing trees, streetlights and street furniture...', 'streetDetails');
+  await showLoadingStage('正在布置行道树、路灯与街道设施...', 'streetDetails');
   const streetDetails = buildStreetDetails(scene, allColliders);
   markInit('streetDetails');
-  await showLoadingStage('Creating traffic and pedestrian routes...', 'traffic');
+  await showLoadingStage('正在生成车流与人行路线...', 'traffic');
   // Buildings turned along non-grid streets have oriented colliders whose world bounds reach past their lots: they stay
   // inside the property line anyway, so the road network (lanes & sidewalks) doesn't need them.
   // Elevated building sections that clear even a bus don't obstruct ground traffic.
@@ -139,16 +145,16 @@ async function initApp() {
   ], streetDetails.signalIntersections);
   markInit('traffic');
   const highwayTraffic = createHighwayTraffic(scene, cityGrid.highwayLanes);
-  await showLoadingStage('Adding road markings...', 'roadPaint');
+  await showLoadingStage('正在绘制道路标线...', 'roadPaint');
   buildRoadPaint(scene, trafficSystem.network, cityGrid.roadPaint);
   markInit('roadPaint');
 
   // 4. Initialize Third-Person Controllers (Person, Car, Cyclist, Helicopter) & Multi-Camera System
-  await showLoadingStage('Preparing player, vehicles and controls...', 'controllers');
+  await showLoadingStage('正在准备角色、车辆与控制...', 'controllers');
   const controllerManager = new ThirdPersonControllerManager(scene, allColliders);
   // Reuse teleport placement so saved players return at rest, close to their last positions.
   try {
-    const saved = JSON.parse(localStorage.getItem('nyc-player-state'));
+    const saved = JSON.parse(localStorage.getItem('shuyang-player-state'));
     if (saved?.version === 1) {
       for (const mode of Object.keys(controllerManager.entities)) {
         const p = saved.entities?.[mode];
@@ -165,11 +171,30 @@ async function initApp() {
       const entities = Object.fromEntries(Object.entries(controllerManager.entities).map(([mode, entity]) => [mode, {
         x: entity.position.x, y: entity.position.y, z: entity.position.z, heading: entity.heading
       }]));
-      localStorage.setItem('nyc-player-state', JSON.stringify({ version: 1, activeMode: controllerManager.activeMode, entities }));
+      localStorage.setItem('shuyang-player-state', JSON.stringify({ version: 1, activeMode: controllerManager.activeMode, entities }));
     } catch { /* Storage may be disabled or full. */ }
   }
 
   const cameraSystem = new CameraSystem(renderer.domElement, controllerManager);
+  if (new URLSearchParams(location.search).has('debug')) {
+    window.__debug = {
+      scene, renderer, controllerManager, cameraSystem, streetDetails, THREE, landmarkColliders, cityBlocks,
+      teleportToLandmark: (id) => {
+        const loc = TELEPORT_LOCATIONS[id];
+        if (!loc) return false;
+        teleportTo(loc.x, loc.z, loc.heading);
+        return true;
+      },
+      lookAtLandmark: (id) => {
+        const lm = LANDMARKS.find((l) => l.id === id);
+        if (!lm) return false;
+        const ent = controllerManager.getActiveEntity();
+        ent.heading = Math.atan2(lm.x - ent.position.x, lm.z - ent.position.z);
+        cameraSystem.resetForTeleport();
+        return true;
+      }
+    };
+  }
   const touchControls = new TouchControls(controllerManager);
   const soundButton = document.getElementById('btn-sound');
   const audioSystem = new CityAudioSystem({ controllerManager, trafficSystem, highwayTraffic, streetDetails }, {
@@ -179,8 +204,8 @@ async function initApp() {
     if (!soundButton) return;
     soundButton.disabled = !audioSystem.supported;
     soundButton.setAttribute('aria-pressed', String(audioSystem.enabled));
-    soundButton.setAttribute('aria-label', audioSystem.enabled ? 'Mute sound' : 'Enable sound');
-    soundButton.title = audioSystem.supported ? `${audioSystem.enabled ? 'Mute' : 'Enable'} sound [N]` : 'Web Audio is unavailable';
+    soundButton.setAttribute('aria-label', audioSystem.enabled ? '关闭声音' : '开启声音');
+    soundButton.title = audioSystem.supported ? `${audioSystem.enabled ? '关闭声音' : '开启声音'} [N]` : '当前浏览器不支持声音';
     soundButton.querySelector('use').setAttribute('href', audioSystem.enabled ? '#i-sound' : '#i-sound-off');
   }
   soundButton?.addEventListener('click', () => audioSystem.setEnabled(!audioSystem.enabled));
@@ -195,8 +220,8 @@ async function initApp() {
 
   // Island-wide static geometry: chunk & distance-cull the small props, shadow stand-ins for the big casters
   // (scene-culling.js)
-  await showLoadingStage('Preparing scene visibility and shadows...', 'culling');
-  const cullingRoots = ['ManhattanCityGrid', 'ManhattanCityBlocks', 'ManhattanStreetDetails', 'ManhattanLandmarks', 'Boroughs', 'RoadMarkings']
+  await showLoadingStage('正在准备场景可见性与阴影...', 'culling');
+  const cullingRoots = ['ShuyangCityGrid', 'ShuyangCityBlocks', 'ShuyangUrbanContext', 'ShuyangCommunityEntrances', 'ShuyangStreetDetails', 'ShuyangLandmarks', 'ShuyangGreenBelt', 'RoadMarkings']
     .map((name) => scene.getObjectByName(name))
     .filter(Boolean);
   setupSceneCulling(scene, cullingRoots, lightingSystem.sunLight.shadow);
@@ -210,14 +235,14 @@ async function initApp() {
     scene.getObjectByName('StreetClusteredLights'),
     ...Object.values(controllerManager.entities).map((entity) => entity.mesh),
     controllerManager.entities.cyclist.helmet
-  ];
+  ].filter(Boolean);
   scene.updateMatrixWorld(true);
   scene.matrixWorldAutoUpdate = false;
   markInit('culling');
 
   // 5. TSL RenderPipeline with Half-Res Screen Space Reflections (SSRNode), Bloom & Filmic Toning
   //    Fade out distant and matte surfaces so SSR spends its rays on visible glossy reflections.
-  await showLoadingStage('Setting up visual effects, map and interface...', 'ui');
+  await showLoadingStage('正在设置视觉效果、地图与界面...', 'ui');
   const scenePass = pass(scene, cameraSystem.camera);
   // The multisampled colour attachments (output, normal, metalRough) only need resolving, never storing: discarding
   // them spares the GPU writing 3 x 4 samples per pixel to memory every frame (transient, memoryless attachments where
@@ -289,13 +314,31 @@ async function initApp() {
 
   // Keyboard guide for each mode: [keys, action]
   const controlHints = {
-    person: [[['W', 'S'], 'Walk / Run'], [['A', 'D'], 'Turn'], [['Space'], 'Jump'], [['Drag'], 'Orbit']],
-    car: [[['W', 'S'], 'Drive / Reverse'], [['A', 'D'], 'Steer'], [['B'], 'Horn'], [['Drag'], 'Orbit']],
-    cyclist: [[['W', 'S'], 'Pedal / Brake'], [['Space'], 'Brake'], [['A', 'D'], 'Lean & Turn'], [['Drag'], 'Orbit']],
-    helicopter: [[['W', 'S'], 'Pitch'], [['A', 'D'], 'Yaw'], [['Space', 'E'], 'Ascend'], [['Q', 'C'], 'Descend']]
+    person: [[['W', 'S'], '前进 / 后退'], [['A', 'D'], '转向'], [['空格'], '跳跃'], [['拖动'], '环绕视角']],
+    car: [[['W', 'S'], '前进 / 倒车'], [['A', 'D'], '转向'], [['B'], '鸣笛'], [['拖动'], '环绕视角']],
+    cyclist: [[['W', 'S'], '踩踏 / 刹车'], [['空格'], '刹车'], [['A', 'D'], '压弯转向'], [['拖动'], '环绕视角']],
+    helicopter: [[['W', 'S'], '俯仰'], [['A', 'D'], '偏航'], [['空格', 'E'], '上升'], [['Q', 'C'], '下降']]
   };
-  // Top speeds in mph (controllers.js caps them at 8.2, 36, 19 & 52 m/s): full scale of the speed meter
-  const topSpeedMph = { person: 18, car: 81, cyclist: 43, helicopter: 116 };
+  // 最高速度 km/h（controllers.js 上限 8.2 / 36 / 19 / 52 m/s）
+  const topSpeedKmh = { person: 30, car: 130, cyclist: 68, helicopter: 187 };
+  const fastSpeedKmh = { person: 45, car: 173, cyclist: 90, helicopter: 281 };
+
+  for (const hints of Object.values(controlHints)) hints.push([['上档'], '按住加速']);
+
+  const boostButton = document.getElementById('btn-boost');
+  const boostLabel = document.getElementById('boost-label');
+  function updateBoostButton() {
+    const active = controllerManager.isBoosting();
+    boostButton?.classList.toggle('is-active', active);
+    boostButton?.setAttribute('aria-pressed', String(Boolean(controllerManager.boostEnabled)));
+    boostButton?.setAttribute('aria-label', controllerManager.boostEnabled ? '关闭持续加速' : '开启持续加速');
+    if (boostLabel) boostLabel.textContent = controllerManager.boostEnabled ? '持续加速' : active ? '加速中' : '加速';
+  }
+  boostButton?.addEventListener('click', () => {
+    controllerManager.setBoostEnabled(!controllerManager.boostEnabled);
+    updateBoostButton();
+  });
+  updateBoostButton();
 
   function renderControlHints(mode) {
     if (!elControlsHint) return;
@@ -438,7 +481,7 @@ async function initApp() {
 
   // Where you are: the place's name over its street corner, drawn as a pair of NYC street-name signs
   const roadNames = new Set(ROADS.map((r) => r.name));
-  const placeNames = new Set(NYC_LANDMARKS.map((l) => l.name));
+  const placeNames = new Set(LANDMARKS.map((l) => l.name));
   let locationText = '';
   function renderLocation(label) {
     if (!elLocation || label === locationText) return;
@@ -467,7 +510,7 @@ async function initApp() {
         streets = streets.slice(5);
         const near = document.createElement('span');
         near.className = 'location-near';
-        near.textContent = 'near';
+        near.textContent = '附近';
         row.appendChild(near);
       }
       for (const name of streets.split(' & ')) {
@@ -495,7 +538,7 @@ async function initApp() {
     return destination;
   }
 
-  const mapSystem = new NYCMapSystem({
+  const mapSystem = new CityMapSystem({
     controllerManager,
     cameraSystem,
     allBlocks: cityBlocks.allBlocks,
@@ -505,7 +548,7 @@ async function initApp() {
       gamepadControls.setEnabled(!open);
       const mapHint = document.getElementById('fullmap-hover-info');
       if (open && touchControls.available && mapHint) {
-        mapHint.textContent = 'Tap to teleport · Drag to pan · Use + / − to zoom';
+        mapHint.textContent = '点击传送 · 拖动平移 · + / − 缩放';
       }
     },
     onTeleport: teleportTo
@@ -521,17 +564,27 @@ async function initApp() {
       closePopovers();
     });
   });
-
   const openMapBtn = document.getElementById('btn-open-map');
   if (openMapBtn) openMapBtn.addEventListener('click', () => mapSystem.toggleFullMap(true));
+  // Local demo deep link: ?tp=<landmarkId> starts the scene at that landmark.
+  const startAt = new URLSearchParams(location.search).get('tp');
+  if (startAt && TELEPORT_LOCATIONS[startAt]) {
+    const loc = TELEPORT_LOCATIONS[startAt];
+    requestAnimationFrame(() => teleportTo(loc.x, loc.z, loc.heading));
+  }
+  installLandmarkGallery({
+    onTeleport:teleportTo,
+    onOpen:()=>{closePopovers();controllerManager.resetInput();touchControls.setEnabled(false);gamepadControls.setEnabled(false)},
+    onClose:()=>{controllerManager.resetInput();touchControls.setEnabled(!mapSystem.isFullMapOpen);gamepadControls.setEnabled(!mapSystem.isFullMapOpen)}
+  });
 
   if (hudToggleBtn) {
     hudToggleBtn.addEventListener('click', () => {
       document.body.classList.toggle('hud-minimized');
       const isMin = document.body.classList.contains('hud-minimized');
       hudToggleBtn.setAttribute('aria-pressed', String(isMin));
-      hudToggleBtn.setAttribute('aria-label', isMin ? 'Show HUD' : 'Hide HUD');
-      hudToggleBtn.title = isMin ? 'Show the HUD [H]' : 'Clean view: hide the HUD [H]';
+      hudToggleBtn.setAttribute('aria-label', isMin ? '显示界面' : '隐藏界面');
+      hudToggleBtn.title = isMin ? '显示界面 [H]' : '简洁视图：隐藏界面 [H]';
       if (isMin) closePopovers();
     });
   }
@@ -608,7 +661,7 @@ async function initApp() {
   const COMPILE_POOL = 16;
   const nextTask = () => (globalThis.scheduler?.yield ? globalThis.scheduler.yield() : new Promise((resolve) => setTimeout(resolve, 0)));
   async function precompileShaders() {
-    await showLoadingStage('Preparing reflections and bloom...', 'postFX');
+    await showLoadingStage('正在准备反射与泛光...', 'postFX');
     // An empty frame first: it sets up the post-processing chain, which configures the scene pass's render target
     // (MSAA samples, depth format), so the pipelines compiled below are the very ones the scene pass asks for
     scene.visible = false;
@@ -648,7 +701,7 @@ async function initApp() {
       job.push(o);
     });
 
-    await showLoadingStage(`Compiling scene shaders... 0 / ${jobs.length} batches`, 'compile', false);
+    await showLoadingStage(`正在编译场景着色器... 0 / ${jobs.length} 批`, 'compile', false);
     renderer.setRenderTarget(scenePass.renderTarget);
     renderer.setMRT(sceneMRT);
     const compile = async (object) => {
@@ -668,7 +721,7 @@ async function initApp() {
         const job = jobs[next++];
         for (const object of job) await compile(object);
         done++;
-        if (loadingStatus) loadingStatus.textContent = `Compiling scene shaders... ${done} / ${jobs.length} batches`;
+        if (loadingStatus) loadingStatus.textContent = `正在编译场景着色器... ${done} / ${jobs.length} 批`;
         setStageProgress(done / jobs.length);
       }
     };
@@ -680,7 +733,7 @@ async function initApp() {
 
   await precompileShaders();
   markInit('compile');
-  await showLoadingStage('Preparing shadows and the first frame...', 'warmup');
+  await showLoadingStage('正在准备阴影与首帧...', 'warmup');
 
   // 6. Animation Loop
   let lastTime = performance.now();
@@ -720,6 +773,7 @@ async function initApp() {
     cityBlocks.update(cameraSystem.currentPos.x, cameraSystem.currentPos.z);
     if (cityBlocks.updateLights) cityBlocks.updateLights(cameraSystem.camera);
     if (streetDetails.update) streetDetails.update(cameraSystem.camera);
+    urbanContext.update(cameraSystem.camera, elapsed);
     lightingSystem.update(cameraSystem.currentPos);
     mapSystem.update();
     audioSystem.update(dt, elapsed, cameraSystem.camera, lightingSystem.activePresetId === 'midnight');
@@ -754,7 +808,7 @@ async function initApp() {
       // The loading screen stays up until the GPU has got through the first frame (and the pipelines its warm-up
       // compiled), i.e. until the city is actually on screen
       const device = renderer.backend.device;
-      beginLoadingStage('Waiting for graphics to finish the first frame...', 'gpu');
+      beginLoadingStage('正在等待首帧渲染完成...', 'gpu');
       Promise.resolve(device && device.queue.onSubmittedWorkDone()).catch(() => {}).then(() => {
         markInit('gpu');
         console.log(`[init] ${initTimings.join(', ')}`);
@@ -776,16 +830,17 @@ async function initApp() {
 
       const activeEnt = controllerManager.getActiveEntity();
       const mode = controllerManager.activeMode;
-      const mph = Math.round(Math.abs(activeEnt.speed) * 2.237);
-      const altFt = Math.max(0, Math.round(activeEnt.position.y * 3.281));
+      const kmh = Math.round(Math.abs(activeEnt.speed) * 3.6);
+      const altM = Math.max(0, Math.round(activeEnt.position.y));
 
       if (elFps) {
         elFps.textContent = String(currentFps);
         elFps.className = currentFps >= 50 ? 'fps-ok' : currentFps >= 30 ? 'fps-warn' : 'fps-bad';
       }
-      if (elSpeed) elSpeed.textContent = String(mph);
-      if (elSpeedMeter) elSpeedMeter.style.transform = `scaleX(${Math.min(1, mph / (topSpeedMph[mode] || 80))})`;
-      if (elAltitude) elAltitude.textContent = altFt.toLocaleString('en-US');
+      updateBoostButton();
+      if (elSpeed) elSpeed.textContent = String(kmh);
+      if (elSpeedMeter) elSpeedMeter.style.transform = `scaleX(${Math.min(1, kmh / ((controllerManager.isBoosting() ? fastSpeedKmh : topSpeedKmh)[mode] || 120))})`;
+      if (elAltitude) elAltitude.textContent = altM.toLocaleString('zh-CN');
       // The street corner of the player on the follow cameras, of the camera itself on the scenic ones
       const where = cameraSystem.getActivePreset().category === 'follow' ? activeEnt.position : cameraSystem.currentPos;
       renderLocation(getLocationLabel(where.x, where.z));

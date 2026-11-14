@@ -63,8 +63,7 @@ import {
   ISLAND_BOUNDS,
   getIslandBoundsAtZ,
   NJ_SHORELINE_POLYGON,
-  LONG_ISLAND_POLYGONS,
-  streetZ
+  LONG_ISLAND_POLYGONS
 } from './city-config.js';
 
 // Procedural city materials: facades and interiors, vegetation, roads, water and lighting effects.
@@ -420,7 +419,7 @@ const WALL_KINDS = { shop: 0, front: 1, rear: 2, lotLine: 3 };
  * supply wall dimensions to fit whole window bays between the corners. `cornerPier` reserves solid masonry
  * at each end above the ground-floor shops. Partial storeys and the coping remain solid at each wall's top.
  */
-function facadeCell(windowWidth, floorHeight, boxLocal, cornerPier = 0, footprintLocal = false) {
+function facadeCell(windowWidth, floorHeight, boxLocal, cornerPier = 0, footprintLocal = false, sourceStoreys = false) {
   // Local walls use geometry normals; world-space walls use the stable facade frame.
   const nWall = boxLocal ? normalGeometry : facadeWorldNormal;
   const nW = abs(nWall);
@@ -428,6 +427,8 @@ function facadeCell(windowWidth, floorHeight, boxLocal, cornerPier = 0, footprin
   const alongZ = boxLocal ? step(nW.z, nW.x) : facadeAlongZ;
   let uCoord = mix(positionWorld.x, positionWorld.z, alongZ);
   let bayWidth = float(windowWidth);
+  const buildingInfo = sourceStoreys ? attribute('buildingInfo', 'vec3') : null;
+  if (sourceStoreys) floorHeight = mix(floorHeight, max(1, buildingInfo.y), step(.1, buildingInfo.y));
   let gridU = uCoord.div(bayWidth);
   let inPier = float(0.0);
   let kind = float(WALL_KINDS.front);
@@ -474,7 +475,7 @@ function facadeCell(windowWidth, floorHeight, boxLocal, cornerPier = 0, footprin
     uCoord = gridU.mul(bayWidth);
   }
 
-  const vCoord = positionWorld.y;
+  const vCoord = sourceStoreys ? positionWorld.y.sub(buildingInfo.x) : positionWorld.y;
   const gridV = vCoord.div(floorHeight);
   const cellId = vec2(floor(gridU), floor(gridV));
   const cellUV = vec2(fract(gridU), fract(gridV));
@@ -512,8 +513,8 @@ let _storefrontSignTexture;
 
 function getStorefrontSignTexture() {
   if (_storefrontSignTexture) return _storefrontSignTexture;
-  const labels = ['CORNER MARKET', 'COFFEE & BAKERY', 'BOOKS & RECORDS', 'NEIGHBORHOOD DELI',
-    'CLEANERS', 'FLOWERS', 'HARDWARE', 'PIZZA'];
+  const labels = ['便民超市', '咖啡烘焙', '书报文具', '邻里餐馆',
+    '衣物洗护', '鲜花绿植', '五金电料', '风味小吃'];
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = 512;
   const ctx = canvas.getContext('2d');
@@ -880,6 +881,7 @@ function createPreWarBuildingMaterial(opts = {}) {
     stoneColor = 0xd8ceb8,
     trimColor = 0x9e937f,
     windowGlassColor = 0x162432,
+    roofColor = null,
     windowWidth = 2.7,
     floorHeight = 3.8,
     windowRatioX = 0.50,
@@ -891,10 +893,11 @@ function createPreWarBuildingMaterial(opts = {}) {
     seed = 42.0,
     boxLocal = false,
     footprintLocal = false,
+    plasterFacade = false,
     cornerPier = 1.2 // solid masonry at both ends of every wall above the shopfronts (box-local mode)
   } = opts;
 
-  const cacheKey = `${stoneColor}_${trimColor}_${windowWidth}_${floorHeight}_${litProbability}_${warmth}_${crownGlowHeight}_${seed}_${boxLocal}_${footprintLocal}_${cornerPier}`;
+  const cacheKey = `${stoneColor}_${trimColor}_${roofColor}_${windowWidth}_${floorHeight}_${litProbability}_${warmth}_${crownGlowHeight}_${seed}_${boxLocal}_${footprintLocal}_${cornerPier}_${plasterFacade}`;
   if (_preWarCache.has(cacheKey)) {
     return _preWarCache.get(cacheKey);
   }
@@ -908,6 +911,8 @@ function createPreWarBuildingMaterial(opts = {}) {
   const cStone = uniform(new THREE.Color(stoneColor));
   const cTrim = uniform(new THREE.Color(trimColor));
   const cGlass = uniform(new THREE.Color(windowGlassColor));
+  const cRoof = uniform(new THREE.Color(roofColor ?? 0x000000));
+  const uRoofTint = uniform(roofColor === null ? 0 : 1);
   const cCrown = uniform(new THREE.Color(crownGlowColor));
   const uWindowWidth = uniform(windowWidth);
   const uFloorHeight = uniform(floorHeight);
@@ -916,6 +921,7 @@ function createPreWarBuildingMaterial(opts = {}) {
   const uCrownGlowHeight = uniform(crownGlowHeight);
   const uSeed = uniform(seed);
   const cSoot = color(0x4a4236);
+  const uPlaster = uniform(plasterFacade ? 1 : 0);
   const cCanyonBounce = color(0xe89c68);
 
   const halfWinX = (1.0 - windowRatioX) * 0.5;
@@ -925,7 +931,7 @@ function createPreWarBuildingMaterial(opts = {}) {
 
   // The facade cell, the window opening and the apartment behind it are built once and shared by every output below,
   // so the shader carries a single copy of them (and evaluates the interior mapping once per pixel)
-  const facade = facadeCell(uWindowWidth, uFloorHeight, boxLocal || footprintLocal, cornerPier, footprintLocal);
+  const facade = facadeCell(uWindowWidth, uFloorHeight, boxLocal || footprintLocal, cornerPier, footprintLocal, plasterFacade);
   const { isRoof, uCoord, vCoord, gridV, cellId, cellUV, fw, bayWidth, isGroundFloor, solid, back, blank, tone, coping } = facade;
   const { wallS, wallW, wallH, exposedHeight, fromTop, boxSeed } = facade;
   const open = float(1.0).sub(solid);
@@ -948,7 +954,7 @@ function createPreWarBuildingMaterial(opts = {}) {
   const storefront = createStorefront(facade, uSeed, boxLocal || footprintLocal);
   const entrance = createBuildingEntrance(facade, cTrim, boxLocal || footprintLocal);
   // Window AC units (~12% of upper-floor windows), none in the floor the band course covers
-  const beltFloor = step(5.0, mod(floor(gridV), 6.0)).mul(front);
+  const beltFloor = step(5.0, mod(floor(gridV), 6.0)).mul(front).mul(float(1).sub(uPlaster));
   const acRand = hash2D(cellId.add(vec2(uSeed.mul(1.3).add(7.1), 91.7)));
   const hasAC = step(0.88, acRand).mul(float(1.0).sub(isGroundFloor)).mul(float(1.0).sub(isRoof)).mul(open).mul(float(1.0).sub(beltFloor));
 
@@ -964,7 +970,7 @@ function createPreWarBuildingMaterial(opts = {}) {
     const isCornice = max(
       filteredPulse(cornicePhase, 0.86, 1.0, fw.y.div(6.0)).mul(front),
       isGroundFloor.mul(filteredPulse(cellUV.y, 0.86, 1.0, fw.y))
-    );
+    ).mul(float(1).sub(uPlaster));
 
     // Double-hung meeting rails.
     const sashBarY = lineAA(cellUV.y.sub(0.52), 0.012).mul(float(1.0).sub(isGroundFloor));
@@ -1013,22 +1019,22 @@ function createPreWarBuildingMaterial(opts = {}) {
       const patch = smoothstep(0.6, 0.76, noise2D(vec2(uCoord.mul(0.11), vCoord.mul(0.07)).add(tone.mul(37.0))));
       parged.assign(max(step(0.74, fract(tone.mul(3.7))), patch.mul(0.85)));
     });
-    const backTint = mix(backBrick, color(0x8f8b84), parged);
+    const backTint = mix(mix(backBrick, color(0x8f8b84), parged), cStone, uPlaster);
     const mortarJoint = max(
       gridLine(colCoord.mul(brickL), brickL, 0.016),
       gridLine(vCoord, brickH, 0.016)
-    ).mul(float(1.0).sub(isRoof)).mul(float(1.0).sub(parged)).mul(float(1.0).sub(coping));
+    ).mul(float(1.0).sub(isRoof)).mul(float(1.0).sub(parged)).mul(float(1.0).sub(coping)).mul(float(1).sub(uPlaster));
 
     // Per-brick tint fades out once bricks shrink to a pixel (and soot streaks once they do), so neither can shimmer
     const uFw = fwidth(uCoord);
-    const brickVar = float(1.0).sub(smoothstep(0.5, 1.0, max(uFw.div(brickL), fwidth(rowCoord))));
+    const brickVar = float(1.0).sub(smoothstep(0.5, 1.0, max(uFw.div(brickL), fwidth(rowCoord)))).mul(float(1).sub(uPlaster));
     const brickCell = vec2(floor(colCoord), courseRow);
     const brickRnd = hash2D(brickCell.add(vec2(uSeed, 5.3))).sub(0.5).mul(brickVar);
     const brickWarmShift = hash2D(brickCell.add(vec2(17.1, uSeed))).sub(0.5).mul(0.12).mul(brickVar);
     const brickShiftVec = vec3(float(1.0).add(brickWarmShift), float(1.0), float(1.0).sub(brickWarmShift));
 
     const streakNoise = mix(float(0.5), noise2D(vec2(uCoord.mul(1.4), vCoord.mul(0.05))), float(1.0).sub(smoothstep(0.5, 1.0, uFw.mul(1.4))));
-    const sootDirt = smoothstep(0.25, 0.78, streakNoise).mul(float(1.0).sub(smoothstep(0.0, 180.0, vCoord))).mul(0.36);
+    const sootDirt = smoothstep(0.25, 0.78, streakNoise).mul(float(1.0).sub(smoothstep(0.0, 180.0, vCoord))).mul(mix(.36, .09, uPlaster));
 
     const lintelShadow = smoothstep(oneMinusEffY.sub(0.14), oneMinusEffY, cellUV.y).mul(0.58);
     const jambShadow = float(1.0).sub(smoothstep(effHalfX, effHalfX.add(0.08), cellUV.x)).mul(0.42);
@@ -1037,7 +1043,7 @@ function createPreWarBuildingMaterial(opts = {}) {
     const isSillTop = filteredPulse(cellUV.y, effHalfY.sub(0.032), effHalfY, fw.y).mul(sillSpan);
     const isSillUnderShadow = filteredPulse(cellUV.y, effHalfY.sub(0.075), effHalfY.sub(0.032), fw.y).mul(sillSpan);
 
-    const corniceShadow = smoothstep(0.76, 0.86, cornicePhase).mul(0.32).mul(front);
+    const corniceShadow = smoothstep(0.76, 0.86, cornicePhase).mul(0.32).mul(front).mul(float(1).sub(uPlaster));
 
     const canyonBand = smoothstep(0.0, 14.0, vCoord).mul(float(1.0).sub(smoothstep(22.0, 75.0, vCoord)));
     const canyonGlow = cCanyonBounce.mul(canyonBand.mul(cityUniforms.uCanyonBounce).mul(0.22));
@@ -1047,7 +1053,7 @@ function createPreWarBuildingMaterial(opts = {}) {
     const signH = max(min(min(min(wallH.mul(0.3), signW.mul(0.42)), 6.5), exposedHeight.sub(1.8)), 0.1);
     const hasSign = blank.mul(float(1.0).sub(step(0.74, fract(tone.mul(3.7)))))
       .mul(step(0.8, fract(tone.mul(13.7).add(boxSeed.mul(0.618)))))
-      .mul(step(5.0, signW)).mul(step(2.6, signH));
+      .mul(step(5.0, signW)).mul(step(2.6, signH)).mul(float(1).sub(uPlaster));
     const su = wallS.sub(wallW.sub(signW).mul(0.5)).div(signW);
     const sv = fromTop.sub(1.2).div(signH);
     const signFw = vec2(fwidth(su), fwidth(sv));
@@ -1113,7 +1119,7 @@ function createPreWarBuildingMaterial(opts = {}) {
 
     const frameCol = masonryTint.mul(0.46).mul(recessShade);
     const roofNoise = noise2D(positionWorld.xz.mul(0.35));
-    const roofCol = mix(cTrim.mul(0.42), cTrim.mul(0.62), roofNoise);
+    const roofCol = mix(mix(cTrim.mul(0.42), cTrim.mul(0.62), roofNoise),mix(cRoof.mul(.9),cRoof.mul(1.08),roofNoise),uRoofTint);
 
     const wallOrRoof = mix(masonryWeathered, roofCol, isRoof);
     const withFrames = mix(wallOrRoof, frameCol, isWindowOpening.mul(sashMask));
@@ -1123,7 +1129,7 @@ function createPreWarBuildingMaterial(opts = {}) {
   })();
 
   mat.roughnessNode = Fn(() => {
-    const belt = filteredPulse(gridV.div(6.0), 0.86, 1.0, fw.y.div(6.0)).mul(front);
+    const belt = filteredPulse(gridV.div(6.0), 0.86, 1.0, fw.y.div(6.0)).mul(front).mul(float(1).sub(uPlaster));
     const inX = filteredPulse(cellUV.x, halfWinX, 1.0 - halfWinX, fw.x).mul(open).mul(float(1.0).sub(belt));
     const inY = filteredPulse(cellUV.y, halfWinY, 1.0 - halfWinY, fw.y);
     const isWindow = inX.mul(inY).mul(float(1.0).sub(isRoof));
@@ -1148,7 +1154,7 @@ function createPreWarBuildingMaterial(opts = {}) {
     const footprint = max(fwidth(uCoord), fwidth(vCoord)); // Meters per pixel
 
     // Stone band course every 6 floors on street fronts: no window recesses, sills or AC units in it
-    const belt = filteredPulse(gridV.div(6.0), 0.86, 1.0, ramp.y.div(6.0)).mul(front);
+    const belt = filteredPulse(gridV.div(6.0), 0.86, 1.0, ramp.y.div(6.0)).mul(front).mul(float(1).sub(uPlaster));
     const inX = filteredPulse(cellUV.x, effHalfX, float(1.0).sub(effHalfX), ramp.x).mul(open).mul(float(1.0).sub(belt));
     const inY = filteredPulse(cellUV.y, effHalfY, float(1.0).sub(effHalfY), ramp.y);
     const isWindow = inX.mul(inY);
@@ -1172,7 +1178,7 @@ function createPreWarBuildingMaterial(opts = {}) {
     const acLouverHeight = fract(cellUV.y.sub(effHalfY).div(0.22).mul(6.0)).mul(0.012)
       .mul(float(1.0).sub(smoothstep(0.012, 0.025, footprint)));
 
-    const wallHeight = brickDome.mul(float(1.0).sub(coping)).add(sillLedge).add(corniceLedge).add(coping.mul(0.024));
+    const wallHeight = brickDome.mul(float(1).sub(uPlaster)).mul(float(1.0).sub(coping)).add(sillLedge).add(corniceLedge).add(coping.mul(0.024));
     const totalHeight = mix(wallHeight, acLouverHeight.mul(inACBox), isWindow);
 
     const relief = mix(totalHeight, storefront.relief, storefront.mask);
@@ -1189,7 +1195,7 @@ function createPreWarBuildingMaterial(opts = {}) {
     const isCornice = max(
       filteredPulse(fract(gridV.div(6.0)), 0.86, 1.0, fw.y.div(6.0)).mul(front),
       isGroundFloor.mul(filteredPulse(cellUV.y, 0.86, 1.0, fw.y))
-    );
+    ).mul(float(1).sub(uPlaster));
 
     const sashBarY = lineAA(cellUV.y.sub(0.52), 0.014).mul(float(1.0).sub(isGroundFloor));
     const sashBarX = lineAA(cellUV.x.sub(0.50), 0.010).mul(float(1.0).sub(isGroundFloor)).mul(0.55);
@@ -1910,6 +1916,36 @@ const roadTarSnakes = Fn(([wxz, px]) => {
  * from above.
  * Lane markings are separate geometry built from the road network (js/road-paint.js).
  */
+function createModernRoadSurfaceMaterial() {
+  const mat = new THREE.MeshStandardNodeMaterial({ metalness: 0, roughness: .86 });
+  const px = length(fwidth(positionWorld.xz));
+  const wet = roadWetMasks(roadPuddleField(positionWorld.x, positionWorld.z));
+  // Quiet, neutral aggregate: no metre-scale brown repairs, tar snakes or pothole bowls.
+  const grain = Fn(() => fadedDetail(px.lessThan(.08), .5, () =>
+    mix(float(.5), noise2D(positionWorld.xz.mul(26)), smoothstep(.08, .015, px))))();
+  const broad = noise2D(positionWorld.xz.mul(.7));
+  mat.colorNode = mix(color(0x30363d), color(0x3b4249), grain.mul(.25).add(broad.mul(.07)).add(.22))
+    .mul(mix(float(1), float(.78), wet.x));
+  mat.roughnessNode = mix(float(.86), float(.28), wet.y.mul(.8));
+  mat.normalNode = bumpNormal(grain.sub(.5).mul(.0008));
+  mat.aoNode = canyonSkyAONode();
+  return mat;
+}
+
+function createModernSidewalkMaterial() {
+  const mat = new THREE.MeshStandardNodeMaterial({ metalness: 0, roughness: .88 });
+  const px = length(fwidth(positionWorld.xz));
+  const grid = positionWorld.xz.div(vec2(.6, .3));
+  const cell = fract(grid);
+  const edge = min(min(cell.x, float(1).sub(cell.x)).mul(.6), min(cell.y, float(1).sub(cell.y)).mul(.3));
+  const seam = float(1).sub(smoothstep(.004, max(.007, px), edge)).mul(smoothstep(.18, .025, px));
+  const tone = noise2D(floor(grid)).mul(.04).add(.48);
+  mat.colorNode = mix(mix(color(0xabb0b2), color(0xc6c9c7), tone), color(0x858e92), seam.mul(.35));
+  mat.normalNode = bumpNormal(seam.mul(-.001));
+  mat.aoNode = canyonSkyAONode();
+  return mat;
+}
+
 function createRoadSurfaceMaterial() {
   const mat = new THREE.MeshStandardNodeMaterial({
     metalness: 0.24,
@@ -2153,7 +2189,7 @@ function createRoadPaintMaterial() {
     });
     return w;
   })();
-  mat.opacityNode = dashes.mul(varying(float(1.0).div(widen))).mul(smoothstep(0.1, 0.6, wear).mul(0.4).add(0.55)).mul(distFade);
+  mat.opacityNode = dashes.mul(varying(float(1.0).div(widen))).mul(smoothstep(0.1, 0.6, wear).mul(0.08).add(0.9)).mul(distFade);
 
   // Standing-water puddle mask is zero when uRoadWetness <= 0.1 (e.g. midday); evaluate once and share across channels
   const puddle = Fn(() => {
@@ -2406,15 +2442,15 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#ffdf78';
     ctx.font = '800 18px Inter, Arial, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('★  BROADWAY MUSICAL SPECTACULAR  ★', 256, 46);
+    ctx.fillText('★  沭阳文化演出  ★', 256, 46);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 44px Inter, Arial, sans-serif';
-    ctx.fillText('METROPOLIS', 256, 102);
+    ctx.fillText('沭阳之夜', 256, 102);
 
     ctx.fillStyle = '#ffc845';
     ctx.font = '900 26px Inter, Arial, sans-serif';
-    ctx.fillText('LIVE ON BROADWAY', 256, 138);
+    ctx.fillText('城市舞台 · 精彩上演', 256, 138);
 
     ctx.fillStyle = '#18040a';
     ctx.fillRect(36, 158, 440, 42);
@@ -2424,11 +2460,11 @@ function createBillboardCanvasTexture(themeKey) {
 
     ctx.fillStyle = '#fff3c4';
     ctx.font = '800 20px Inter, Arial, sans-serif';
-    ctx.fillText('★★★★★  "UNFORGETTABLE!" — NY TIMES', 256, 185);
+    ctx.fillText('★★★★★  城市文艺 · 美好生活', 256, 185);
 
     ctx.fillStyle = '#ffae42';
     ctx.font = '700 16px JetBrains Mono, monospace';
-    ctx.fillText('MAJESTIC THEATRE · 44TH ST WEST · TONIGHT 8 PM', 256, 226);
+    ctx.fillText('文化中心 · 今晚八点', 256, 226);
   } else if (themeKey === 1) {
     // Theme 1: NASDAQ / Wall St MarketSite Financial Display
     const grad = ctx.createLinearGradient(0, 0, 0, 256);
@@ -2453,11 +2489,11 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 24px Inter, Arial, sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText('NASDAQ · TIMES SQ MARKETSITE', 18, 31);
+    ctx.fillText('沭阳商业街 · 城市生活', 18, 31);
     ctx.fillStyle = '#00f5a0';
     ctx.textAlign = 'right';
     ctx.font = '800 20px JetBrains Mono, monospace';
-    ctx.fillText('LIVE ▲ +2.84%', 494, 31);
+    ctx.fillText('生活资讯', 494, 31);
 
     // Bullish emerald chart area & line
     const pts = [
@@ -2490,9 +2526,9 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#38d8ff';
     ctx.font = '800 20px JetBrains Mono, monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('NDX 21,490 ▲   SPX 6,145 ▲   DOW 44,880 ▲   NYC 100 ▲', 256, 238);
+    ctx.fillText('文明出行 · 留意路况 · 礼让行人 · 平安到家', 256, 238);
   } else if (themeKey === 2) {
-    // Theme 2: Gotham Cola / Iconic Red & White Wave Billboard
+    // Theme 2: 清爽饮品 / Iconic Red & White Wave Billboard
     const grad = ctx.createLinearGradient(0, 0, 512, 256);
     grad.addColorStop(0, '#b8061e');
     grad.addColorStop(0.5, '#e6122e');
@@ -2513,21 +2549,21 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#ffe082';
     ctx.font = '800 18px Inter, Arial, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('ICE COLD · EST. 1898 · NEW YORK', 256, 48);
+    ctx.fillText('清凉一夏 · 沭阳时光', 256, 48);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = 'italic 900 54px Georgia, serif';
-    ctx.fillText('Gotham Cola', 256, 108);
+    ctx.fillText('清爽饮品', 256, 108);
 
     ctx.fillStyle = '#fff5cc';
     ctx.font = '800 22px Inter, Arial, sans-serif';
-    ctx.fillText('TASTE THE MANHATTAN SKYLINE', 256, 148);
+    ctx.fillText('品味城市生活', 256, 148);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '700 17px JetBrains Mono, monospace';
-    ctx.fillText('REFRESHING TIMES SQUARE 24 HOURS A DAY', 256, 236);
+    ctx.fillText('街角好味道 · 四季常相伴', 256, 236);
   } else if (themeKey === 3) {
-    // Theme 3: Fifth Avenue Luxury Watch & Couture ("CHRONO GENÈVE")
+    // Theme 3: Fifth Avenue Luxury Watch & Couture ("时光印记")
     const grad = ctx.createRadialGradient(256, 128, 16, 256, 128, 260);
     grad.addColorStop(0, '#2c2218');
     grad.addColorStop(1, '#0c0908');
@@ -2572,19 +2608,19 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#f5d97e';
     ctx.textAlign = 'center';
     ctx.font = '800 16px Inter, Arial, sans-serif';
-    ctx.fillText('SWISS MANUFACTURE · SINCE 1884', 345, 66);
+    ctx.fillText('精工时计 · 记录美好', 345, 66);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 38px Georgia, serif';
-    ctx.fillText('CHRONO GENÈVE', 345, 114);
+    ctx.fillText('时光印记', 345, 114);
 
     ctx.fillStyle = '#e5c158';
     ctx.font = '700 22px Inter, Arial, sans-serif';
-    ctx.fillText('FIFTH AVENUE FLAGSHIP', 345, 154);
+    ctx.fillText('人民路精品店', 345, 154);
 
     ctx.fillStyle = '#c8b89a';
     ctx.font = '600 16px JetBrains Mono, monospace';
-    ctx.fillText('5TH AVE AT 57TH ST · NEW YORK', 345, 202);
+    ctx.fillText('江苏沭阳 · 城市商圈', 345, 202);
   } else if (themeKey === 4) {
     // Theme 4: NY1 Live Skyline News & Weather Broadcast
     const grad = ctx.createLinearGradient(0, 0, 512, 200);
@@ -2599,28 +2635,28 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#38b6ff';
     ctx.font = '900 26px Inter, Arial, sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText('NY1 NEWS · LIVE MANHATTAN', 18, 33);
+    ctx.fillText('沭阳城市资讯', 18, 33);
 
     ctx.fillStyle = '#ffd15c';
     ctx.textAlign = 'right';
     ctx.font = '800 22px JetBrains Mono, monospace';
-    ctx.fillText('NYC 72°F ☀', 492, 33);
+    ctx.fillText('沭阳 · 晴', 492, 33);
 
     // Center headline graphic
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.font = '900 36px Inter, Arial, sans-serif';
-    ctx.fillText('MIDTOWN SKYLINE REPORT', 256, 104);
+    ctx.fillText('城市风光', 256, 104);
     ctx.fillStyle = '#a8dcff';
     ctx.font = '700 20px Inter, Arial, sans-serif';
-    ctx.fillText('CLEAR SKIES FROM HARLEM TO BATTERY PARK', 256, 138);
+    ctx.fillText('沭水之阳 · 宜居家园', 256, 138);
 
-    // Red BREAKING NEWS badge
+    // Red 城市动态 badge
     ctx.fillStyle = '#e6192e';
     ctx.fillRect(20, 154, 178, 34);
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 19px Inter, Arial, sans-serif';
-    ctx.fillText('BREAKING NEWS', 109, 177);
+    ctx.fillText('城市动态', 109, 177);
 
     // White Broadcast Lower-Third Chyron
     ctx.fillStyle = '#f4f7fb';
@@ -2628,10 +2664,10 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#0a192f';
     ctx.font = '900 24px Inter, Arial, sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText('EXPRESS: 5TH AVE & BROADWAY CLEAR', 20, 220);
+    ctx.fillText('温馨提示：出行请遵守交通规则', 20, 220);
     ctx.fillStyle = '#c8102e';
     ctx.font = '800 16px JetBrains Mono, monospace';
-    ctx.fillText('LIVE HD · EMPIRE STATE · CHRYSLER · ONE WTC · CENTRAL PARK', 20, 244);
+    ctx.fillText('人民路 · 南湖公园 · 虞姬公园 · 文化中心', 20, 244);
   } else {
     // Theme 5: Times Square Neon Nights & TKTS Booth
     const grad = ctx.createLinearGradient(0, 0, 512, 256);
@@ -2663,17 +2699,17 @@ function createBillboardCanvasTexture(themeKey) {
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.font = '900 42px Inter, Arial, sans-serif';
-    ctx.fillText('TIMES SQUARE NYC', 256, 62);
+    ctx.fillText('沭阳城市广场', 256, 62);
 
     ctx.fillStyle = '#ffea70';
     ctx.font = '800 22px Inter, Arial, sans-serif';
-    ctx.fillText('THE CROSSROADS OF THE WORLD', 256, 94);
+    ctx.fillText('花乡沭阳 · 美好生活', 256, 94);
 
     ctx.fillStyle = '#120322';
     ctx.fillRect(0, 198, 512, 58);
     ctx.fillStyle = '#ff4081';
     ctx.font = '900 24px JetBrains Mono, monospace';
-    ctx.fillText('TKTS · 50% OFF BROADWAY SHOWS TONIGHT', 256, 234);
+    ctx.fillText('文化演出 · 精彩相约', 256, 234);
   }
 
   const tex = new THREE.CanvasTexture(c);
@@ -3020,7 +3056,6 @@ function createWaterMaterial() {
     return terms[0];
   };
   const CPB = CENTRAL_PARK_BOUNDS;
-  const zSt = (n) => streetZ(n);
   mat.emissiveNode = Fn(() => {
     const emit = vec3(0.0).toVar();
     const night = smoothstep(0.55, 1.35, cityUniforms.uInteriorGlow);
@@ -3072,12 +3107,12 @@ function createWaterMaterial() {
         const hRefl = tHit.mul(tanEl); // height up the facades that this reflection sees
         const u = hit.x.add(hit.y); // runs along whichever face was hit
 
-        // Skyline heights: Midtown (60th to 28th St) & the Financial District (south of Chambers St) stand tallest
-        const midtown = smoothstep(zSt(80), zSt(60), hit.y).mul(float(1.0).sub(smoothstep(zSt(28), zSt(14), hit.y)));
-        const manhattanS = mix(float(70.0), float(215.0), max(midtown, smoothstep(4400.0, 4950.0, hit.y)));
-        // Across the rivers: the Jersey City towers (Newport to Exchange Place) & Long Island City (opposite 60th-26th St)
-        const jerseyCity = smoothstep(3300.0, 3900.0, hit.y).mul(float(1.0).sub(smoothstep(6100.0, 6500.0, hit.y))).mul(step(hit.x, 0.0));
-        const lic = smoothstep(zSt(62), zSt(57), hit.y).mul(float(1.0).sub(smoothstep(zSt(30), zSt(25), hit.y))).mul(step(0.0, hit.x));
+        // 城区天际线：中心商圈最高，南北两端渐低（近似值，仅用于水面倒影）
+        const midtown = smoothstep(-1200.0, -500.0, hit.y).mul(float(1.0).sub(smoothstep(700.0, 1500.0, hit.y)));
+        const manhattanS = mix(float(60.0), float(150.0), max(midtown, smoothstep(2600.0, 3400.0, hit.y)));
+        // 外围：西侧老城与东侧开发区
+        const jerseyCity = smoothstep(1800.0, 2600.0, hit.y).mul(float(1.0).sub(smoothstep(3400.0, 4200.0, hit.y))).mul(step(hit.x, 0.0));
+        const lic = smoothstep(-1800.0, -900.0, hit.y).mul(float(1.0).sub(smoothstep(600.0, 1400.0, hit.y))).mul(step(0.0, hit.x));
         const S = mix(mix(mix(float(30.0), float(120.0), max(jerseyCity, lic)), manhattanS, onIsland), float(120.0), lake);
         const brightness = mix(mix(float(0.6), float(1.0), onIsland), float(0.8), lake);
 
@@ -3485,6 +3520,8 @@ export {
   createMarbleAshlarMaterial,
   createTreeGrateMaterial,
   createRoadSurfaceMaterial,
+  createModernRoadSurfaceMaterial,
+  createModernSidewalkMaterial,
   createRoadPaintMaterial,
   createSidewalkMaterial,
   createCurbMaterial,
