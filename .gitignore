@@ -5,3 +5,4 @@ __pycache__/
 .screenshots/
 .trae-html-share-packages/
 .workbuddy/
+.releases/

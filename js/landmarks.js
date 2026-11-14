@@ -579,7 +579,7 @@ function buildLandmarks(scene) {
 
   buildPhotoLandmarks({ctxFor,box,cyl,sign,M,sourceBody});
   buildRtMartDistrict({ctxFor,box,sourceBody,sourceEdges});
-  buildCorePhotoBuildings({ctxFor,box,sign,M,sourceBody,sourceEdges,edgePanel});
+  buildCorePhotoBuildings({ctxFor,box,cyl,sign,M,sourceBody,sourceEdges,edgePanel});
   buildWorkersPalace({ctxFor,box,cyl,M,sourceBody,sourceEdges,edgePanel});
   buildHuachenHousing({ctxFor,sourceBody,M,colliders,facadeMaterial:facadeMaterials[0]});
   buildCivicCampuses({ctxFor,box,cyl,sign,M,sourceBody,sourceEdges,edgePanel,colliders});
