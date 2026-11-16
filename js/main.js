@@ -6,6 +6,8 @@ import { ClusteredLighting } from 'three/addons/lighting/ClusteredLighting.js';
 import { getLocationLabel, isTypingInField, ROADS, LANDMARKS, TELEPORT_LOCATIONS } from './city-config.js';
 import { buildCityGrid } from './city-grid.js';
 import { buildUrbanContext } from './urban-context.js';
+import { buildParkInterior } from './park-interior.js';
+import { buildSchoolGrounds } from './school-grounds.js';
 import { buildBoroughs } from './boroughs.js';
 import { buildLandmarks } from './landmarks.js';
 import { installLandmarkGallery } from './landmark-gallery.js';
@@ -129,6 +131,8 @@ async function initApp() {
   await showLoadingStage('正在生成建筑轮廓与立面...', 'blocks');
   const cityBlocks = buildCityBlocks(scene, modelColliders);
   const urbanContext = buildUrbanContext(scene);
+  buildParkInterior(scene);
+  buildSchoolGrounds(scene, modelColliders);
   markInit('blocks');
   const allColliders = [...modelColliders, ...cityBlocks.colliders, ...boroughs.colliders, ...(cityGrid.colliders || [])];
 
@@ -180,6 +184,7 @@ async function initApp() {
   if (new URLSearchParams(location.search).has('debug')) {
     window.__debug = {
       scene, renderer, controllerManager, cameraSystem, streetDetails, THREE, landmarkColliders, cityBlocks, trafficSystem,
+      teleportTo: (x, z, heading) => { teleportTo(x, z, heading); return true; },
       teleportToLandmark: (id) => {
         const loc = TELEPORT_LOCATIONS[id];
         if (!loc) return false;

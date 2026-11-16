@@ -1,0 +1,1368 @@
+{
+  "scope": "Parks use mapped land polygons. Schools use mapped POIs; a missing boundary means no campus extent is verified, so no interior surface is asserted for that school.",
+  "parks": [
+    {
+      "name": "南湖公园",
+      "kind": "park",
+      "areaHa": 39.43,
+      "buildings": [
+        {
+          "index": 611,
+          "id": "372729ac-9f5f-4cb4-acff-c665cefc35c4",
+          "name": "",
+          "height": 22.5,
+          "area": 246.5
+        },
+        {
+          "index": 614,
+          "id": "way/995943367",
+          "name": "",
+          "height": 9,
+          "area": 441.4
+        },
+        {
+          "index": 1222,
+          "id": "a326eb58-85dc-4851-86c3-bdd7930314fe",
+          "name": "",
+          "height": 9,
+          "area": 32
+        },
+        {
+          "index": 1223,
+          "id": "f4fa5a1b-afdf-4366-8590-64805380d4c8",
+          "name": "",
+          "height": 13.4,
+          "area": 419.9
+        }
+      ],
+      "roads": [],
+      "paths": [
+        {
+          "index": 2,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 3,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": true,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 4,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": false,
+          "verticesInside": 7,
+          "vertices": 7
+        },
+        {
+          "index": 5,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": true,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 6,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": false,
+          "verticesInside": 3,
+          "vertices": 3
+        },
+        {
+          "index": 7,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": true,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 8,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": false,
+          "verticesInside": 6,
+          "vertices": 6
+        },
+        {
+          "index": 9,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": true,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 10,
+          "name": "",
+          "kind": "path",
+          "width": 1.8,
+          "bridge": false,
+          "verticesInside": 6,
+          "vertices": 6
+        },
+        {
+          "index": 59,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 1,
+          "vertices": 2
+        },
+        {
+          "index": 60,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 1,
+          "vertices": 2
+        },
+        {
+          "index": 61,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 62,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 4
+        },
+        {
+          "index": 63,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 7,
+          "vertices": 8
+        },
+        {
+          "index": 64,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 31,
+          "vertices": 31
+        },
+        {
+          "index": 65,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 6,
+          "vertices": 6
+        }
+      ],
+      "pitches": 0,
+      "buildingCount": 4
+    },
+    {
+      "name": "台州路森林公园",
+      "kind": "park",
+      "areaHa": 35.47,
+      "buildings": [
+        {
+          "index": 6828,
+          "id": "1f81d5a3-12f4-469e-a893-a9fa088b7a0a",
+          "name": "",
+          "height": 9,
+          "area": 135.3
+        },
+        {
+          "index": 6829,
+          "id": "327de0bd-7278-4654-a41c-74b8de2e0a37",
+          "name": "",
+          "height": 9,
+          "area": 39.5
+        },
+        {
+          "index": 6830,
+          "id": "3380ad18-09ce-4b63-a337-9dc0d5864dbf",
+          "name": "",
+          "height": 15.1,
+          "area": 313.8
+        },
+        {
+          "index": 6831,
+          "id": "ae7a991b-59ce-4d63-9c91-7622bed92d5c",
+          "name": "",
+          "height": 9,
+          "area": 91.3
+        }
+      ],
+      "roads": [
+        {
+          "index": 667,
+          "sourceWayId": "way/1372571580",
+          "name": "",
+          "kind": "service",
+          "width": 4.5
+        }
+      ],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 4
+    },
+    {
+      "name": "虞姬生态园",
+      "kind": "park",
+      "areaHa": 21.39,
+      "buildings": [],
+      "roads": [],
+      "paths": [
+        {
+          "index": 49,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 4,
+          "vertices": 7
+        },
+        {
+          "index": 50,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 4,
+          "vertices": 6
+        },
+        {
+          "index": 51,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 52,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 53,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 54,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 2
+        },
+        {
+          "index": 55,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 2,
+          "vertices": 2
+        }
+      ],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "沭河公园",
+      "kind": "park",
+      "areaHa": 8.68,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 6.92,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "沭阳烈士陵园",
+      "kind": "cemetery",
+      "areaHa": 5.48,
+      "buildings": [
+        {
+          "index": 5284,
+          "id": "321490cb-3de6-4a24-8f74-eb7740b216c8",
+          "name": "",
+          "height": 12.6,
+          "area": 238.5
+        },
+        {
+          "index": 6111,
+          "id": "way/995943413",
+          "name": "",
+          "height": 11.2,
+          "area": 1230.8
+        },
+        {
+          "index": 6123,
+          "id": "4793db2c-423d-492e-ab95-d1b78cccb979",
+          "name": "",
+          "height": 11,
+          "area": 277.1
+        },
+        {
+          "index": 6129,
+          "id": "b4f48b91-69c3-4fff-bd84-601f2d06249b",
+          "name": "",
+          "height": 9,
+          "area": 49.9
+        },
+        {
+          "index": 6130,
+          "id": "c1189824-e177-4436-a145-0431d638e459",
+          "name": "",
+          "height": 9,
+          "area": 198.6
+        },
+        {
+          "index": 6133,
+          "id": "d38e6fc8-49d6-4688-8c24-8038ded20436",
+          "name": "",
+          "height": 9,
+          "area": 13.6
+        }
+      ],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 6
+    },
+    {
+      "name": "城北公园",
+      "kind": "park",
+      "areaHa": 5.41,
+      "buildings": [
+        {
+          "index": 2678,
+          "id": "c788b648-408e-40f0-952b-9fcb9f5e6b00",
+          "name": "",
+          "height": 9,
+          "area": 182.9
+        },
+        {
+          "index": 2686,
+          "id": "d96bb73a-50dc-4497-8b59-9820f7175f75",
+          "name": "",
+          "height": 9,
+          "area": 116.3
+        },
+        {
+          "index": 2703,
+          "id": "way/995943282",
+          "name": "",
+          "height": 9,
+          "area": 183.5
+        },
+        {
+          "index": 2704,
+          "id": "way/995943283",
+          "name": "",
+          "height": 9,
+          "area": 514
+        }
+      ],
+      "roads": [
+        {
+          "index": 1004,
+          "sourceWayId": "way/1459467712",
+          "name": "",
+          "kind": "unclassified",
+          "width": 8
+        }
+      ],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 4
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 5.13,
+      "buildings": [],
+      "roads": [],
+      "paths": [
+        {
+          "index": 57,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 3,
+          "vertices": 4
+        },
+        {
+          "index": 58,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 5,
+          "vertices": 6
+        },
+        {
+          "index": 83,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 1,
+          "vertices": 2
+        },
+        {
+          "index": 84,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": true,
+          "verticesInside": 2,
+          "vertices": 2
+        }
+      ],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 4.89,
+      "buildings": [],
+      "roads": [
+        {
+          "index": 472,
+          "sourceWayId": "way/1321791086",
+          "name": "河滨路",
+          "kind": "tertiary",
+          "width": 12
+        },
+        {
+          "index": 952,
+          "sourceWayId": "way/1456180561",
+          "name": "",
+          "kind": "residential",
+          "width": 7
+        }
+      ],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 4.72,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 2.87,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 2.77,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 2.49,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 2.16,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 2.03,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 1.87,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 1.78,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "建陵公园",
+      "kind": "park",
+      "areaHa": 1.7,
+      "buildings": [],
+      "roads": [
+        {
+          "index": 651,
+          "sourceWayId": "way/1372002239",
+          "name": "",
+          "kind": "residential",
+          "width": 7
+        }
+      ],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 1.65,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 1.52,
+      "buildings": [
+        {
+          "index": 6706,
+          "id": "reviewed/online/workers-palace",
+          "name": "沭阳县工人文化宫（新馆）",
+          "height": 18,
+          "area": 3866
+        }
+      ],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 1
+    },
+    {
+      "name": "孙巷公园",
+      "kind": "park",
+      "areaHa": 1.41,
+      "buildings": [
+        {
+          "index": 378,
+          "id": "e7ddb5fb-0325-460d-a32b-04f285ee2522",
+          "name": "",
+          "height": 15.8,
+          "area": 735
+        }
+      ],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 1
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 1.4,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 1.29,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 1.23,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 1.04,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "park",
+      "areaHa": 0.96,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 0.51,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "garden",
+      "areaHa": 0.38,
+      "buildings": [],
+      "roads": [],
+      "paths": [
+        {
+          "index": 17,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 1,
+          "vertices": 6
+        },
+        {
+          "index": 29,
+          "name": "",
+          "kind": "footway",
+          "width": 2,
+          "bridge": false,
+          "verticesInside": 4,
+          "vertices": 5
+        }
+      ],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "wood",
+      "areaHa": 0.3,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 0.29,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 0.16,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 0.12,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 0.09,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "forest",
+      "areaHa": 0.03,
+      "buildings": [],
+      "roads": [],
+      "paths": [],
+      "pitches": 0,
+      "buildingCount": 0
+    }
+  ],
+  "schools": [
+    {
+      "id": 302990687,
+      "name": "沭阳县外国语实验学校",
+      "amenity": "school",
+      "x": 2978,
+      "z": 2140,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 92533,
+      "candidateBuildings": 18,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 302990688,
+      "name": "沭阳县潼阳中学府苑校区",
+      "amenity": "school",
+      "x": 2623,
+      "z": 2914,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 46576,
+      "candidateBuildings": 1,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    },
+    {
+      "id": 302990689,
+      "name": "沭阳银河学校",
+      "amenity": "school",
+      "x": 97,
+      "z": 3506,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 115897,
+      "candidateBuildings": 12,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 497799729,
+      "name": "宿迁机电工程职业技术学院",
+      "amenity": "college",
+      "x": -407,
+      "z": 4071,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 389087,
+      "candidateBuildings": 33,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 7
+    },
+    {
+      "id": 497849521,
+      "name": "江苏省沭阳梦溪中学",
+      "amenity": "school",
+      "x": 446,
+      "z": 1490,
+      "inFrame": true,
+      "boundary": "reviewed",
+      "boundarySource": "reviewed-mengxi-campus.json（名称匹配）",
+      "groundArea": 72252,
+      "candidateBuildings": 15,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 8
+    },
+    {
+      "id": 499425733,
+      "name": "南湖小学",
+      "amenity": "school",
+      "x": -2128,
+      "z": 4641,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 58484,
+      "candidateBuildings": 6,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 499425828,
+      "name": "小太阳幼儿园",
+      "amenity": "kindergarten",
+      "x": -2003,
+      "z": 4783,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 9376,
+      "candidateBuildings": 0,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 499426054,
+      "name": "江苏省沭阳如东高级中学",
+      "amenity": "school",
+      "x": -1112,
+      "z": 4746,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 190272,
+      "candidateBuildings": 13,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 1027263212,
+      "name": "江苏省沭阳高级中学",
+      "amenity": "school",
+      "x": 1177,
+      "z": -218,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 172864,
+      "candidateBuildings": 23,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 3
+    },
+    {
+      "id": 1027263214,
+      "name": "沭阳县实验中学",
+      "amenity": "school",
+      "x": -823,
+      "z": 872,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 33944,
+      "candidateBuildings": 8,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 1
+    },
+    {
+      "id": 1321791082,
+      "name": "沭阳县广州路实验小学",
+      "amenity": "school",
+      "x": 167,
+      "z": 1145,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 26916,
+      "candidateBuildings": 8,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    },
+    {
+      "id": 1321791089,
+      "name": "宿迁经贸高等职业技术学院",
+      "amenity": "university",
+      "x": 879,
+      "z": 3841,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 438447,
+      "candidateBuildings": 24,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 4
+    },
+    {
+      "id": 1321791092,
+      "name": "沭阳县第一实验小学（康平路）",
+      "amenity": "school",
+      "x": 1673,
+      "z": 2308,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 72896,
+      "candidateBuildings": 3,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 1
+    },
+    {
+      "id": 1321791139,
+      "name": "江苏省沭阳师范学院附属小学",
+      "amenity": "school",
+      "x": -411,
+      "z": 303,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 11451,
+      "candidateBuildings": 3,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    },
+    {
+      "id": 1371978256,
+      "name": "沭阳县特殊教育学校",
+      "amenity": "school",
+      "x": 1395,
+      "z": -771,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 18782,
+      "candidateBuildings": 9,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 10
+    },
+    {
+      "id": 1372002247,
+      "name": "怀文小学",
+      "amenity": "school",
+      "x": 669,
+      "z": -361,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 9055,
+      "candidateBuildings": 5,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 2
+    },
+    {
+      "id": 1372002248,
+      "name": "怀文中学",
+      "amenity": "school",
+      "x": 817,
+      "z": -323,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 28278,
+      "candidateBuildings": 5,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 2
+    },
+    {
+      "id": 1372002249,
+      "name": "怀文中学附属幼儿园",
+      "amenity": "school",
+      "x": 730,
+      "z": -275,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 3367,
+      "candidateBuildings": 1,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 1
+    },
+    {
+      "id": 1372002250,
+      "name": "东关实验小学",
+      "amenity": "school",
+      "x": 753,
+      "z": -122,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 13544,
+      "candidateBuildings": 5,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 4
+    },
+    {
+      "id": 1372002251,
+      "name": "沭阳县沭河中学",
+      "amenity": "school",
+      "x": -798,
+      "z": -367,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 22162,
+      "candidateBuildings": 8,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 4
+    },
+    {
+      "id": 1372002261,
+      "name": "沭阳县建陵中学",
+      "amenity": "school",
+      "x": -1577,
+      "z": -291,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 93494,
+      "candidateBuildings": 13,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 1
+    },
+    {
+      "id": 1372583934,
+      "name": "沭阳广宇学校",
+      "amenity": "school",
+      "x": 2547,
+      "z": 3082,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 39596,
+      "candidateBuildings": 3,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    },
+    {
+      "id": 1372587246,
+      "name": "修远中学",
+      "amenity": "school",
+      "x": 1380,
+      "z": 832,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 46321,
+      "candidateBuildings": 17,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 6
+    },
+    {
+      "id": 1372587261,
+      "name": "南京路幼儿园",
+      "amenity": "school",
+      "x": -1206,
+      "z": -951,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 5255,
+      "candidateBuildings": 1,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 3
+    },
+    {
+      "id": 1372587281,
+      "name": "怀文中学（人民路校区）",
+      "amenity": "school",
+      "x": -2201,
+      "z": -566,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 35475,
+      "candidateBuildings": 8,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 2
+    },
+    {
+      "id": 1372587282,
+      "name": "沭阳县人民路小学",
+      "amenity": "school",
+      "x": -2240,
+      "z": -368,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 47188,
+      "candidateBuildings": 6,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 1
+    },
+    {
+      "id": 1373258541,
+      "name": "沭阳南洋学校",
+      "amenity": "school",
+      "x": -1216,
+      "z": 1201,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 67712,
+      "candidateBuildings": 20,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 2
+    },
+    {
+      "id": 1373258572,
+      "name": "沭阳县南关小学（南关校区）",
+      "amenity": "school",
+      "x": -1724,
+      "z": 2681,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 43286,
+      "candidateBuildings": 5,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 1373258576,
+      "name": "沭阳县南湖初级中学",
+      "amenity": "school",
+      "x": -2737,
+      "z": 3126,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 49008,
+      "candidateBuildings": 10,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 1456180559,
+      "name": "沭阳县第二实验小学",
+      "amenity": "school",
+      "x": 509,
+      "z": 3157,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 83045,
+      "candidateBuildings": 11,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 1
+    },
+    {
+      "id": 1456180560,
+      "name": "沭阳县二实小幼儿园",
+      "amenity": "school",
+      "x": 459,
+      "z": 2972,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 7794,
+      "candidateBuildings": 1,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 3
+    },
+    {
+      "id": 1456634995,
+      "name": "沭阳实验小学",
+      "amenity": "school",
+      "x": -286,
+      "z": -1029,
+      "inFrame": true,
+      "boundary": "reviewed",
+      "boundarySource": "reviewed-shiyan-campus.json（名称匹配）",
+      "groundArea": 13155,
+      "candidateBuildings": 10,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 6
+    },
+    {
+      "id": 1456635007,
+      "name": "沭阳县实验幼儿园",
+      "amenity": "school",
+      "x": -603,
+      "z": -935,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 1224,
+      "candidateBuildings": 1,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 4
+    },
+    {
+      "id": 1456635043,
+      "name": "大连路幼儿园",
+      "amenity": "school",
+      "x": 2254,
+      "z": -1141,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 3239,
+      "candidateBuildings": 1,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    },
+    {
+      "id": 1456635054,
+      "name": "学府路小学",
+      "amenity": "school",
+      "x": 1527,
+      "z": -1242,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 59086,
+      "candidateBuildings": 10,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    },
+    {
+      "id": 1456635094,
+      "name": "鸿星中等专业学校",
+      "amenity": "school",
+      "x": 2670,
+      "z": -1129,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 12659,
+      "candidateBuildings": 3,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 9
+    },
+    {
+      "id": 1459467714,
+      "name": "沭阳实验小学北区",
+      "amenity": "school",
+      "x": -157,
+      "z": -1191,
+      "inFrame": true,
+      "boundary": "reviewed",
+      "boundarySource": "reviewed-shiyan-campus.json（名称匹配）",
+      "groundArea": 32282,
+      "candidateBuildings": 10,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    },
+    {
+      "id": 1460717246,
+      "name": "沭阳县智慧路初级中学",
+      "amenity": "school",
+      "x": -2807,
+      "z": 4897,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 44762,
+      "candidateBuildings": 0,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 0
+    },
+    {
+      "id": 1465666525,
+      "name": "沭阳一实小附属幼儿园",
+      "amenity": "school",
+      "x": 1602,
+      "z": 2185,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 9579,
+      "candidateBuildings": 1,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 3
+    },
+    {
+      "id": 1465666552,
+      "name": "东城幼儿园",
+      "amenity": "school",
+      "x": 1382,
+      "z": 1142,
+      "inFrame": true,
+      "boundary": "osm-ground",
+      "boundarySource": "OSM amenity=school 面（out geom）",
+      "groundArea": 4221,
+      "candidateBuildings": 0,
+      "buildingBinding": "inside-campus-outline",
+      "localRoads": 5
+    }
+  ],
+  "totals": {
+    "parks": 34,
+    "parksWithBuildings": 6,
+    "parkBuildings": 20,
+    "parkRoadSegments": 5,
+    "parkPaths": 29,
+    "schools": 40,
+    "schoolsWithVerifiedBoundary": 40,
+    "schoolGroundsMapped": 40,
+    "schoolBuildingsInsideOutlines": 331
+  }
+}

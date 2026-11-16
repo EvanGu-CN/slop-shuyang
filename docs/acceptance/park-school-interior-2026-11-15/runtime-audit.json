@@ -1,0 +1,28 @@
+{
+  "generated": "2026-11-15",
+  "method": "Node + three@0.187.0 runtime harness (browser module copies, no DOM); browser numbers from headless Chrome 157 CDP session at 1600x900",
+  "campusOutlines": 40,
+  "parkInterior": {
+    "pavedPaths": 61,
+    "benches": 96,
+    "bins": 37,
+    "lamps": 138,
+    "riverRails": 682,
+    "parks": 2
+  },
+  "schoolGrounds": {
+    "gates": 33,
+    "byMappedPath": 1,
+    "plaques": 33
+  },
+  "colliders": 66,
+  "nodeGeometry": {
+    "afterPark": { "meshes": 10, "verts": 110394, "nan": 0 },
+    "afterSchools": { "meshes": 13, "verts": 113694, "nan": 0 }
+  },
+  "browserGeometry": {
+    "schoolGates": { "meshes": 4, "verts": 3564, "materialGroups": 4 },
+    "note": "校名牌图集把 33 块独立牌（原每块 6 个材质组）合并为 1 个石质板网格 + 1 个印面网格"
+  },
+  "errors": []
+}

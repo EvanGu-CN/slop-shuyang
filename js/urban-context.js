@@ -17,19 +17,21 @@ function shapeFromPolygon(p) {
   return shape;
 }
 
+// 影像铺面高程表。school-grounds 的校门硬地要压在所在铺面之上，复用同一份表。
+export const URBAN_SURFACE_STYLES = {
+  'residential-ground': { color: 0xa8ada4, y: .225 },
+  path: { color: 0xb9b3a5, y: .255 },'community-path':{color:0x8e9695,y:.255}, parking: { color: 0x737d80, y: .245 },
+  plaza: { color: 0xc0bcae, y: .25 }, green: { color: 0x738354, y: .235 },
+  soccer:{color:0x557747,y:.27},basketball:{color:0x627f8b,y:.27},
+  'sports-ground':{color:0x77856e,y:.265},'running-track':{color:0xa85645,y:.28},
+  infield:{color:0x4d7b58,y:.28},court:{color:0x5a8f86,y:.28},'sport-paving':{color:0x9a7261,y:.275}
+};
+
 function buildUrbanContext(scene) {
   const group = new THREE.Group();
   group.name = 'ShuyangUrbanContext';
   scene.add(group);
-  const styles = {
-    'residential-ground': { color: 0xa8ada4, y: .225 },
-    path: { color: 0xb9b3a5, y: .255 },'community-path':{color:0x8e9695,y:.255}, parking: { color: 0x737d80, y: .245 },
-    plaza: { color: 0xc0bcae, y: .25 }, green: { color: 0x738354, y: .235 },
-    soccer:{color:0x557747,y:.27},basketball:{color:0x627f8b,y:.27},
-    'sports-ground':{color:0x77856e,y:.265},'running-track':{color:0xa85645,y:.28},
-    infield:{color:0x4d7b58,y:.28},court:{color:0x5a8f86,y:.28},'sport-paving':{color:0x9a7261,y:.275}
-  };
-  for (const [kind, style] of Object.entries(styles)) {
+  for (const [kind, style] of Object.entries(URBAN_SURFACE_STYLES)) {
     const geos = [];
     for (const surface of GEO.urban?.surfaces || []) {
       if (surface.kind !== kind) continue;
