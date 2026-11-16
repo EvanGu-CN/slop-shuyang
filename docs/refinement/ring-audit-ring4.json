@@ -1,0 +1,78 @@
+{
+ "center": [
+  898.4,
+  2146.6
+ ],
+ "cellMeters": 100,
+ "method": "OSM landuse cells (100 m) inside 4 rings; coverage from merged building footprints; internal lane = OSM residential/service/unclassified/living_street way or an imagery-inferred community-path crossing the cell; surfaced = imagery-read green/farmland/parking ground.",
+ "rings": [
+  {
+   "ring": 0,
+   "fromM": 0,
+   "toM": 500,
+   "cells": 43,
+   "empty": 0,
+   "emptyAreaM2": 0,
+   "surfaced": 2,
+   "coarse": 0,
+   "noLane": 0,
+   "mappedLane": 7,
+   "inferredLane": 41
+  },
+  {
+   "ring": 1,
+   "fromM": 500,
+   "toM": 1000,
+   "cells": 90,
+   "empty": 0,
+   "emptyAreaM2": 0,
+   "surfaced": 7,
+   "coarse": 0,
+   "noLane": 0,
+   "mappedLane": 20,
+   "inferredLane": 83
+  },
+  {
+   "ring": 2,
+   "fromM": 1000,
+   "toM": 1500,
+   "cells": 215,
+   "empty": 0,
+   "emptyAreaM2": 0,
+   "surfaced": 19,
+   "coarse": 0,
+   "noLane": 0,
+   "mappedLane": 124,
+   "inferredLane": 196
+  },
+  {
+   "ring": 3,
+   "fromM": 1500,
+   "toM": 2000,
+   "cells": 151,
+   "empty": 0,
+   "emptyAreaM2": 0,
+   "surfaced": 2,
+   "coarse": 0,
+   "noLane": 0,
+   "mappedLane": 73,
+   "inferredLane": 149
+  },
+  {
+   "ring": 4,
+   "fromM": 2000,
+   "toM": 2500,
+   "cells": 166,
+   "empty": 0,
+   "emptyAreaM2": 0,
+   "surfaced": 6,
+   "coarse": 0,
+   "noLane": 0,
+   "mappedLane": 47,
+   "inferredLane": 160
+  }
+ ],
+ "emptyCells": [],
+ "noInternalLaneCells": [],
+ "coarseMassingCells": []
+}

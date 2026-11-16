@@ -1,0 +1,682 @@
+{
+ "audit": {
+  "group": "ShuyangCityBlocks",
+  "counts": {
+   "source": 9977,
+   "rendered": 9910,
+   "explicitReplacements": [
+    621,
+    622,
+    623,
+    1761,
+    1782,
+    1925,
+    2569,
+    2576,
+    2589,
+    2591,
+    2593,
+    2595,
+    2598,
+    2605,
+    2726,
+    2793,
+    2795,
+    3045,
+    3046,
+    3172,
+    3475,
+    3682,
+    3683,
+    3684,
+    3685,
+    3686,
+    3737,
+    4627,
+    4628,
+    4631,
+    4638,
+    4641,
+    4647,
+    4649,
+    4654,
+    4665,
+    4675,
+    4676,
+    4677,
+    4678,
+    4679,
+    4680,
+    4682,
+    4683,
+    4685,
+    4690,
+    4691,
+    4695,
+    4698,
+    4699,
+    4700,
+    4701,
+    4705,
+    4706,
+    4708,
+    4712,
+    4714,
+    6241,
+    6278,
+    6279,
+    6657,
+    6658,
+    6659,
+    6706,
+    6726,
+    6749
+   ],
+   "fullyCovered": [
+    1418
+   ],
+   "clipped": [
+    {
+     "index": 1384,
+     "sourceAreaM2": 614.3,
+     "retainedAreaM2": 216.4
+    },
+    {
+     "index": 1386,
+     "sourceAreaM2": 843.6,
+     "retainedAreaM2": 143.5
+    },
+    {
+     "index": 1400,
+     "sourceAreaM2": 979.1,
+     "retainedAreaM2": 707.6
+    },
+    {
+     "index": 1415,
+     "sourceAreaM2": 59.3,
+     "retainedAreaM2": 58.3
+    },
+    {
+     "index": 1428,
+     "sourceAreaM2": 858.8,
+     "retainedAreaM2": 137.9
+    },
+    {
+     "index": 1454,
+     "sourceAreaM2": 963.3,
+     "retainedAreaM2": 573.9
+    },
+    {
+     "index": 1455,
+     "sourceAreaM2": 4379.4,
+     "retainedAreaM2": 3110.9
+    },
+    {
+     "index": 1462,
+     "sourceAreaM2": 2435,
+     "retainedAreaM2": 1371.3
+    },
+    {
+     "index": 1476,
+     "sourceAreaM2": 3094.3,
+     "retainedAreaM2": 1696.7
+    },
+    {
+     "index": 1479,
+     "sourceAreaM2": 188.8,
+     "retainedAreaM2": 115.1
+    },
+    {
+     "index": 1487,
+     "sourceAreaM2": 235,
+     "retainedAreaM2": 212.6
+    },
+    {
+     "index": 1756,
+     "sourceAreaM2": 215.8,
+     "retainedAreaM2": 198.7
+    },
+    {
+     "index": 2702,
+     "sourceAreaM2": 608.3,
+     "retainedAreaM2": 602.2
+    },
+    {
+     "index": 5077,
+     "sourceAreaM2": 1310,
+     "retainedAreaM2": 1279.3
+    },
+    {
+     "index": 8488,
+     "sourceAreaM2": 5281,
+     "retainedAreaM2": 5229.9
+    }
+   ],
+   "clipFailures": [],
+   "replacedByLandmarks": 67
+  }
+ },
+ "probe": [
+  {
+   "n": "shuhe-retrofit-path",
+   "x": 1016,
+   "z": 3300,
+   "hits": [
+    {
+     "y": 0.05,
+     "mesh": "ShuyangParks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": -1.8,
+     "mesh": "ShuyangWater",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "shuhe-path-mid",
+   "x": 1006,
+   "z": 3290,
+   "hits": [
+    {
+     "y": 0.095,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.095,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.05,
+     "mesh": "ShuyangParks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "shuhe-link-mid",
+   "x": 1080,
+   "z": 3343,
+   "hits": [
+    {
+     "y": 0.095,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "9c3b30",
+     "transparent": false
+    },
+    {
+     "y": 0.05,
+     "mesh": "ShuyangParks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": -1.8,
+     "mesh": "ShuyangWater",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "shuhe-link-end",
+   "x": 1158,
+   "z": 3334,
+   "hits": [
+    {
+     "y": 0.095,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "9c3b30",
+     "transparent": false
+    },
+    {
+     "y": 0.05,
+     "mesh": "ShuyangParks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": -1.8,
+     "mesh": "ShuyangWater",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "shuhe-gap-check",
+   "x": 1165,
+   "z": 3334,
+   "hits": [
+    {
+     "y": 0.05,
+     "mesh": "ShuyangParks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": -1.8,
+     "mesh": "ShuyangWater",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": -100000,
+     "mesh": "(unnamed)",
+     "mat": "NodeMaterial",
+     "color": null,
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "shuhe-plaza",
+   "x": 1200,
+   "z": 3326,
+   "hits": [
+    {
+     "y": 0.097,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.097,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.05,
+     "mesh": "ShuyangParks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "yuji-axis-mid",
+   "x": 2455,
+   "z": 1470,
+   "hits": [
+    {
+     "y": 0.34,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "b8b2a4",
+     "transparent": false
+    },
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.22,
+     "mesh": "ShuyangParkBlocks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "yuji-axis-north",
+   "x": 2310,
+   "z": 1200,
+   "hits": [
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.05,
+     "mesh": "ShuyangParks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "yuji-axis-south",
+   "x": 2410,
+   "z": 1380,
+   "hits": [
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.22,
+     "mesh": "ShuyangParkBlocks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.18,
+     "mesh": "ShuyangCurbs",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "lieshi-axis-mid",
+   "x": 1470,
+   "z": 1650,
+   "hits": [
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.22,
+     "mesh": "ShuyangParkBlocks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.18,
+     "mesh": "ShuyangCurbs",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "lieshi-axis-south",
+   "x": 1450,
+   "z": 1700,
+   "hits": [
+    {
+     "y": 0.249,
+     "mesh": "(unnamed)",
+     "mat": "MeshBasicNodeMaterial",
+     "color": "ffffff",
+     "transparent": true
+    },
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.245,
+     "mesh": "(unnamed)",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0.22,
+     "mesh": "ShuyangParkBlocks",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "wanshun-row-gap",
+   "x": 898,
+   "z": 2147,
+   "hits": [
+    {
+     "y": 0.235,
+     "mesh": "Mapped-green",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "738354",
+     "transparent": false
+    },
+    {
+     "y": 0.225,
+     "mesh": "Mapped-residential-ground",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "a8ada4",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": -1.8,
+     "mesh": "ShuyangWater",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "ring4-south",
+   "x": 898,
+   "z": 4100,
+   "hits": [
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": -1.8,
+     "mesh": "ShuyangWater",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": -100000,
+     "mesh": "(unnamed)",
+     "mat": "NodeMaterial",
+     "color": null,
+     "transparent": false
+    }
+   ]
+  },
+  {
+   "n": "ring3-north",
+   "x": 898,
+   "z": 1250,
+   "hits": [
+    {
+     "y": 0.03,
+     "mesh": "ShuyangAsphalt",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": 0,
+     "mesh": "ShuyangGround",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "6f7565",
+     "transparent": false
+    },
+    {
+     "y": -1.8,
+     "mesh": "ShuyangWater",
+     "mat": "MeshStandardNodeMaterial",
+     "color": "ffffff",
+     "transparent": false
+    },
+    {
+     "y": -100000,
+     "mesh": "(unnamed)",
+     "mat": "NodeMaterial",
+     "color": null,
+     "transparent": false
+    }
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "name": "ShuyangParkBlocks",
+   "type": "Mesh",
+   "visible": true,
+   "children": 0
+  },
+  {
+   "name": "ShuyangParks",
+   "type": "Mesh",
+   "visible": true,
+   "children": 0
+  },
+  {
+   "name": "Mapped-path",
+   "type": "Mesh",
+   "visible": true,
+   "children": 0
+  },
+  {
+   "name": "Mapped-community-path",
+   "type": "Mesh",
+   "visible": true,
+   "children": 0
+  },
+  {
+   "name": "Mapped-parking",
+   "type": "Mesh",
+   "visible": true,
+   "children": 0
+  },
+  {
+   "name": "Mapped-plaza",
+   "type": "Mesh",
+   "visible": true,
+   "children": 0
+  }
+ ]
+}
