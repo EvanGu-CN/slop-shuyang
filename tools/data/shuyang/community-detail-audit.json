@@ -3,7 +3,7 @@
     {
       "id": "way/302990684",
       "name": "奥韵都城",
-      "buildingCount": 87,
+      "buildingCount": 219,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -50,7 +50,7 @@
     {
       "id": "way/302990685",
       "name": "如意园",
-      "buildingCount": 7,
+      "buildingCount": 17,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -198,7 +198,7 @@
     {
       "id": "way/1321791080",
       "name": "金地花园",
-      "buildingCount": 43,
+      "buildingCount": 82,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -269,7 +269,7 @@
     {
       "id": "way/1321791083",
       "name": "巴黎新城",
-      "buildingCount": 73,
+      "buildingCount": 190,
       "access": [
         {
           "x": 1179.6,
@@ -347,7 +347,7 @@
     {
       "id": "way/1321791085",
       "name": "沃德嘉园",
-      "buildingCount": 72,
+      "buildingCount": 182,
       "access": [],
       "photoStatus": "reviewed",
       "mapContext": {
@@ -406,7 +406,7 @@
     {
       "id": "way/1321791090",
       "name": "万顺·帝景天成",
-      "buildingCount": 32,
+      "buildingCount": 83,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -419,7 +419,7 @@
     {
       "id": "way/1321791091",
       "name": "金禾理想城",
-      "buildingCount": 34,
+      "buildingCount": 128,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -660,7 +660,7 @@
     {
       "id": "way/1321791100",
       "name": "浦东国际",
-      "buildingCount": 24,
+      "buildingCount": 63,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -774,7 +774,7 @@
     {
       "id": "way/1321791102",
       "name": "新康景园",
-      "buildingCount": 0,
+      "buildingCount": 15,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -807,7 +807,7 @@
     {
       "id": "way/1321791103",
       "name": "翰林府第",
-      "buildingCount": 42,
+      "buildingCount": 195,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -854,7 +854,7 @@
     {
       "id": "way/1321791104",
       "name": "沭阳县新江南小区",
-      "buildingCount": 26,
+      "buildingCount": 99,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -887,7 +887,7 @@
     {
       "id": "way/1321791105",
       "name": "美好家园",
-      "buildingCount": 1,
+      "buildingCount": 149,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -934,7 +934,7 @@
     {
       "id": "way/1321791106",
       "name": "祥和小区",
-      "buildingCount": 3,
+      "buildingCount": 24,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -959,7 +959,7 @@
     {
       "id": "way/1321791108",
       "name": "欧洲城",
-      "buildingCount": 30,
+      "buildingCount": 77,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1006,7 +1006,7 @@
     {
       "id": "way/1321791109",
       "name": "家和小区",
-      "buildingCount": 7,
+      "buildingCount": 63,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1046,7 +1046,7 @@
     {
       "id": "way/1321791110",
       "name": "南湖郡",
-      "buildingCount": 1,
+      "buildingCount": 21,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1059,7 +1059,7 @@
     {
       "id": "way/1321791111",
       "name": "汇金新城（南区）",
-      "buildingCount": 0,
+      "buildingCount": 12,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1200,7 +1200,7 @@
     {
       "id": "way/1321791119",
       "name": "中央花园",
-      "buildingCount": 0,
+      "buildingCount": 53,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1294,7 +1294,7 @@
     {
       "id": "way/1321791121",
       "name": "福达国际城",
-      "buildingCount": 0,
+      "buildingCount": 89,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1341,7 +1341,7 @@
     {
       "id": "way/1321791128",
       "name": "明厚源·轩府",
-      "buildingCount": 0,
+      "buildingCount": 16,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1487,7 +1487,7 @@
     {
       "id": "way/1371978231",
       "name": "健康家园",
-      "buildingCount": 69,
+      "buildingCount": 107,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1574,7 +1574,7 @@
     {
       "id": "way/1372571596",
       "name": "康盛花园",
-      "buildingCount": 8,
+      "buildingCount": 16,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1661,7 +1661,7 @@
     {
       "id": "way/1372583935",
       "name": "沭阳县碧桂园小区",
-      "buildingCount": 2,
+      "buildingCount": 15,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1870,7 +1870,7 @@
     {
       "id": "way/1372587242",
       "name": "帝景佳园天悦",
-      "buildingCount": 34,
+      "buildingCount": 84,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -1917,7 +1917,7 @@
     {
       "id": "way/1372587243",
       "name": "荣盛鑫城",
-      "buildingCount": 15,
+      "buildingCount": 28,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -2792,7 +2792,7 @@
     {
       "id": "way/1373258563",
       "name": "明厚源紫玉庄园",
-      "buildingCount": 0,
+      "buildingCount": 9,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -2839,7 +2839,7 @@
     {
       "id": "way/1373258564",
       "name": "汇金新城",
-      "buildingCount": 1,
+      "buildingCount": 15,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -2879,7 +2879,7 @@
     {
       "id": "way/1373258565",
       "name": "宁浦云庭",
-      "buildingCount": 7,
+      "buildingCount": 31,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -2919,7 +2919,7 @@
     {
       "id": "way/1373258566",
       "name": "庭瑞紫园",
-      "buildingCount": 9,
+      "buildingCount": 22,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -2966,7 +2966,7 @@
     {
       "id": "way/1373258569",
       "name": "如意庄园",
-      "buildingCount": 1,
+      "buildingCount": 78,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -3013,7 +3013,7 @@
     {
       "id": "way/1373258570",
       "name": "华脉金樾府",
-      "buildingCount": 0,
+      "buildingCount": 15,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -3107,7 +3107,7 @@
     {
       "id": "way/1373258573",
       "name": "荣润麒麟府",
-      "buildingCount": 0,
+      "buildingCount": 12,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -3533,7 +3533,7 @@
     {
       "id": "way/1456180549",
       "name": "观澜府",
-      "buildingCount": 10,
+      "buildingCount": 35,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -3580,7 +3580,7 @@
     {
       "id": "way/1456180557",
       "name": "教工住宅小区",
-      "buildingCount": 0,
+      "buildingCount": 5,
       "access": [
         {
           "x": 664.5,
@@ -3637,7 +3637,7 @@
     {
       "id": "way/1456180562",
       "name": "皇冠·世纪花园",
-      "buildingCount": 3,
+      "buildingCount": 28,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -3684,7 +3684,7 @@
     {
       "id": "way/1456180563",
       "name": "仰龙湾",
-      "buildingCount": 2,
+      "buildingCount": 71,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -3777,7 +3777,7 @@
     {
       "id": "way/1456180567",
       "name": "天宇·天和花城芸香苑",
-      "buildingCount": 3,
+      "buildingCount": 53,
       "access": [
         {
           "x": -761.0,
@@ -3839,7 +3839,7 @@
     {
       "id": "way/1456180568",
       "name": "天宇·天和花城",
-      "buildingCount": 29,
+      "buildingCount": 98,
       "access": [
         {
           "x": -1061.4,
@@ -4723,7 +4723,7 @@
     {
       "id": "way/1460717242",
       "name": "湾河丽景小区",
-      "buildingCount": 0,
+      "buildingCount": 1,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -4856,7 +4856,7 @@
     {
       "id": "way/1465666515",
       "name": "沭城一品",
-      "buildingCount": 8,
+      "buildingCount": 22,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5016,7 +5016,7 @@
     {
       "id": "way/1465666531",
       "name": "阳光天地",
-      "buildingCount": 49,
+      "buildingCount": 194,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5103,7 +5103,7 @@
     {
       "id": "way/1465666534",
       "name": "沭城天下",
-      "buildingCount": 6,
+      "buildingCount": 26,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5150,7 +5150,7 @@
     {
       "id": "way/1465666535",
       "name": "沭城天下二期",
-      "buildingCount": 19,
+      "buildingCount": 72,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5175,7 +5175,7 @@
     {
       "id": "way/1465666536",
       "name": "沭城天下三期",
-      "buildingCount": 8,
+      "buildingCount": 18,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5222,7 +5222,7 @@
     {
       "id": "way/1465666537",
       "name": "昊园小区",
-      "buildingCount": 6,
+      "buildingCount": 17,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5269,7 +5269,7 @@
     {
       "id": "way/1465666540",
       "name": "崇文公寓",
-      "buildingCount": 0,
+      "buildingCount": 2,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5701,7 +5701,7 @@
     {
       "id": "way/1465666556",
       "name": "人和小区",
-      "buildingCount": 6,
+      "buildingCount": 21,
       "access": [
         {
           "x": -567.3,
@@ -5744,7 +5744,7 @@
     {
       "id": "way/1465666557",
       "name": "上海阳城花园",
-      "buildingCount": 15,
+      "buildingCount": 31,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {
@@ -5791,7 +5791,7 @@
     {
       "id": "way/1465666558",
       "name": "盛唐世家",
-      "buildingCount": 0,
+      "buildingCount": 9,
       "access": [],
       "photoStatus": "not-yet-reviewed",
       "mapContext": {

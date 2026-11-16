@@ -1,0 +1,18 @@
+{
+ "reference": {
+  "id": "amap-satellite-z18-20261115-b2",
+  "provider": "高德地图卫星影像瓦片（GCJ-02）",
+  "imageAcquired": null,
+  "retrievedAt": "2026-11-15",
+  "coordinateNote": "瓦片为 GCJ-02 网格；经 tools/china-coordinates.py 反算 WGS84 后投影到项目米制坐标，与 OSM/Overture 同系。检索日期不是拍摄日期。",
+  "limitations": "影像约 0.5 m/px；树冠、阴影与在建工地遮挡会压低轮廓判读精度；高度为层数或照片推断，非测量值。"
+ },
+ "sites": [
+  {"id": "tianjin-bus", "name": "天津路公交停保场", "x": -1453.1, "z": -1233.6, "half": 190},
+  {"id": "changzhou-stop", "name": "常州路客运经停站", "x": 1029.5, "z": 2214.0, "half": 150},
+  {"id": "station-bus", "name": "火车站公交停保场", "x": -893.1, "z": 2220.9, "half": 190},
+  {"id": "jinlong-park", "name": "金隆游乐园", "x": 2972.1, "z": -305.5, "half": 230},
+  {"id": "jinlong-park-close", "name": "金隆游乐园（近景判边界）", "x": 2960.0, "z": -285.0, "half": 110},
+  {"id": "fire-command", "name": "沭阳县消防指挥中心/救援大队", "x": 2853.0, "z": 2401.0, "half": 200}
+ ]
+}

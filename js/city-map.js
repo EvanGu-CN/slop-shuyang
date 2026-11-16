@@ -51,6 +51,8 @@ const C = {
   blockEdge: '#222b35',
   park: '#1c3527',
   parkEdge: '#2a4a36',
+  campus: '#1d2530',
+  campusEdge: '#38455a',
   building: '#343d49',
   buildingTall: '#4b5766',
   buildingEdge: '#1b222b',
@@ -147,7 +149,9 @@ const ROAD_INDEX = makeIndex(ROAD_ITEMS);
 const PATH_INDEX = makeIndex(PATH_ITEMS);
 
 // 来源建筑及地标展示轮廓；美术馆分散体块仍为图纸/照片引导的估计。
-const BUILDING_ITEMS = (GEO.mapBuildings || []).flatMap((b) => b.id===ART_GALLERY.sourceId
+// 被影像重建取代的粗略体块（GEO.supersededSourceIndices）在矢量图上同样隐藏，
+// 保证地图与三维场景使用同一套建筑。
+const BUILDING_ITEMS = (GEO.mapBuildings || []).filter((b) => !b.sup).flatMap((b) => b.id===ART_GALLERY.sourceId
   ?galleryDisplayFootprints().map(p=>({flat:p.outer.flatMap(q=>[q.x,q.z]),holes:p.holes.map(r=>r.flatMap(q=>[q.x,q.z])),
     bb:flatBBox(p.outer.flatMap(q=>[q.x,q.z])),name:p.id==='red-hall'?b.n:'',h:p.height,aliases:p.id==='red-hall'?['沭阳美术馆']:[]}))
   :CULTURAL_HALL_BY_SOURCE.has(b.id)?[(()=>{const h=CULTURAL_HALL_BY_SOURCE.get(b.id),flat=h.outer.flatMap(q=>[q.x,q.z]);return{flat,holes:[],bb:flatBBox(flat),name:b.n,h:h.displayMaxHeight,aliases:[]};})()]:[{
@@ -172,6 +176,17 @@ const PARK_LABELS = PARKS.map((p) => {
     bb: ringBBox(best.ring), ...ringCentroid(best.ring) } : null;
 }).filter(Boolean);
 const RAIL_ITEMS = (GEO.railways || []).map(([name, kind, flat]) => ({ name, kind, flat, bb: flatBBox(flat) }));
+
+// 校区：OSM amenity=school 面（2026-11 out geom）。地图上单独成层，与 3D 共用同一轮廓。
+const flatRing = (flat) => {
+  const out = [];
+  for (let i = 0; i + 1 < flat.length; i += 2) out.push({ x: flat[i], z: flat[i + 1] });
+  return out;
+};
+const SCHOOL_ITEMS = (GEO.schoolGrounds || []).map((g) => ({
+  name: g.n, kind: g.k, area: g.a, ring: flatRing(g.r), bb: flatBBox(g.r), x: g.c[0], z: g.c[1]
+})).filter((g) => g.ring.length >= 3);
+const SCHOOL_NAMES = new Set(SCHOOL_ITEMS.map((s) => s.name));
 const SPORTS_COLORS={soccer:'#31543b',basketball:'#375b68','sports-ground':'#354b3b','running-track':'#855447',
   infield:'#365d41',court:'#406d69','sport-paving':'#73594d','community-path':'#748180'};
 const SPORTS_ITEMS=(GEO.urban?.surfaces||[]).filter(s=>SPORTS_COLORS[s.kind]).flatMap(s=>s.polygons.map(p=>({
@@ -405,6 +420,8 @@ class CityMapSystem {
     if (lm) return lm;
     const park = PARK_LABELS.find((p) => p.name && p.name.includes(q));
     if (park) return park;
+    const school = SCHOOL_ITEMS.find((s) => s.name.includes(q));
+    if (school) return { x: school.x, z: school.z, name: school.name };
     const road = ROAD_ITEMS.find((r) => r.name.includes(q) || r.short.includes(q));
     if (road) return flatCentroid(road.flat, Math.floor(road.flat.length / 4));
     const poi = POI_ITEMS.find((p) => p.name.includes(q));
@@ -500,6 +517,20 @@ class CityMapSystem {
         ctx.fill('evenodd');
         if(zoom>=.12)ctx.stroke();
       }
+    }
+
+    // 校区（OSM 实测轮廓，位于公园之后、运动场地之前）
+    if (zoom >= 0.045) for (const s of SCHOOL_ITEMS) {
+      if (!inRect(s.bb, v)) continue;
+      ctx.fillStyle = C.campus;
+      ctx.strokeStyle = C.campusEdge;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(P.x(s.ring[0].x), P.y(s.ring[0].z));
+      for (let i = 1; i < s.ring.length; i++) ctx.lineTo(P.x(s.ring[i].x), P.y(s.ring[i].z));
+      ctx.closePath();
+      ctx.fill();
+      if (zoom >= 0.14) ctx.stroke();
     }
 
     // 来源运动场地：与3D使用相同的外环/内孔，不用整块公园底色覆盖跑道。
@@ -670,6 +701,16 @@ class CityMapSystem {
       }
     }
 
+    // 校名
+    if (zoom >= 0.075) {
+      for (const s of SCHOOL_ITEMS) {
+        if (!s.name || !inRect(s.bb, v)) continue;
+        if ((s.bb[2] - s.bb[0]) * zoom < 44) continue;
+        const size = Math.max(8.5, Math.min(11.5, 8 + zoom * 5));
+        label(s.name, P.x(s.x), P.y(s.z), size, 'rgba(190,205,235,0.78)', '600', 0);
+      }
+    }
+
     // 水体名
     if (zoom >= 0.09) {
       for (const l of WATER_LINES) {
@@ -700,7 +741,7 @@ class CityMapSystem {
       const visiblePois = queryIndex(POI_INDEX, POI_ITEMS, v).sort((a, b) => Math.hypot(a.x - view.x, a.z - view.z) - Math.hypot(b.x - view.x, b.z - view.z));
       for (const p of visiblePois) {
         if(p.labelScope==='building-unit'&&(radar||zoom<.75))continue;
-        if (LANDMARK_NAMES.has(p.name) || LANDMARK_SHORTS.has(p.name)) continue;
+        if (LANDMARK_NAMES.has(p.name) || LANDMARK_SHORTS.has(p.name) || SCHOOL_NAMES.has(p.name)) continue;
         const major = MAJOR_POI.has(p.kind);
         if (poiZoom === 1 && !major && !radar) continue;
         const [color, icon] = p.style;

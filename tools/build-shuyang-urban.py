@@ -38,11 +38,15 @@ def encode(g):
 
 def main():
     raw = (DATA / 'buildings-enriched.json.gz').read_bytes()
-    buildings = json.loads(gzip.decompress(raw))['buildings']
+    payload = json.loads(gzip.decompress(raw))
+    buildings = payload['buildings']
+    # 被替代/排除的粗块不参与铺装裁剪：它们不再渲染，若仍占位会把看台、跑道挖空。
+    superseded_ids = set((payload['report'].get('reviewedImagery') or {}).get('supersededSourceIds') or [])
     shapes = [unary_union([Polygon(p['outer'], p['holes']) for p in b['polygons']]) for b in buildings]
     tree = STRtree(shapes)
     # Clearance exceeds simplification + quantization, so paving cannot peek through a wall.
-    building_mask = unary_union(shapes).buffer(.65)
+    building_mask = unary_union([s for b, s in zip(buildings, shapes)
+                                 if b['id'] not in superseded_ids]).buffer(.65)
     land, roads, urban, water = (load('osm_'+k+'.json') for k in ('land', 'roads', 'urban_features', 'water'))
     neighborhoods, areas = [], []
     name_aliases=load('place-name-aliases.json')
@@ -235,7 +239,9 @@ def main():
                                  'heightSource': 'osm-height' if height else 'display-estimate',
                                  'points': [round(v, 1) for xy in seg.coords for v in xy]})
     for s in reviewed_surfaces['surfaces']:
-        g=Polygon(s['rings'][0],s['rings'][1:]).intersection(CORE).difference(paving_mask)
+        # Row-gap lanes are produced by a geometric difference and can come back
+        # self-touching; repair before the boolean op instead of letting GEOS abort.
+        g=make_valid(Polygon(s['rings'][0],s['rings'][1:])).intersection(CORE).difference(paving_mask)
         encoded=encode(g)
         if encoded:
             surfaces.append({k:s[k] for k in ('id','kind','name','sourceSiteId')}|{'source':'ReviewedImagery',

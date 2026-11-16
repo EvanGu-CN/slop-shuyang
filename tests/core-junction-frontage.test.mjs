@@ -16,8 +16,8 @@ const all=F.surfaces.flatMap(s=>s.polygons.map(poly)),mask=clipping.union(...all
 const near=(p)=>{const xs=p.map(p=>p[0]),zs=p.map(p=>p[1]),b=F.extent;return Math.max(...xs)>b[0]-30&&Math.min(...xs)<b[2]+30&&Math.max(...zs)>b[1]-30&&Math.min(...zs)<b[3]+30};
 test('core frontage preserves every source road, map part and building binary',()=>{
   assert.equal(createHash('sha256').update(JSON.stringify(GEO.roads)).digest('hex'),F.sourceRoadsDigest);
-  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'211ef701274c3124809f5fe0390b2fc949ce47c968b967b0d2c03d98fb79615f');
-  assert.equal(GEO.mapBuildings.length,7745);assert.equal(new Set(GEO.roadSourceIds).size,1104);assert.equal(GEO.mapPaths.length,92);
+  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'1c3e296f4c0a17ba7fa0801b1d44998f5ddeaf95481dcd234eb72e14566722a9');
+  assert.equal(GEO.mapBuildings.length,9982);assert.equal(new Set(GEO.roadSourceIds).size,1104);assert.equal(GEO.mapPaths.length,92);
   for(const id of F.sourceWayIds)assert.ok(GEO.roadSourceIds.includes(id));
 });
 test('coloured frontage never overlaps actual road ribbon triangles',()=>{

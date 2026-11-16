@@ -1,0 +1,248 @@
+{
+ "provider": "高德地图卫星影像瓦片（GCJ-02）",
+ "tileUrl": "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+ "retrievedAt": "2026-11-15",
+ "resolutionMetersPerPixel": 0.494,
+ "coordinateNote": "瓦片为 GCJ-02 网格；经 tools/china-coordinates.py 反算 WGS84 后投影到项目米制坐标，与 OSM/Overture 同系。检索日期不是拍摄日期。",
+ "limitations": "影像约 0.5 m/px；树冠、阴影与在建工地遮挡会压低轮廓判读精度；高度为层数或照片推断，非测量值。",
+ "sites": [
+  {
+   "id": "zhongshan-hospital",
+   "name": "中山医院",
+   "zoom": 18,
+   "worldCenter": [
+    -567.7,
+    518.5
+   ],
+   "halfSizeM": 150,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2618,
+   "worldToPixel": {
+    "x0": 353.4,
+    "z0": 165.39
+   },
+   "image": "zhongshan-hospital.png"
+  },
+  {
+   "id": "zhongxing-hospital",
+   "name": "沭阳中兴医院",
+   "zoom": 18,
+   "worldCenter": [
+    -362.1,
+    1987.1
+   ],
+   "halfSizeM": 150,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2616,
+   "worldToPixel": {
+    "x0": 198.8,
+    "z0": 36.96
+   },
+   "image": "zhongxing-hospital.png"
+  },
+  {
+   "id": "renci-hospital",
+   "name": "沭阳仁慈医院",
+   "zoom": 18,
+   "worldCenter": [
+    1463.3,
+    661.8
+   ],
+   "halfSizeM": 150,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2645,
+   "worldToPixel": {
+    "x0": 366.37,
+    "z0": 230.46
+   },
+   "image": "renci-hospital.png"
+  },
+  {
+   "id": "chengxi-hospital",
+   "name": "沭阳医院（城西院区）",
+   "zoom": 18,
+   "worldCenter": [
+    -2086.9,
+    -302.8
+   ],
+   "halfSizeM": 160,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2597,
+   "worldToPixel": {
+    "x0": 320.65,
+    "z0": 321.3
+   },
+   "image": "chengxi-hospital.png"
+  },
+  {
+   "id": "nanguan-hospital",
+   "name": "沭阳县中医院南关院区",
+   "zoom": 18,
+   "worldCenter": [
+    -211.1,
+    804.7
+   ],
+   "halfSizeM": 140,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2622,
+   "worldToPixel": {
+    "x0": 310.23,
+    "z0": 312.53
+   },
+   "image": "nanguan-hospital.png"
+  },
+  {
+   "id": "brain-hospital",
+   "name": "沭阳脑科医院",
+   "zoom": 18,
+   "worldCenter": [
+    -2290.4,
+    2547.2
+   ],
+   "halfSizeM": 150,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2583,
+   "worldToPixel": {
+    "x0": 103.09,
+    "z0": 221.63
+   },
+   "image": "brain-hospital.png"
+  },
+  {
+   "id": "sports-center",
+   "name": "沭阳体育中心",
+   "zoom": 18,
+   "worldCenter": [
+    -613.1,
+    4674.6
+   ],
+   "halfSizeM": 230,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2602,
+   "worldToPixel": {
+    "x0": 356.26,
+    "z0": 340.25
+   },
+   "image": "sports-center.png"
+  },
+  {
+   "id": "railway-station",
+   "name": "沭阳站",
+   "zoom": 18,
+   "worldCenter": [
+    -1387.3,
+    1705.2
+   ],
+   "halfSizeM": 220,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2601,
+   "worldToPixel": {
+    "x0": 342.18,
+    "z0": 117.03
+   },
+   "image": "railway-station.png"
+  },
+  {
+   "id": "oceanarium",
+   "name": "沭阳海洋馆（在建）",
+   "zoom": 18,
+   "worldCenter": [
+    -1750.0,
+    4180.0
+   ],
+   "halfSizeM": 200,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2586,
+   "worldToPixel": {
+    "x0": 51.64,
+    "z0": 54.05
+   },
+   "image": "oceanarium.png"
+  },
+  {
+   "id": "fire-command",
+   "name": "消防指挥中心/救援大队",
+   "zoom": 18,
+   "worldCenter": [
+    2853.0,
+    2401.0
+   ],
+   "halfSizeM": 160,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2651,
+   "worldToPixel": {
+    "x0": 318.37,
+    "z0": 139.46
+   },
+   "image": "fire-command.png"
+  },
+  {
+   "id": "chengbei-bus",
+   "name": "城北公交停保场",
+   "zoom": 18,
+   "worldCenter": [
+    1704.6,
+    -1848.6
+   ],
+   "halfSizeM": 130,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2657,
+   "worldToPixel": {
+    "x0": 392.3,
+    "z0": 305.76
+   },
+   "image": "chengbei-bus.png"
+  },
+  {
+   "id": "tianjin-bus",
+   "name": "天津路公交停保场",
+   "zoom": 18,
+   "worldCenter": [
+    -1453.1,
+    -1233.6
+   ],
+   "halfSizeM": 120,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2611,
+   "worldToPixel": {
+    "x0": 44.02,
+    "z0": 284.94
+   },
+   "image": "tianjin-bus.png"
+  },
+  {
+   "id": "station-bus",
+   "name": "火车站公交停保场",
+   "zoom": 18,
+   "worldCenter": [
+    -893.1,
+    2220.9
+   ],
+   "halfSizeM": 130,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2607,
+   "worldToPixel": {
+    "x0": 184.21,
+    "z0": 43.7
+   },
+   "image": "station-bus.png"
+  },
+  {
+   "id": "badminton",
+   "name": "深呼吸羽毛球馆",
+   "zoom": 18,
+   "worldCenter": [
+    -1930.5,
+    1022.5
+   ],
+   "halfSizeM": 110,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2595,
+   "worldToPixel": {
+    "x0": 169.16,
+    "z0": 298.35
+   },
+   "image": "badminton.png"
+  }
+ ]
+}

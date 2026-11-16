@@ -13,7 +13,7 @@ const source=GEO.mapBuildings.find(b=>b.id===R.sourceId),sourceRing=Array.from({
 test('roof detail keeps the bound market source footprint and original height',()=>{
   assert.equal(R.sourceIndex,2726);assert.equal(source.h,19.3);assert.equal(R.sourceHeight,19.3);
   assert.deepEqual(source.o,[8,-201.5,-262.5,-319.5,-344,-139.5,-34,-50.5]);assert.deepEqual(source.holes,[]);
-  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'211ef701274c3124809f5fe0390b2fc949ce47c968b967b0d2c03d98fb79615f');
+  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'1c3e296f4c0a17ba7fa0801b1d44998f5ddeaf95481dcd234eb72e14566722a9');
 });
 test('reviewed roof traces remain inside the original source and in separate regions',()=>{
   for(const r of [R.pavilion,R.terrace,R.darkPanel,...R.beds])assert.ok(polyArea(clipping.difference([r],[sourceRing]))<1e-7);

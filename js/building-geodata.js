@@ -42,7 +42,7 @@ let x = 0, z = 0;
 export const REAL_BUILDINGS = Array.from({ length: count }, () => {
   const height = uint() / 10, baseHeight = uint() / 10;
   const category = ['unknown', 'residential', 'commercial', 'office', 'industrial', 'civic', 'house', 'garage'][uint()];
-  const heightSource = ['estimate', 'osm-height', 'osm-levels', 'overture-height', 'globfp-model', 'cnbh-raster'][uint()];
+  const heightSource = ['estimate', 'osm-height', 'osm-levels', 'overture-height', 'globfp-model', 'cnbh-raster', 'reviewed-floor-count'][uint()];
   const source = ['OSM', 'Overture', 'procedural', 'ReviewedImagery'][uint()], levels = uint();
   const roofShape = ['flat', 'gabled', 'hipped', 'pyramidal'][uint()], roofHeight = uint() / 10, seed = uint();
   if (!category || !heightSource || !source || !roofShape || height <= baseHeight || height > 200) throw invalidData();

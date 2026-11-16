@@ -16,8 +16,8 @@ test('RT-Mart keeps one mapped footprint and gains no invented buildings', () =>
   assert.ok(site && site.sourceId === 'way/497798167');
   for (const i of site.sourceBuildingIndices) assert.equal(enriched.buildings[i].id, site.sourceId);
   // 全量清单护栏含新补录的独立档案馆候选；大润发仍只绑定原有一条来源。
-  assert.equal(enriched.buildings.length, 7742);
-  assert.equal(enriched.buildings.filter(b => b.source === 'ReviewedImagery').length, 184);
+  assert.equal(enriched.buildings.length, 9977);
+  assert.equal(enriched.buildings.filter(b => b.source === 'ReviewedImagery').length, 2419);
 });
 
 test('the north forecourt is a reviewed asphalt surface with an unknown capture date', () => {

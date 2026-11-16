@@ -499,6 +499,30 @@ for (const e of osmLand.elements) {
 }
 log(`parks & green: ${parks.length}, other landuse: ${landuse.length}`);
 
+// 学校校区：OSM amenity=school/kindergarten/college/university 面（overpass out geom），
+// 全部为封闭环。用于地图上的校区图层、校内步道归属与校门位置推导；不用于编造楼体。
+const osmSchoolGrounds = load('osm_school_grounds.json');
+const schoolGrounds = [];
+for (const e of osmSchoolGrounds.elements) {
+  const t = e.tags || {};
+  if (!t.name) continue;
+  for (const ring of elemRings(e)) {
+    if (ring.length < 3) continue;
+    const clipped = clipRect(ring, BOUNDS);
+    if (clipped.length < 3) continue;
+    const area = Math.abs(ringArea(clipped));
+    if (area < 400) continue;
+    let cx = 0, cz = 0;
+    for (const [x, z] of clipped) { cx += x; cz += z; }
+    schoolGrounds.push({
+      n: t.name, k: t.amenity || 'school', a: Math.round(area),
+      c: [q(cx / clipped.length), q(cz / clipped.length)],
+      r: flat(rdpRing(clipped, 1.2))
+    });
+  }
+}
+log(`school grounds: ${schoolGrounds.length}`);
+
 const osmPois = load('osm_pois.json');
 const pois = [];
 for (const e of osmPois.elements) {
@@ -782,6 +806,13 @@ const mapBuildings = real.flatMap((b) => b.polygons.map((p) => ({
   id: b.id, n: b.name, h: b.h, s: b.source, o: flat(p.outer), holes: p.holes.map(flat)
 })));
 log(`map buildings: ${mapBuildings.length}`);
+// Coarse source massing replaced by the 万顺·帝景天成 imagery reconstruction.
+// Records stay in the extract (source order/indices are bound elsewhere); the
+// map and the 3D scene hide them so the finer footprints are the only surface.
+const supersededIds = new Set(enriched.report.reviewedImagery?.supersededSourceIds || []);
+const supersededSourceIndices = real.flatMap((b, i) => supersededIds.has(b.id) ? [i] : []);
+for (const m of mapBuildings) if (supersededIds.has(m.id)) m.sup = 1;
+log(`superseded coarse records: ${supersededSourceIndices.length}`);
 
 // spatial index of surveyed buildings, for the infill's overlap test
 const BCELL = 40;
@@ -904,7 +935,10 @@ const zigzag = (n) => (n << 1) ^ (n >> 31);
     varint(meta, Math.round(b.height * 10));
     varint(meta, Math.round((b.baseHeight || 0) * 10));
     varint(meta, ['unknown', 'residential', 'commercial', 'office', 'industrial', 'civic', 'house', 'garage'].indexOf(b.category || 'unknown'));
-    varint(meta, ['estimate', 'osm-height', 'osm-levels', 'overture-height', 'globfp-model', 'cnbh-raster'].indexOf(b.heightSource || 'estimate'));
+    const heightSourceCode = ['estimate', 'osm-height', 'osm-levels', 'overture-height', 'globfp-model', 'cnbh-raster', 'reviewed-floor-count'].indexOf(b.heightSource || 'estimate');
+    // An unmapped value would encode as 255 and shift the whole metadata stream.
+    if (heightSourceCode < 0) throw new Error('Unmapped heightSource: ' + b.heightSource + ' (' + b.id + ')');
+    varint(meta, heightSourceCode);
     varint(meta, b.source === 'OSM' ? 0 : b.source === 'Overture' ? 1 : b.source === 'ReviewedImagery' ? 3 : 2);
     varint(meta, b.levels || 0);
     varint(meta, ['flat', 'gabled', 'hipped', 'pyramidal'].indexOf(b.roofShape || 'flat'));
@@ -951,6 +985,7 @@ const GEO = {
   roadReviews:roads.flatMap((r,index)=>r.photoReviewId?[{index,sourceId:r.sourceId,reviewId:r.photoReviewId,originalWidth:r.originalWidth,originalLanes:r.originalLanes,width:r.w,lanes:r.lanes}]:[]),
   mapPaths,
   mapBuildings,
+  supersededSourceIndices,
   buildingDataVersion: createHash('sha256').update(zlib.gunzipSync(fs.readFileSync(BUILDINGS_OUT))).digest('hex'),
   buildingAudit: enriched.report,
   neighborhoods: urban.neighborhoods,
@@ -968,6 +1003,7 @@ const GEO = {
   parks: parks.map((p) => ({ name: p.name, kind: p.kind, rings: p.rings,
     landPolygons:polygonClip.difference(p.rings.map(r=>[ringPts(r)]),...waterGeometry).map(poly=>poly.map(flat)) })),
   landuse: landuse.map((l) => ({ name: l.name, kind: l.kind, rings: l.rings })),
+  schoolGrounds,
   landmarks: landmarkMap,
   pois,
   places,

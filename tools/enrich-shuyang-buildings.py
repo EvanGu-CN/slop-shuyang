@@ -18,7 +18,7 @@ KX, KY = 111320 * math.cos(math.radians(LAT)), 110574
 CORE = box(-3200, -2400, 3400, 5000)
 WGS_BOUNDS = [LON - 3200/KX, LAT - 5000/KY, LON + 3400/KX, LAT + 2400/KY]
 USES = ['unknown', 'residential', 'commercial', 'office', 'industrial', 'civic', 'house', 'garage']
-HEIGHTS = ['estimate', 'osm-height', 'osm-levels', 'overture-height', 'globfp-model', 'cnbh-raster']
+HEIGHTS = ['estimate', 'osm-height', 'osm-levels', 'overture-height', 'globfp-model', 'cnbh-raster', 'reviewed-floor-count']
 SOURCES = ['OSM', 'Overture', 'procedural', 'ReviewedImagery']
 ROOFS = ['flat', 'gabled', 'hipped', 'pyramidal']
 
@@ -177,9 +177,58 @@ def main():
     # Individually reviewed roof observations may fill real omissions, with their
     # acquisition date and uncertainty retained. Never subdivide empty lots.
     reviewed_meta = None
+    wanshun_superseded = []
     reviewed_file = DATA/'reviewed-buildings.geojson'
     if reviewed_file.exists():
         reviewed = json.loads(reviewed_file.read_bytes())
+        # Overture massing inside 万顺·帝景天成 is coarse (merged slabs plus a few
+        # sub-20 m² fragments). Records stay in the extract so source order and
+        # index bindings remain stable; where the imagery reconstruction covers a
+        # record it is marked superseded and hidden by the renderer/map instead.
+        # OSM survey geometry is never superseded here.
+        wanshun_file = DATA / 'reviewed-wanshun-buildings.geojson'
+        superseded_ids = set()
+        scopes = []
+        if wanshun_file.exists():
+            wanshun = json.loads(wanshun_file.read_bytes())
+            scopes.append((Polygon(wanshun['district']['boundary']), wanshun['features']))
+        # 批2 空地补全：12 个小区 + 3 所学校的影像重建覆盖范围。
+        blank_file = DATA / 'reviewed-blank-plots.geojson'
+        if blank_file.exists():
+            blank = json.loads(blank_file.read_bytes())
+            prefix = 'reviewed/imagery/blank/'
+            scopes.extend((Polygon(d['boundary']),
+                           [f for f in blank['features']
+                            if f['properties']['id'].startswith(prefix + d['id'] + '/')])
+                          for d in blank.get('districts', []))
+        for plot, plot_features in scopes:
+            traced_parts = [make_valid(world(shape(f['geometry']))) for f in plot_features]
+            traced = unary_union(traced_parts)
+            traced_tree = STRtree(traced_parts)
+            for r in rows:
+                if r['source'] == 'OSM':
+                    continue
+                g = r['_geometry']
+                if not plot.contains(g.representative_point()):
+                    continue
+                # A reconstruction footprint that spends a quarter of its own area
+                # inside a coarse record means that record's massing is wrong.
+                claimed = max((p.intersection(g).area / p.area
+                               for p in (traced_parts[int(i)] for i in traced_tree.query(g))),
+                              default=0)
+                covered = g.intersection(traced).area / g.area
+                # Any coarse massing the reconstruction actually overlaps is
+                # replaced, not just the ones mostly covered: leaving a merged
+                # Overture slab next to the rebuilt rows doubles the massing.
+                overlap = g.intersection(traced).area
+                if claimed >= .25 or covered >= .3 or overlap > 1 or g.area < 120:
+                    superseded_ids.add(r['id'])
+        wanshun_superseded = sorted(superseded_ids)
+        for ident in reviewed.get('supersededSourceIds', []):
+            if ident not in {r['id'] for r in rows}:
+                raise SystemExit('Unknown superseded source id: ' + ident)
+            superseded_ids.add(ident)
+        wanshun_superseded = sorted(superseded_ids)
         existing = [r['_geometry'] for r in rows]
         existing_tree = STRtree(existing)
         accepted = []
@@ -187,9 +236,15 @@ def main():
         for f in reviewed['features']:
             ident = f['properties']['id']
             bound_ids=set(f['properties'].get('reviewedReplacesSourceIds',[]))
-            g = make_valid(world(shape(f['geometry']))).intersection(CORE)
+            raw = make_valid(world(shape(f['geometry'])))
+            g = raw.intersection(CORE)
             if g.is_empty or g.area < 12:
-                decisions.append({'traceId':ident,'status':'rejected-invalid-or-small'})
+                # Distinguish "traced but the plot sits at the model edge" from a
+                # genuinely invalid outline; only the former is a bounds decision.
+                outside = raw.area > 12 and g.area < raw.area*.5
+                decisions.append({'traceId':ident,'status':'rejected-invalid-or-small',
+                    **({'reason':'footprint lies mostly outside the published CORE frame; '
+                                'kept in the reviewed extract but not rendered.'} if outside else {})})
                 continue
             overlaps = [(existing[int(i)],rows[int(i)]['id']) for i in existing_tree.query(g)] + [
                 (p,pid) for p,pid in zip(accepted,accepted_ids) if p.intersects(g)]
@@ -205,6 +260,10 @@ def main():
                     g.intersection(p).area/p.area<.8 or g.area<2*p.area for p,_ in matches):
                     raise ValueError('Invalid reviewed partial-source binding: '+ident)
                 conflicts=[c for c in conflicts if c['sourceId'] not in bound_ids]
+            if ident.startswith(('reviewed/wanshun/', 'reviewed/batch1/', 'reviewed/batch2/', 'reviewed/imagery/blank/')):
+                # Coarse massing already flagged superseded no longer blocks the
+                # finer footprint; the old record is hidden, not deleted.
+                conflicts=[c for c in conflicts if c['sourceId'] not in superseded_ids]
             if conflicts:
                 audit['reviewed-existing-duplicate'] += 1
                 decisions.append({'traceId':ident,'status':'rejected-overlap','observedAreaM2':round(g.area,1),
@@ -227,7 +286,35 @@ def main():
                     **({'boundSourceIds':sorted(bound_ids),'overlapResolution':'Original partial source retained in extract; dedicated model must bind both IDs to the complete reviewed outline.'} if bound_ids else {})})
         reviewed_meta = {'reference':reviewed['reference'],'additionalReferences':reviewed.get('additionalReferences',[]),'traceSha256':reviewed['traceSha256'],
             'observedCandidates':len(reviewed['features']),'acceptedBuildings':len(accepted),
-            'deduplicatedAgainstExisting':audit['reviewed-existing-duplicate'],'decisions':decisions}
+            'deduplicatedAgainstExisting':audit['reviewed-existing-duplicate'],'decisions':decisions,
+            'supersededSourceIds':wanshun_superseded}
+        reviewed_meta['supersededReasons'] = reviewed.get('supersededReasons', {})
+        reviewed_meta['nonBuildingExclusionIds'] = reviewed.get('nonBuildingExclusionIds', [])
+
+    # 批1/批2 设施复核：对保留实测轮廓的记录只修正名称、类别与层数高度。
+    # 高度来自官方层数或影像层数推断，明确标为 reviewed-floor-count，不冒充测量值。
+    for batch in ('batch1', 'batch2'):
+        overrides_path = DATA / f'{batch}-massing-overrides.json'
+        if not overrides_path.exists():
+            continue
+        override_doc = json.loads(overrides_path.read_bytes())
+        by_id = {r['id']: r for r in rows}
+        for o in override_doc['overrides']:
+            r = by_id.get(o['sourceId'])
+            if r is None:
+                raise SystemExit('Override references a missing record: ' + o['sourceId'])
+            if o.get('name'):
+                r['name'] = o['name']
+            if o.get('category'):
+                r['category'], r['categorySource'] = o['category'], 'reviewed-facility'
+            if o.get('height') is not None:
+                r['height'] = round(float(o['height']), 1)
+                r['levels'] = round(float(o.get('levels') or 0))
+                r['heightSource'] = 'reviewed-floor-count'
+            r['heightNote'] = o.get('heightNote', o.get('note', ''))
+            r['reviewedFacility'] = {'facilityId': o['facilityId'], 'facilityName': o['facilityName'],
+                                     'group': o.get('facilityGroup'), 'referenceId': o.get('referenceId'),
+                                     'note': o.get('note', '')}
 
     # Optional regional archives. Only intersecting records are read; full ZIPs stay outside Git.
     glob_shapes, glob_heights, glob_refs = [], [], []

@@ -1,0 +1,73 @@
+{
+  "reference": {
+    "id": "amap-satellite-z18-20261115",
+    "provider": "高德地图卫星影像瓦片（GCJ-02）",
+    "tileUrl": "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z=18",
+    "retrievedAt": "2026-11-15",
+    "imageAcquired": null,
+    "resolutionMetersPerPixel": 0.494,
+    "coordinateNote": "瓦片为 GCJ-02 网格；按 tools/china-coordinates.py 反算 WGS84 后换算到项目米制坐标，与 OSM 同系。检索日期不是拍摄日期。",
+    "limitations": "影像约 0.5 m/px，树冠遮挡屋顶；楼体为街区尺度行排重建，不是逐栋实测轮廓；高度为层数推断，非测量值。"
+  },
+  "district": {
+    "id": "way/1321791090",
+    "name": "万顺·帝景天成",
+    "boundary": [[802.5, 1922], [964.3, 1887], [1055.6, 2374.3], [912.1, 2371.7], [843, 2242.1], [813, 2082.7]],
+    "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+    "context": "小区户型以联排/双拼别墅为主，高层仅在南北两端少数几栋（宿迁房天下/58 同城小区页面的户型说明）。"
+  },
+  "villaRows": {
+    "method": "影像判读的行排网格：东—西向楼排中心距约 32 m、单元面宽 28 m、进深 18 m，楼间为院落与 5.5 m 内部通道；按 OSM 地块边界裁剪。",
+    "rows": [1926, 1958, 1990, 2022, 2054, 2086, 2118, 2150, 2182, 2214, 2246, 2278],
+    "rowDepth": 18,
+    "unitWidth": 28,
+    "unitGap": 6,
+    "originX": 812,
+    "insetFromBoundary": 2,
+    "height": 12.4,
+    "levels": 3,
+    "roofShape": "hipped",
+    "roofHeight": 2.8,
+    "building": "house",
+    "heightNote": "按 3 层（一复二带花园）推断，总高 12.4 m 含坡屋顶；不是测量高度。",
+    "overlapRadius": 4
+  },
+  "buildings": [
+    {
+      "id": "south-canopy",
+      "name": "",
+      "building": "commercial",
+      "height": 9,
+      "roofShape": "flat",
+      "roofHeight": 0,
+      "levels": 1,
+      "note": "南侧弧形大棚市场：影像中为白色弧顶连续棚架，紧邻临安东路北侧。",
+      "ring": [[930, 2368], [930, 2344], [936, 2328], [948, 2320], [986, 2320], [1004, 2324], [1020, 2332], [1032, 2346], [1044, 2368]]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "east-spine",
+      "width": 7,
+      "pts": [[963, 1920], [978, 2000], [997, 2100], [1016, 2200], [1035, 2300], [1046, 2360]]
+    },
+    {
+      "id": "south-gate",
+      "width": 7,
+      "pts": [[1035, 2300], [1046, 2366]]
+    },
+    {
+      "id": "east-gate",
+      "width": 6,
+      "pts": [[1014, 2196], [1026, 2196]]
+    }
+  ],
+  "crossLaneZStep": 31,
+  "crossLaneWidth": 5.5,
+  "crossLaneOffset": 24.5,
+  "greenBands": {
+    "note": "楼排后方院落带，按行排间距生成，供庭院绿化；不覆盖内部通道。",
+    "fromOffset": 17,
+    "toOffset": 31
+  }
+}

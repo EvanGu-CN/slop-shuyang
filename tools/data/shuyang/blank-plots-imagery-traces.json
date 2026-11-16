@@ -1,0 +1,3540 @@
+{
+ "reference": {
+  "id": "amap-satellite-z18-20261115-blankplots",
+  "provider": "高德地图卫星影像瓦片（GCJ-02）",
+  "tileUrl": "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z=18",
+  "retrievedAt": "2026-11-15",
+  "imageAcquired": null,
+  "resolutionMetersPerPixel": 0.494,
+  "coordinateNote": "瓦片为 GCJ-02 网格；按 tools/china-coordinates.py 反算 WGS84 后换算到项目米制坐标，与 OSM 同系。检索日期不是拍摄日期。",
+  "limitations": "影像约 0.5 m/px，树冠、长阴影和在建工地遮挡屋顶；楼排按可见行列、间距与单体长度重建，不是逐栋实测轮廓；高度为层数与体量推断，非测量值；平面水平误差约 ±6 m。"
+ },
+ "method": {
+  "plots": "清单 批2 空地补全 的 15 条（12 个整片空地小区 + 3 所空地学校），状态码 C：地块内 0 栋本地建筑。",
+  "boundary": "沿用 OSM landuse=residential 或 amenity=school 地块边界原值，不修改边界本身。",
+  "reading": "每个地块导出 z18 影像叠合页（0.5 m/px，25 m 网格、地块边界、既有足迹），逐块判读行列、排距、单体长度、屋面形态与内部通道；判读页不入库。",
+  "masking": "生成体量裁到地块内 2 m，避让 OSM 水体、道路走廊、既有建筑足迹与判读排除区（在建工地、操场、水塘、广场）。",
+  "discipline": "实测=OSM 地块与外围道路；推断=本文件全部建筑与面要素，均带 referenceId、imageAcquired=null、geometrySource 与误差说明。"
+ },
+ "districts": [
+  {
+   "id": "central-garden",
+   "sid": "SY-045",
+   "name": "中央花园",
+   "landuseId": "way/1321791119",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 11.22 ha，南北两片 5–6 层行列住宅夹中央绿地；单体长约 54 m、进深约 15 m，排距约 27 m。",
+   "tiltDegrees": 0,
+   "patterns": [
+    {
+     "id": "north",
+     "startZ": 4328,
+     "zTo": 4425,
+     "pitch": 27,
+     "depth": 15,
+     "unitWidth": 42,
+     "unitGap": 14,
+     "levels": 5,
+     "height": 16,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层行列住宅、浅色坡顶推断，总高 16 m；不是测量高度。"
+    },
+    {
+     "id": "south",
+     "startZ": 4458,
+     "zTo": 4580,
+     "pitch": 27,
+     "depth": 15,
+     "unitWidth": 42,
+     "unitGap": 14,
+     "levels": 6,
+     "height": 18.4,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 6 层行列住宅、浅色坡顶推断，总高 18.4 m；不是测量高度。"
+    }
+   ],
+   "crossLaneEvery": 0,
+   "lanes": [
+    {
+     "id": "west-spine",
+     "width": 6,
+     "pts": [
+      [
+       -1690,
+       4310
+      ],
+      [
+       -1690,
+       4600
+      ]
+     ]
+    },
+    {
+     "id": "mid-spine",
+     "width": 5.5,
+     "pts": [
+      [
+       -1470,
+       4312
+      ],
+      [
+       -1472,
+       4600
+      ]
+     ]
+    },
+    {
+     "id": "east-spine",
+     "width": 6,
+     "pts": [
+      [
+       -1285,
+       4316
+      ],
+      [
+       -1283,
+       4600
+      ]
+     ]
+    },
+    {
+     "id": "cross-mid",
+     "width": 7,
+     "pts": [
+      [
+       -1710,
+       4470
+      ],
+      [
+       -1262,
+       4472
+      ]
+     ]
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "central-garden",
+     "reason": "影像中央为铺装小广场、亭子与乔木，无楼体。",
+     "ring": [
+      [
+       -1575,
+       4428
+      ],
+      [
+       -1495,
+       4428
+      ],
+      [
+       -1495,
+       4492
+      ],
+      [
+       -1575,
+       4492
+      ]
+     ]
+    }
+   ],
+   "greenBands": {
+    "fromOffset": 17,
+    "toOffset": 26
+   },
+   "reading": {
+    "observedBuildings": 34,
+    "type": "5–6 层行列住宅 + 中央小广场",
+    "typeConflict": false,
+    "unresolved": "南侧两排与东侧转角单体是否同规格未能逐栋确认；屋面坡向按浅色纹理推断。"
+   }
+  },
+  {
+   "id": "fuda-international",
+   "sid": "SY-046",
+   "name": "福达国际城",
+   "landuseId": "way/1321791121",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 7.30 ha。西侧 4 栋东西向长条温室/厂房（白金属坡顶，约 100–130×35–45 m）；东侧约 14 排 3 层联排/叠拼（单元约 12 m 面宽，排距约 25 m）。",
+   "tiltDegrees": 0,
+   "patterns": [
+    {
+     "id": "east-rows",
+     "startZ": 4578,
+     "zTo": 4932,
+     "pitch": 25,
+     "depth": 12,
+     "unitWidth": 12,
+     "unitGap": 2,
+     "levels": 3,
+     "height": 11.4,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "house",
+     "heightNote": "东侧 3 层联排/叠拼、灰坡顶推断，总高 11.4 m；不是测量高度。"
+    }
+   ],
+   "buildings": [
+    {
+     "id": "gh-2",
+     "ring": [
+      [
+       -1760,
+       4704
+      ],
+      [
+       -1662,
+       4704
+      ],
+      [
+       -1662,
+       4740
+      ],
+      [
+       -1760,
+       4740
+      ]
+     ],
+     "building": "industrial",
+     "height": 8,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    },
+    {
+     "id": "gh-3",
+     "ring": [
+      [
+       -1784,
+       4786
+      ],
+      [
+       -1662,
+       4786
+      ],
+      [
+       -1662,
+       4826
+      ],
+      [
+       -1784,
+       4826
+      ]
+     ],
+     "building": "industrial",
+     "height": 8,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    },
+    {
+     "id": "gh-4",
+     "ring": [
+      [
+       -1780,
+       4840
+      ],
+      [
+       -1652,
+       4840
+      ],
+      [
+       -1652,
+       4886
+      ],
+      [
+       -1780,
+       4886
+      ]
+     ],
+     "building": "industrial",
+     "height": 8,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    },
+    {
+     "id": "gh-5",
+     "ring": [
+      [
+       -1736,
+       4904
+      ],
+      [
+       -1650,
+       4904
+      ],
+      [
+       -1650,
+       4932
+      ],
+      [
+       -1736,
+       4932
+      ]
+     ],
+     "building": "industrial",
+     "height": 7,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 2.5
+    }
+   ],
+   "crossLaneEvery": 0,
+   "lanes": [
+    {
+     "id": "east-spine",
+     "width": 5.5,
+     "pts": [
+      [
+       -1584,
+       4570
+      ],
+      [
+       -1580,
+       4934
+      ]
+     ]
+    },
+    {
+     "id": "cross-mid",
+     "width": 6,
+     "pts": [
+      [
+       -1648,
+       4700
+      ],
+      [
+       -1516,
+       4702
+      ]
+     ]
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "west-greenhouses",
+     "reason": "西侧温室/厂房已逐栋描边，不参与行列填充。",
+     "ring": [
+      [
+       -1794,
+       4557
+      ],
+      [
+       -1648,
+       4557
+      ],
+      [
+       -1648,
+       4939
+      ],
+      [
+       -1794,
+       4939
+      ]
+     ]
+    }
+   ],
+   "greenBands": {
+    "fromOffset": 10,
+    "toOffset": 17
+   },
+   "reading": {
+    "observedBuildings": 18,
+    "type": "东侧 3 层联排/叠拼 + 西侧温室/厂房列",
+    "typeConflict": true,
+    "unresolved": "清单登记为住宅小区，影像西侧为温室/厂房尺度大跨；东侧联排单元宽度与排距按可见韵律近似，未逐栋核对。温室内部隔间不可辨。"
+   },
+   "greens": [
+    {
+     "id": "belt",
+     "ring": [
+      [
+       -1648,
+       4580
+      ],
+      [
+       -1636,
+       4580
+      ],
+      [
+       -1636,
+       4930
+      ],
+      [
+       -1648,
+       4930
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "huijin-south",
+   "sid": "SY-047",
+   "name": "汇金新城（南区）",
+   "landuseId": "way/1321791111",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 7.15 ha。影像为 12 栋连片大跨市场/仓储大棚（橙红、浅色与绿色金属坡顶，单体约 60–120×32–46 m），北侧围合中央绿地；与清单登记的居住小区类别不一致，按影像形态建模。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "nw-large",
+     "ring": [
+      [
+       -1279,
+       3312
+      ],
+      [
+       -1215,
+       3312
+      ],
+      [
+       -1215,
+       3348
+      ],
+      [
+       -1279,
+       3348
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "n-mid",
+     "ring": [
+      [
+       -1176,
+       3322
+      ],
+      [
+       -1108,
+       3322
+      ],
+      [
+       -1108,
+       3352
+      ],
+      [
+       -1176,
+       3352
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "ne",
+     "ring": [
+      [
+       -1088,
+       3340
+      ],
+      [
+       -1029,
+       3340
+      ],
+      [
+       -1029,
+       3378
+      ],
+      [
+       -1088,
+       3378
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "west",
+     "ring": [
+      [
+       -1306,
+       3392
+      ],
+      [
+       -1256,
+       3392
+      ],
+      [
+       -1256,
+       3426
+      ],
+      [
+       -1306,
+       3426
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 3.5
+    },
+    {
+     "id": "mid-west",
+     "ring": [
+      [
+       -1275,
+       3428
+      ],
+      [
+       -1203,
+       3428
+      ],
+      [
+       -1203,
+       3458
+      ],
+      [
+       -1275,
+       3458
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 3.5
+    },
+    {
+     "id": "mid-long",
+     "ring": [
+      [
+       -1233,
+       3486
+      ],
+      [
+       -1169,
+       3486
+      ],
+      [
+       -1169,
+       3510
+      ],
+      [
+       -1233,
+       3510
+      ]
+     ],
+     "building": "industrial",
+     "height": 7,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    },
+    {
+     "id": "green-shed",
+     "ring": [
+      [
+       -1150,
+       3424
+      ],
+      [
+       -1084,
+       3424
+      ],
+      [
+       -1084,
+       3476
+      ],
+      [
+       -1150,
+       3476
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "center-east",
+     "ring": [
+      [
+       -1082,
+       3428
+      ],
+      [
+       -1020,
+       3428
+      ],
+      [
+       -1020,
+       3458
+      ],
+      [
+       -1082,
+       3458
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 3.5
+    },
+    {
+     "id": "sw-long",
+     "ring": [
+      [
+       -1321,
+       3512
+      ],
+      [
+       -1205,
+       3512
+      ],
+      [
+       -1205,
+       3540
+      ],
+      [
+       -1321,
+       3540
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "se",
+     "ring": [
+      [
+       -1129,
+       3496
+      ],
+      [
+       -1041,
+       3496
+      ],
+      [
+       -1041,
+       3540
+      ],
+      [
+       -1129,
+       3540
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "south",
+     "ring": [
+      [
+       -1223,
+       3568
+      ],
+      [
+       -1101,
+       3568
+      ],
+      [
+       -1101,
+       3612
+      ],
+      [
+       -1223,
+       3612
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 2,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "sw-small",
+     "ring": [
+      [
+       -1333,
+       3568
+      ],
+      [
+       -1272,
+       3568
+      ],
+      [
+       -1272,
+       3604
+      ],
+      [
+       -1333,
+       3604
+      ]
+     ],
+     "building": "industrial",
+     "height": 8,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    }
+   ],
+   "greens": [
+    {
+     "id": "central-green",
+     "ring": [
+      [
+       -1192,
+       3384
+      ],
+      [
+       -1114,
+       3384
+      ],
+      [
+       -1114,
+       3428
+      ],
+      [
+       -1192,
+       3428
+      ]
+     ]
+    }
+   ],
+   "lanes": [
+    {
+     "id": "north-south",
+     "width": 7,
+     "pts": [
+      [
+       -1202,
+       3310
+      ],
+      [
+       -1200,
+       3660
+      ]
+     ]
+    },
+    {
+     "id": "cross-mid",
+     "width": 7,
+     "pts": [
+      [
+       -1325,
+       3520
+      ],
+      [
+       -1026,
+       3522
+      ]
+     ]
+    },
+    {
+     "id": "cross-north",
+     "width": 6,
+     "pts": [
+      [
+       -1325,
+       3400
+      ],
+      [
+       -1026,
+       3402
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 12,
+    "type": "大跨市场/仓储大棚，围合中央绿地水塘",
+    "typeConflict": true,
+    "unresolved": "大棚内部隔间与层数不可辨；中央绿地为草坪/树丛，未见水面，未作为水体入库。"
+   }
+  },
+  {
+   "id": "ziyu-manor",
+   "sid": "SY-048",
+   "name": "明厚源紫玉庄园",
+   "landuseId": "way/1373258563",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 5.39 ha。影像为两列三排浅色金属坡顶大跨厂房/仓储加南侧两栋横向大跨，单体约 70–105×30–32 m；与登记居住小区类别不一致，按影像建模。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "w1",
+     "ring": [
+      [
+       -1633,
+       2964
+      ],
+      [
+       -1588,
+       2964
+      ],
+      [
+       -1588,
+       2996
+      ],
+      [
+       -1633,
+       2996
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "e1",
+     "ring": [
+      [
+       -1543,
+       2974
+      ],
+      [
+       -1442,
+       2974
+      ],
+      [
+       -1442,
+       3006
+      ],
+      [
+       -1543,
+       3006
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "w2",
+     "ring": [
+      [
+       -1633,
+       3037
+      ],
+      [
+       -1562,
+       3037
+      ],
+      [
+       -1562,
+       3067
+      ],
+      [
+       -1633,
+       3067
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "e2",
+     "ring": [
+      [
+       -1543,
+       3046
+      ],
+      [
+       -1441,
+       3046
+      ],
+      [
+       -1441,
+       3078
+      ],
+      [
+       -1543,
+       3078
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "w3",
+     "ring": [
+      [
+       -1630,
+       3110
+      ],
+      [
+       -1559,
+       3110
+      ],
+      [
+       -1559,
+       3140
+      ],
+      [
+       -1630,
+       3140
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "e3",
+     "ring": [
+      [
+       -1541,
+       3122
+      ],
+      [
+       -1438,
+       3122
+      ],
+      [
+       -1438,
+       3154
+      ],
+      [
+       -1541,
+       3154
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "s1",
+     "ring": [
+      [
+       -1688,
+       3178
+      ],
+      [
+       -1620,
+       3178
+      ],
+      [
+       -1620,
+       3208
+      ],
+      [
+       -1688,
+       3208
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4.5
+    },
+    {
+     "id": "s2",
+     "ring": [
+      [
+       -1612,
+       3178
+      ],
+      [
+       -1518,
+       3178
+      ],
+      [
+       -1518,
+       3208
+      ],
+      [
+       -1612,
+       3208
+      ]
+     ],
+     "building": "industrial",
+     "height": 10,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4.5
+    },
+    {
+     "id": "gate",
+     "ring": [
+      [
+       -1523,
+       3166
+      ],
+      [
+       -1503,
+       3166
+      ],
+      [
+       -1503,
+       3178
+      ],
+      [
+       -1523,
+       3178
+      ]
+     ],
+     "building": "civic",
+     "height": 4.5,
+     "levels": 1,
+     "roofShape": "flat",
+     "roofHeight": 0
+    }
+   ],
+   "greens": [
+    {
+     "id": "east-lawn",
+     "ring": [
+      [
+       -1500,
+       3008
+      ],
+      [
+       -1442,
+       3008
+      ],
+      [
+       -1442,
+       3044
+      ],
+      [
+       -1500,
+       3044
+      ]
+     ]
+    }
+   ],
+   "lanes": [
+    {
+     "id": "mid-spine",
+     "width": 6,
+     "pts": [
+      [
+       -1562,
+       2950
+      ],
+      [
+       -1560,
+       3196
+      ]
+     ]
+    },
+    {
+     "id": "cross",
+     "width": 6,
+     "pts": [
+      [
+       -1680,
+       3052
+      ],
+      [
+       -1440,
+       3054
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 9,
+    "type": "大跨金属坡顶厂房/仓储",
+    "typeConflict": true,
+    "unresolved": "清单登记为居住小区，影像未见住宅形态；西列与东列是否为同一业主未核实。"
+   }
+  },
+  {
+   "id": "zhihui-middle-school",
+   "sid": "SY-049",
+   "name": "沭阳县智慧路初级中学",
+   "landuseId": "way/1460717246",
+   "boundaryFile": "osm_school_grounds.json",
+   "inventoryCategory": "学校",
+   "boundarySource": "OSM amenity=school 校园边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "校园 4.84 ha。西侧三组 C 形教学楼（白色平顶，4 层），北侧一栋风雨操场/食堂，东侧 400 m 环形跑道与内场（两块硬地球场），南侧校门。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "block-a-north",
+     "ring": [
+      [
+       -2905,
+       4796
+      ],
+      [
+       -2825,
+       4796
+      ],
+      [
+       -2825,
+       4810
+      ],
+      [
+       -2905,
+       4810
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-a-south",
+     "ring": [
+      [
+       -2905,
+       4836
+      ],
+      [
+       -2825,
+       4836
+      ],
+      [
+       -2825,
+       4850
+      ],
+      [
+       -2905,
+       4850
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-a-west",
+     "ring": [
+      [
+       -2905,
+       4812
+      ],
+      [
+       -2891,
+       4812
+      ],
+      [
+       -2891,
+       4834
+      ],
+      [
+       -2905,
+       4834
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-b-north",
+     "ring": [
+      [
+       -2905,
+       4874
+      ],
+      [
+       -2825,
+       4874
+      ],
+      [
+       -2825,
+       4888
+      ],
+      [
+       -2905,
+       4888
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-b-south",
+     "ring": [
+      [
+       -2905,
+       4914
+      ],
+      [
+       -2825,
+       4914
+      ],
+      [
+       -2825,
+       4928
+      ],
+      [
+       -2905,
+       4928
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-b-west",
+     "ring": [
+      [
+       -2905,
+       4890
+      ],
+      [
+       -2891,
+       4890
+      ],
+      [
+       -2891,
+       4912
+      ],
+      [
+       -2905,
+       4912
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-c-north",
+     "ring": [
+      [
+       -2905,
+       4952
+      ],
+      [
+       -2825,
+       4952
+      ],
+      [
+       -2825,
+       4966
+      ],
+      [
+       -2905,
+       4966
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-c-south",
+     "ring": [
+      [
+       -2905,
+       4992
+      ],
+      [
+       -2825,
+       4992
+      ],
+      [
+       -2825,
+       5006
+      ],
+      [
+       -2905,
+       5006
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "block-c-west",
+     "ring": [
+      [
+       -2905,
+       4968
+      ],
+      [
+       -2891,
+       4968
+      ],
+      [
+       -2891,
+       4990
+      ],
+      [
+       -2905,
+       4990
+      ]
+     ],
+     "building": "civic",
+     "height": 16.8,
+     "levels": 4,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "north-hall",
+     "ring": [
+      [
+       -2778,
+       4784
+      ],
+      [
+       -2697,
+       4784
+      ],
+      [
+       -2697,
+       4824
+      ],
+      [
+       -2778,
+       4824
+      ]
+     ],
+     "building": "civic",
+     "height": 11,
+     "levels": 2,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "gate-south",
+     "ring": [
+      [
+       -2812,
+       5048
+      ],
+      [
+       -2794,
+       5048
+      ],
+      [
+       -2794,
+       5060
+      ],
+      [
+       -2812,
+       5060
+      ]
+     ],
+     "building": "civic",
+     "height": 4.5,
+     "levels": 1,
+     "roofShape": "flat",
+     "roofHeight": 0
+    }
+   ],
+   "surfaces": [
+    {
+     "id": "track",
+     "kind": "running-track",
+     "ring": [
+      [
+       -2738,
+       4829
+      ],
+      [
+       -2702,
+       4839
+      ],
+      [
+       -2686,
+       4876
+      ],
+      [
+       -2686,
+       4966
+      ],
+      [
+       -2702,
+       5003
+      ],
+      [
+       -2738,
+       5013
+      ],
+      [
+       -2774,
+       5003
+      ],
+      [
+       -2790,
+       4966
+      ],
+      [
+       -2790,
+       4876
+      ],
+      [
+       -2774,
+       4839
+      ]
+     ],
+     "holes": [
+      [
+       [
+        -2738,
+        4840
+       ],
+       [
+        -2710,
+        4848
+       ],
+       [
+        -2698,
+        4877
+       ],
+       [
+        -2698,
+        4965
+       ],
+       [
+        -2710,
+        4994
+       ],
+       [
+        -2738,
+        5002
+       ],
+       [
+        -2766,
+        4994
+       ],
+       [
+        -2778,
+        4965
+       ],
+       [
+        -2778,
+        4877
+       ],
+       [
+        -2766,
+        4848
+       ]
+      ]
+     ],
+     "method": "imagery-inferred 400 m track centre line and outer kerb; inner field cut out; clipped to OSM campus"
+    },
+    {
+     "id": "field",
+     "kind": "sports-ground",
+     "ring": [
+      [
+       -2738,
+       4844
+      ],
+      [
+       -2712,
+       4851
+      ],
+      [
+       -2702,
+       4878
+      ],
+      [
+       -2702,
+       4964
+      ],
+      [
+       -2712,
+       4991
+      ],
+      [
+       -2738,
+       4999
+      ],
+      [
+       -2764,
+       4991
+      ],
+      [
+       -2774,
+       4964
+      ],
+      [
+       -2774,
+       4878
+      ],
+      [
+       -2762,
+       4851
+      ]
+     ]
+    },
+    {
+     "id": "court-north",
+     "kind": "sports-ground",
+     "ring": [
+      [
+       -2766,
+       4854
+      ],
+      [
+       -2734,
+       4854
+      ],
+      [
+       -2734,
+       4869
+      ],
+      [
+       -2766,
+       4869
+      ]
+     ],
+     "method": "imagery-inferred hard court inside the field; exact court line markings not resolvable"
+    },
+    {
+     "id": "court-south",
+     "kind": "sports-ground",
+     "ring": [
+      [
+       -2766,
+       4967
+      ],
+      [
+       -2734,
+       4967
+      ],
+      [
+       -2734,
+       4982
+      ],
+      [
+       -2766,
+       4982
+      ]
+     ],
+     "method": "imagery-inferred hard court inside the field; exact court line markings not resolvable"
+    }
+   ],
+   "lanes": [
+    {
+     "id": "west-path",
+     "width": 5,
+     "pts": [
+      [
+       -2848,
+       4790
+      ],
+      [
+       -2846,
+       5020
+      ]
+     ]
+    },
+    {
+     "id": "north-path",
+     "width": 5,
+     "pts": [
+      [
+       -2870,
+       4828
+      ],
+      [
+       -2700,
+       4830
+      ]
+     ]
+    },
+    {
+     "id": "gate-path",
+     "width": 6,
+     "pts": [
+      [
+       -2804,
+       5044
+      ],
+      [
+       -2700,
+       5062
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 11,
+    "type": "中学：3 组 C 形教学楼 + 风雨操场 + 400 m 环形跑道",
+    "typeConflict": false,
+    "unresolved": "跑道道数与内场球类项目看不清；三组教学楼连廊是否连通未建模；南侧校门位置按影像深色铺装近似。"
+   }
+  },
+  {
+   "id": "xiaotaiyang-kindergarten",
+   "sid": "SY-050",
+   "name": "小太阳幼儿园",
+   "landuseId": "way/499425828",
+   "boundaryFile": "osm_school_grounds.json",
+   "inventoryCategory": "学校",
+   "boundarySource": "OSM amenity=kindergarten 场地边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "场地 0.94 ha。3 层园舍四翼围合活动场地，西北角一条蓝色金属屋面连廊/多功能厅。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "north-wing",
+     "ring": [
+      [
+       -1998,
+       4744
+      ],
+      [
+       -1952,
+       4744
+      ],
+      [
+       -1952,
+       4766
+      ],
+      [
+       -1998,
+       4766
+      ]
+     ],
+     "building": "civic",
+     "height": 11,
+     "levels": 3,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "south-wing",
+     "ring": [
+      [
+       -2006,
+       4802
+      ],
+      [
+       -1948,
+       4802
+      ],
+      [
+       -1948,
+       4824
+      ],
+      [
+       -2006,
+       4824
+      ]
+     ],
+     "building": "civic",
+     "height": 11,
+     "levels": 3,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "west-wing",
+     "ring": [
+      [
+       -2008,
+       4766
+      ],
+      [
+       -1985,
+       4766
+      ],
+      [
+       -1985,
+       4802
+      ],
+      [
+       -2008,
+       4802
+      ]
+     ],
+     "building": "civic",
+     "height": 11,
+     "levels": 3,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "east-wing",
+     "ring": [
+      [
+       -1962,
+       4768
+      ],
+      [
+       -1948,
+       4768
+      ],
+      [
+       -1948,
+       4802
+      ],
+      [
+       -1962,
+       4802
+      ]
+     ],
+     "building": "civic",
+     "height": 11,
+     "levels": 3,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "blue-hall",
+     "ring": [
+      [
+       -2016,
+       4724
+      ],
+      [
+       -1996,
+       4724
+      ],
+      [
+       -1996,
+       4744
+      ],
+      [
+       -2016,
+       4744
+      ]
+     ],
+     "building": "civic",
+     "height": 7,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 2
+    }
+   ],
+   "surfaces": [
+    {
+     "id": "playground",
+     "kind": "plaza",
+     "ring": [
+      [
+       -1985,
+       4770
+      ],
+      [
+       -1963,
+       4770
+      ],
+      [
+       -1963,
+       4798
+      ],
+      [
+       -1985,
+       4798
+      ]
+     ]
+    },
+    {
+     "id": "lawn",
+     "kind": "green",
+     "ring": [
+      [
+       -1998,
+       4826
+      ],
+      [
+       -1962,
+       4826
+      ],
+      [
+       -1962,
+       4846
+      ],
+      [
+       -1998,
+       4846
+      ]
+     ]
+    }
+   ],
+   "lanes": [
+    {
+     "id": "gate-path",
+     "width": 5,
+     "pts": [
+      [
+       -1990,
+       4842
+      ],
+      [
+       -1956,
+       4844
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 5,
+    "type": "3 层回字形幼儿园 + 蓝色连廊",
+    "typeConflict": false,
+    "unresolved": "蓝色屋面为连廊还是多功能厅未能确认，按单层低体量建模；南侧活动器械不建模。"
+   }
+  },
+  {
+   "id": "dongcheng-kindergarten",
+   "sid": "SY-051",
+   "name": "东城幼儿园",
+   "landuseId": "way/1465666552",
+   "boundaryFile": "osm_school_grounds.json",
+   "inventoryCategory": "学校",
+   "boundarySource": "OSM amenity=school 场地边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "场地 0.42 ha。L 形 3 层园舍沿西、南边界布置，中部为活动场地；北侧大面积蓝色屋面建筑在边界外，不入库。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "west-wing",
+     "ring": [
+      [
+       1343,
+       1124
+      ],
+      [
+       1358,
+       1124
+      ],
+      [
+       1358,
+       1160
+      ],
+      [
+       1343,
+       1160
+      ]
+     ],
+     "building": "civic",
+     "height": 11,
+     "levels": 3,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "south-wing",
+     "ring": [
+      [
+       1342,
+       1160
+      ],
+      [
+       1388,
+       1160
+      ],
+      [
+       1388,
+       1174
+      ],
+      [
+       1342,
+       1174
+      ]
+     ],
+     "building": "civic",
+     "height": 11,
+     "levels": 3,
+     "roofShape": "flat",
+     "roofHeight": 0
+    }
+   ],
+   "surfaces": [
+    {
+     "id": "playground",
+     "kind": "plaza",
+     "ring": [
+      [
+       1362,
+       1126
+      ],
+      [
+       1418,
+       1126
+      ],
+      [
+       1418,
+       1160
+      ],
+      [
+       1362,
+       1160
+      ]
+     ]
+    },
+    {
+     "id": "lawn",
+     "kind": "green",
+     "ring": [
+      [
+       1392,
+       1164
+      ],
+      [
+       1418,
+       1164
+      ],
+      [
+       1418,
+       1180
+      ],
+      [
+       1392,
+       1180
+      ]
+     ]
+    }
+   ],
+   "lanes": [
+    {
+     "id": "gate-path",
+     "width": 5,
+     "pts": [
+      [
+       1416,
+       1142
+      ],
+      [
+       1430,
+       1144
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 2,
+    "type": "3 层 L 形幼儿园",
+    "typeConflict": false,
+    "unresolved": "园舍北侧被邻近建筑长阴影遮挡，进深按可见边界推断；北侧蓝色大屋面属界外建筑，未纳入。"
+   }
+  },
+  {
+   "id": "xinkang-jingyuan",
+   "sid": "SY-052",
+   "name": "新康景园",
+   "landuseId": "way/1321791102",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 4.08 ha，东西向狭长，南临河道。4 排 5–6 层板楼，单体约 50–60×13 m，排距约 33–36 m。",
+   "tiltDegrees": 0,
+   "patterns": [
+    {
+     "id": "north-rows",
+     "startZ": 2258,
+     "zTo": 2310,
+     "pitch": 35,
+     "depth": 13,
+     "unitWidth": 52,
+     "unitGap": 12,
+     "levels": 5,
+     "height": 16,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层板楼、灰坡顶推断，总高 16 m；不是测量高度。"
+    },
+    {
+     "id": "south-rows",
+     "startZ": 2330,
+     "zTo": 2382,
+     "pitch": 33,
+     "depth": 13,
+     "unitWidth": 52,
+     "unitGap": 12,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 6 层板楼、灰坡顶推断，总高 18 m；不是测量高度。"
+    }
+   ],
+   "crossLaneEvery": 0,
+   "lanes": [
+    {
+     "id": "north-spine",
+     "width": 5.5,
+     "pts": [
+      [
+       -745,
+       2268
+      ],
+      [
+       -360,
+       2274
+      ]
+     ]
+    },
+    {
+     "id": "mid-spine",
+     "width": 6,
+     "pts": [
+      [
+       -760,
+       2318
+      ],
+      [
+       -350,
+       2324
+      ]
+     ]
+    },
+    {
+     "id": "east-spine",
+     "width": 5.5,
+     "pts": [
+      [
+       -380,
+       2250
+      ],
+      [
+       -376,
+       2400
+      ]
+     ]
+    }
+   ],
+   "exclusions": [],
+   "greenBands": {
+    "fromOffset": 9,
+    "toOffset": 19
+   },
+   "reading": {
+    "observedBuildings": 16,
+    "type": "4 排 5–6 层板楼",
+    "typeConflict": false,
+    "unresolved": "东端两排与西端单体的排距略大于中部；按统一排距近似。"
+   }
+  },
+  {
+   "id": "huamai-jinyuefu",
+   "sid": "SY-053",
+   "name": "华脉金樾府",
+   "landuseId": "way/1373258570",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 3.58 ha。6 层灰白坡顶住宅 5 排，围合中央圆形下沉广场；单体约 32×15 m，排距约 42 m。",
+   "tiltDegrees": 0,
+   "patterns": [
+    {
+     "id": "row-0",
+     "startZ": 2512,
+     "zTo": 2520,
+     "pitch": 42,
+     "depth": 15,
+     "unitWidth": 32,
+     "unitGap": 10,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 6 层住宅、灰白坡顶推断，总高 18 m；不是测量高度。"
+    },
+    {
+     "id": "row-1",
+     "startZ": 2554,
+     "zTo": 2562,
+     "pitch": 42,
+     "depth": 15,
+     "unitWidth": 32,
+     "unitGap": 10,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 6 层住宅、灰白坡顶推断，总高 18 m；不是测量高度。"
+    },
+    {
+     "id": "row-2",
+     "startZ": 2596,
+     "zTo": 2604,
+     "pitch": 42,
+     "depth": 15,
+     "unitWidth": 32,
+     "unitGap": 10,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 6 层住宅、灰白坡顶推断，总高 18 m；不是测量高度。"
+    },
+    {
+     "id": "row-3",
+     "startZ": 2638,
+     "zTo": 2646,
+     "pitch": 42,
+     "depth": 15,
+     "unitWidth": 32,
+     "unitGap": 10,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 6 层住宅、灰白坡顶推断，总高 18 m；不是测量高度。"
+    },
+    {
+     "id": "row-4",
+     "startZ": 2680,
+     "zTo": 2688,
+     "pitch": 42,
+     "depth": 15,
+     "unitWidth": 32,
+     "unitGap": 10,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 6 层住宅、灰白坡顶推断，总高 18 m；不是测量高度。"
+    }
+   ],
+   "crossLaneEvery": 0,
+   "lanes": [
+    {
+     "id": "north-spine",
+     "width": 6,
+     "pts": [
+      [
+       -1300,
+       2545
+      ],
+      [
+       -1110,
+       2547
+      ]
+     ]
+    },
+    {
+     "id": "mid-spine",
+     "width": 6,
+     "pts": [
+      [
+       -1300,
+       2600
+      ],
+      [
+       -1110,
+       2602
+      ]
+     ]
+    },
+    {
+     "id": "south-spine",
+     "width": 6,
+     "pts": [
+      [
+       -1300,
+       2655
+      ],
+      [
+       -1110,
+       2657
+      ]
+     ]
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "round-plaza",
+     "reason": "影像中央圆形下沉广场与铺装，无楼体。",
+     "ring": [
+      [
+       -1210,
+       2600
+      ],
+      [
+       -1192,
+       2581
+      ],
+      [
+       -1166,
+       2581
+      ],
+      [
+       -1148,
+       2600
+      ],
+      [
+       -1166,
+       2619
+      ],
+      [
+       -1192,
+       2619
+      ]
+     ]
+    }
+   ],
+   "greenBands": {
+    "fromOffset": 16,
+    "toOffset": 25
+   },
+   "reading": {
+    "observedBuildings": 18,
+    "type": "5 排 6 层坡顶住宅",
+    "typeConflict": false,
+    "unresolved": "中央圆形广场为下沉还是地面铺装不可辨；未建地下车库出入口。"
+   }
+  },
+  {
+   "id": "jiaogong-residential",
+   "sid": "SY-054",
+   "name": "教工住宅小区",
+   "landuseId": "way/1456180557",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 3.18 ha。影像为 5 栋浅色金属坡顶大跨建筑（约 60–70×28 m）分两排布置，中间为树荫院落；与登记居住小区类别不一致，按影像建模。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "n1",
+     "ring": [
+      [
+       498,
+       3418
+      ],
+      [
+       568,
+       3418
+      ],
+      [
+       568,
+       3448
+      ],
+      [
+       498,
+       3448
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "n2",
+     "ring": [
+      [
+       582,
+       3432
+      ],
+      [
+       650,
+       3432
+      ],
+      [
+       650,
+       3462
+      ],
+      [
+       582,
+       3462
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "s1",
+     "ring": [
+      [
+       492,
+       3482
+      ],
+      [
+       560,
+       3482
+      ],
+      [
+       560,
+       3510
+      ],
+      [
+       492,
+       3510
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "s2",
+     "ring": [
+      [
+       576,
+       3492
+      ],
+      [
+       642,
+       3492
+      ],
+      [
+       642,
+       3520
+      ],
+      [
+       576,
+       3520
+      ]
+     ],
+     "building": "industrial",
+     "height": 9,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 4
+    },
+    {
+     "id": "se",
+     "ring": [
+      [
+       560,
+       3524
+      ],
+      [
+       614,
+       3524
+      ],
+      [
+       614,
+       3546
+      ],
+      [
+       560,
+       3546
+      ]
+     ],
+     "building": "industrial",
+     "height": 8,
+     "levels": 1,
+     "roofShape": "gabled",
+     "roofHeight": 3.5
+    }
+   ],
+   "greens": [
+    {
+     "id": "court",
+     "ring": [
+      [
+       500,
+       3462
+      ],
+      [
+       648,
+       3462
+      ],
+      [
+       648,
+       3482
+      ],
+      [
+       500,
+       3482
+      ]
+     ]
+    }
+   ],
+   "lanes": [
+    {
+     "id": "cross",
+     "width": 6,
+     "pts": [
+      [
+       470,
+       3470
+      ],
+      [
+       682,
+       3472
+      ]
+     ]
+    },
+    {
+     "id": "spine",
+     "width": 6,
+     "pts": [
+      [
+       572,
+       3410
+      ],
+      [
+       574,
+       3548
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 5,
+    "type": "浅色金属坡顶大跨建筑（厂房/仓储尺度）",
+    "typeConflict": true,
+    "unresolved": "清单登记为教工住宅，影像未见住宅单元划分；可能为旧住宅区内的厂房或市场，按影像体量标注。"
+   }
+  },
+  {
+   "id": "rongrun-qilinfu",
+   "sid": "SY-055",
+   "name": "荣润麒麟府",
+   "landuseId": "way/1373258573",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 3.02 ha，东部为在建工地（裸土、脚手架、塔吊），只重建已封顶的 4 栋多层与南侧 3 栋联排；未封顶体量不建。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "n1",
+     "ring": [
+      [
+       -2142,
+       2500
+      ],
+      [
+       -2112,
+       2500
+      ],
+      [
+       -2112,
+       2522
+      ],
+      [
+       -2142,
+       2522
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "n2",
+     "ring": [
+      [
+       -2104,
+       2506
+      ],
+      [
+       -2076,
+       2506
+      ],
+      [
+       -2076,
+       2528
+      ],
+      [
+       -2104,
+       2528
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "m1",
+     "ring": [
+      [
+       -2140,
+       2570
+      ],
+      [
+       -2108,
+       2570
+      ],
+      [
+       -2108,
+       2594
+      ],
+      [
+       -2140,
+       2594
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "m2",
+     "ring": [
+      [
+       -2114,
+       2610
+      ],
+      [
+       -2086,
+       2610
+      ],
+      [
+       -2086,
+       2632
+      ],
+      [
+       -2114,
+       2632
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "east-block",
+     "ring": [
+      [
+       -2040,
+       2598
+      ],
+      [
+       -2014,
+       2598
+      ],
+      [
+       -2014,
+       2618
+      ],
+      [
+       -2040,
+       2618
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "th-1",
+     "ring": [
+      [
+       -2148,
+       2648
+      ],
+      [
+       -2130,
+       2648
+      ],
+      [
+       -2130,
+       2662
+      ],
+      [
+       -2148,
+       2662
+      ]
+     ],
+     "building": "house",
+     "height": 12,
+     "levels": 3,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    },
+    {
+     "id": "th-2",
+     "ring": [
+      [
+       -2124,
+       2648
+      ],
+      [
+       -2106,
+       2648
+      ],
+      [
+       -2106,
+       2662
+      ],
+      [
+       -2124,
+       2662
+      ]
+     ],
+     "building": "house",
+     "height": 12,
+     "levels": 3,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    },
+    {
+     "id": "th-3",
+     "ring": [
+      [
+       -2100,
+       2648
+      ],
+      [
+       -2082,
+       2648
+      ],
+      [
+       -2082,
+       2662
+      ],
+      [
+       -2100,
+       2662
+      ]
+     ],
+     "building": "house",
+     "height": 12,
+     "levels": 3,
+     "roofShape": "gabled",
+     "roofHeight": 3
+    },
+    {
+     "id": "e1",
+     "ring": [
+      [
+       -2062,
+       2536
+      ],
+      [
+       -2032,
+       2536
+      ],
+      [
+       -2032,
+       2566
+      ],
+      [
+       -2062,
+       2566
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "e2",
+     "ring": [
+      [
+       -2032,
+       2558
+      ],
+      [
+       -2002,
+       2558
+      ],
+      [
+       -2002,
+       2588
+      ],
+      [
+       -2032,
+       2588
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "e3",
+     "ring": [
+      [
+       -2000,
+       2580
+      ],
+      [
+       -1970,
+       2580
+      ],
+      [
+       -1970,
+       2610
+      ],
+      [
+       -2000,
+       2610
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "e4",
+     "ring": [
+      [
+       -2058,
+       2628
+      ],
+      [
+       -2028,
+       2628
+      ],
+      [
+       -2028,
+       2658
+      ],
+      [
+       -2058,
+       2658
+      ]
+     ],
+     "building": "apartments",
+     "height": 18,
+     "levels": 6,
+     "roofShape": "flat",
+     "roofHeight": 0
+    }
+   ],
+   "lanes": [
+    {
+     "id": "west-spine",
+     "width": 6,
+     "pts": [
+      [
+       -2150,
+       2496
+      ],
+      [
+       -2148,
+       2680
+      ]
+     ]
+    },
+    {
+     "id": "cross",
+     "width": 6,
+     "pts": [
+      [
+       -2160,
+       2600
+      ],
+      [
+       -2050,
+       2602
+      ]
+     ]
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "construction",
+     "kind": "plaza",
+     "reason": "东半部其余为在建工地（裸土、脚手架、材料堆场），未封顶，不建体量。",
+     "ring": [
+      [
+       -2076,
+       2530
+      ],
+      [
+       -1951,
+       2530
+      ],
+      [
+       -1951,
+       2712
+      ],
+      [
+       -2076,
+       2712
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 12,
+    "type": "6 层住宅 + 南侧联排 + 东部在建工地",
+    "typeConflict": false,
+    "unresolved": "东半部已封顶的 4 栋按绿色平顶与女儿墙判读为建成；其余裸土与脚手架区域不建。层数由体量与阴影推断。"
+   }
+  },
+  {
+   "id": "shengtang-shijia",
+   "sid": "SY-056",
+   "name": "盛唐世家",
+   "landuseId": "way/1465666558",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 1.26 ha，L 形。6 排 5 层坡顶住宅，单体约 36×12 m，排距约 33 m；南侧凸出部分包含 2 排。",
+   "tiltDegrees": 0,
+   "patterns": [
+    {
+     "id": "row-0",
+     "startZ": 2450,
+     "zTo": 2456,
+     "pitch": 33,
+     "depth": 12,
+     "unitWidth": 28,
+     "unitGap": 10,
+     "levels": 5,
+     "height": 15.5,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层坡顶住宅推断，总高 15.5 m；不是测量高度。"
+    },
+    {
+     "id": "row-1",
+     "startZ": 2483,
+     "zTo": 2489,
+     "pitch": 33,
+     "depth": 12,
+     "unitWidth": 28,
+     "unitGap": 10,
+     "levels": 5,
+     "height": 15.5,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层坡顶住宅推断，总高 15.5 m；不是测量高度。"
+    },
+    {
+     "id": "row-2",
+     "startZ": 2516,
+     "zTo": 2522,
+     "pitch": 33,
+     "depth": 12,
+     "unitWidth": 28,
+     "unitGap": 10,
+     "levels": 5,
+     "height": 15.5,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层坡顶住宅推断，总高 15.5 m；不是测量高度。"
+    },
+    {
+     "id": "row-3",
+     "startZ": 2549,
+     "zTo": 2555,
+     "pitch": 33,
+     "depth": 12,
+     "unitWidth": 28,
+     "unitGap": 10,
+     "levels": 5,
+     "height": 15.5,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层坡顶住宅推断，总高 15.5 m；不是测量高度。"
+    },
+    {
+     "id": "row-4",
+     "startZ": 2582,
+     "zTo": 2588,
+     "pitch": 33,
+     "depth": 12,
+     "unitWidth": 28,
+     "unitGap": 10,
+     "levels": 5,
+     "height": 15.5,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层坡顶住宅推断，总高 15.5 m；不是测量高度。"
+    },
+    {
+     "id": "row-5",
+     "startZ": 2615,
+     "zTo": 2621,
+     "pitch": 33,
+     "depth": 12,
+     "unitWidth": 28,
+     "unitGap": 10,
+     "levels": 5,
+     "height": 15.5,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "apartments",
+     "heightNote": "按 5 层坡顶住宅推断，总高 15.5 m；不是测量高度。"
+    }
+   ],
+   "crossLaneEvery": 0,
+   "lanes": [
+    {
+     "id": "cross-mid",
+     "width": 5.5,
+     "pts": [
+      [
+       -515,
+       2538
+      ],
+      [
+       -370,
+       2540
+      ]
+     ]
+    },
+    {
+     "id": "west-spine",
+     "width": 5,
+     "pts": [
+      [
+       -472,
+       2445
+      ],
+      [
+       -470,
+       2640
+      ]
+     ]
+    }
+   ],
+   "exclusions": [],
+   "greenBands": {
+    "fromOffset": 14,
+    "toOffset": 22
+   },
+   "reading": {
+    "observedBuildings": 14,
+    "type": "4–5 排 5 层坡顶住宅",
+    "typeConflict": false,
+    "unresolved": "南侧凸出部分只可见 1 排，是否另有排数被树冠遮挡未能确认。"
+   }
+  },
+  {
+   "id": "minghou-xuanfu",
+   "sid": "SY-057",
+   "name": "明厚源·轩府",
+   "landuseId": "way/1321791128",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 6.54 ha（清单占地 1.11 ha 仅覆盖 POI 邻近部分）。南北约 8 排 3 层联排/叠墅（单元约 12 m 面宽，排距约 42 m），行列整体向北偏转约 10°；东南角 3 层商业。",
+   "tiltDegrees": -10,
+   "patterns": [
+    {
+     "id": "rows",
+     "startZ": 4972,
+     "zTo": 5192,
+     "pitch": 42,
+     "depth": 12,
+     "unitWidth": 12,
+     "unitGap": 2,
+     "levels": 3,
+     "height": 12,
+     "roofShape": "gabled",
+     "roofHeight": 3,
+     "building": "house",
+     "heightNote": "按 3 层联排/叠墅、浅灰坡顶推断，总高 12 m；不是测量高度。"
+    }
+   ],
+   "buildings": [
+    {
+     "id": "se-commerce",
+     "ring": [
+      [
+       -1938,
+       5152
+      ],
+      [
+       -1882,
+       5152
+      ],
+      [
+       -1882,
+       5186
+      ],
+      [
+       -1938,
+       5186
+      ]
+     ],
+     "building": "commercial",
+     "height": 12,
+     "levels": 3,
+     "roofShape": "flat",
+     "roofHeight": 0
+    }
+   ],
+   "crossLaneEvery": 0,
+   "lanes": [
+    {
+     "id": "west-spine",
+     "width": 6,
+     "pts": [
+      [
+       -2062,
+       4950
+      ],
+      [
+       -2040,
+       5200
+      ]
+     ]
+    },
+    {
+     "id": "east-spine",
+     "width": 5.5,
+     "pts": [
+      [
+       -1952,
+       4950
+      ],
+      [
+       -1928,
+       5180
+      ]
+     ]
+    },
+    {
+     "id": "cross-mid",
+     "width": 6,
+     "pts": [
+      [
+       -2120,
+       5178
+      ],
+      [
+       -1900,
+       5180
+      ]
+     ]
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "central-axis",
+     "reason": "中央绿轴、圆形草坪与乔木，无楼体。",
+     "ring": [
+      [
+       -2002,
+       5098
+      ],
+      [
+       -1958,
+       5098
+      ],
+      [
+       -1958,
+       5152
+      ],
+      [
+       -2002,
+       5152
+      ]
+     ]
+    }
+   ],
+   "greenBands": {
+    "fromOffset": 13,
+    "toOffset": 22
+   },
+   "reading": {
+    "observedBuildings": 40,
+    "type": "10 排 3 层联排/叠墅 + 东南角商业",
+    "typeConflict": false,
+    "unresolved": "清单占地只覆盖 POI 邻近的 1.11 ha，本次按 OSM 地块 6.54 ha 建模；实测与清单差异已记录。"
+   }
+  },
+  {
+   "id": "chongwen-apartment",
+   "sid": "SY-058",
+   "name": "崇文公寓",
+   "landuseId": "way/1465666540",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 0.73 ha。南北 2 栋 5 层公寓（约 52×26 m），中间为院落绿地；北楼西侧有蓝色雨棚/连廊，未单独建模。",
+   "tiltDegrees": 0,
+   "patterns": [],
+   "buildings": [
+    {
+     "id": "north-block",
+     "ring": [
+      [
+       3040,
+       2222
+      ],
+      [
+       3086,
+       2222
+      ],
+      [
+       3086,
+       2248
+      ],
+      [
+       3040,
+       2248
+      ]
+     ],
+     "building": "apartments",
+     "height": 16,
+     "levels": 5,
+     "roofShape": "flat",
+     "roofHeight": 0
+    },
+    {
+     "id": "south-block",
+     "ring": [
+      [
+       3030,
+       2282
+      ],
+      [
+       3078,
+       2282
+      ],
+      [
+       3078,
+       2308
+      ],
+      [
+       3030,
+       2308
+      ]
+     ],
+     "building": "apartments",
+     "height": 16,
+     "levels": 5,
+     "roofShape": "flat",
+     "roofHeight": 0
+    }
+   ],
+   "greens": [
+    {
+     "id": "courtyard",
+     "ring": [
+      [
+       3048,
+       2254
+      ],
+      [
+       3094,
+       2254
+      ],
+      [
+       3094,
+       2278
+      ],
+      [
+       3048,
+       2278
+      ]
+     ]
+    }
+   ],
+   "lanes": [
+    {
+     "id": "east-drive",
+     "width": 5,
+     "pts": [
+      [
+       3110,
+       2210
+      ],
+      [
+       3106,
+       2338
+      ]
+     ]
+    },
+    {
+     "id": "cross",
+     "width": 5,
+     "pts": [
+      [
+       3032,
+       2266
+      ],
+      [
+       3116,
+       2268
+      ]
+     ]
+    }
+   ],
+   "greenBands": null,
+   "reading": {
+    "observedBuildings": 2,
+    "type": "2 栋 5 层公寓",
+    "typeConflict": false,
+    "unresolved": "蓝色雨棚是否延伸为连廊未能确认，未建；北楼北侧与界外建筑相接，边界按 OSM 原值。"
+   }
+  },
+  {
+   "id": "wanhe-lijing",
+   "sid": "SY-059",
+   "name": "湾河丽景小区",
+   "landuseId": "way/1460717242",
+   "boundaryFile": "osm_land.json",
+   "inventoryCategory": "住宅小区",
+   "boundarySource": "OSM landuse=residential 地块边界（来源测绘/描边，沿用原值，不修改）",
+   "note": "地块 13.15 ha（清单占地 919 m² 仅为 POI 邻近碎片）。6–7 层板楼 7 排，浅奶油色平顶，单体约 48×15 m，排距约 43 m；西北角一栋 2 层配套，南侧与东南角有临时棚屋与水塘。",
+   "tiltDegrees": 0,
+   "patterns": [
+    {
+     "id": "row-0",
+     "startZ": 4996,
+     "zTo": 5004,
+     "pitch": 43,
+     "depth": 15,
+     "unitWidth": 48,
+     "unitGap": 8,
+     "levels": 7,
+     "height": 20,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "building": "apartments",
+     "heightNote": "按 7 层板楼、浅色平顶推断，总高 20 m；不是测量高度。"
+    },
+    {
+     "id": "row-1",
+     "startZ": 5039,
+     "zTo": 5047,
+     "pitch": 43,
+     "depth": 15,
+     "unitWidth": 48,
+     "unitGap": 8,
+     "levels": 7,
+     "height": 20,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "building": "apartments",
+     "heightNote": "按 7 层板楼、浅色平顶推断，总高 20 m；不是测量高度。"
+    },
+    {
+     "id": "row-2",
+     "startZ": 5082,
+     "zTo": 5090,
+     "pitch": 43,
+     "depth": 15,
+     "unitWidth": 48,
+     "unitGap": 8,
+     "levels": 7,
+     "height": 20,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "building": "apartments",
+     "heightNote": "按 7 层板楼、浅色平顶推断，总高 20 m；不是测量高度。"
+    },
+    {
+     "id": "row-3",
+     "startZ": 5125,
+     "zTo": 5133,
+     "pitch": 43,
+     "depth": 15,
+     "unitWidth": 48,
+     "unitGap": 8,
+     "levels": 7,
+     "height": 20,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "building": "apartments",
+     "heightNote": "按 7 层板楼、浅色平顶推断，总高 20 m；不是测量高度。"
+    },
+    {
+     "id": "row-4",
+     "startZ": 5168,
+     "zTo": 5176,
+     "pitch": 43,
+     "depth": 15,
+     "unitWidth": 48,
+     "unitGap": 8,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "building": "apartments",
+     "heightNote": "按 6 层板楼、浅色平顶推断，总高 18 m；不是测量高度。"
+    },
+    {
+     "id": "row-5",
+     "startZ": 5211,
+     "zTo": 5219,
+     "pitch": 43,
+     "depth": 15,
+     "unitWidth": 48,
+     "unitGap": 8,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "building": "apartments",
+     "heightNote": "按 6 层板楼、浅色平顶推断，总高 18 m；不是测量高度。"
+    },
+    {
+     "id": "row-6",
+     "startZ": 5254,
+     "zTo": 5262,
+     "pitch": 43,
+     "depth": 15,
+     "unitWidth": 48,
+     "unitGap": 8,
+     "levels": 6,
+     "height": 18,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "building": "apartments",
+     "heightNote": "按 6 层板楼、浅色平顶推断，总高 18 m；不是测量高度。"
+    }
+   ],
+   "buildings": [
+    {
+     "id": "nw-hall",
+     "ring": [
+      [
+       -3410,
+       4962
+      ],
+      [
+       -3344,
+       4962
+      ],
+      [
+       -3344,
+       4996
+      ],
+      [
+       -3410,
+       4996
+      ]
+     ],
+     "building": "civic",
+     "height": 9,
+     "levels": 2,
+     "roofShape": "flat",
+     "roofHeight": 0
+    }
+   ],
+   "crossLaneEvery": 0,
+   "lanes": [
+    {
+     "id": "west-spine",
+     "width": 7,
+     "pts": [
+      [
+       -3346,
+       4970
+      ],
+      [
+       -3342,
+       5312
+      ]
+     ]
+    },
+    {
+     "id": "mid-spine",
+     "width": 7,
+     "pts": [
+      [
+       -3206,
+       4970
+      ],
+      [
+       -3202,
+       5312
+      ]
+     ]
+    },
+    {
+     "id": "east-spine",
+     "width": 6,
+     "pts": [
+      [
+       -3106,
+       4970
+      ],
+      [
+       -3102,
+       5312
+      ]
+     ]
+    },
+    {
+     "id": "cross-north",
+     "width": 7,
+     "pts": [
+      [
+       -3520,
+       5070
+      ],
+      [
+       -3070,
+       5074
+      ]
+     ]
+    },
+    {
+     "id": "cross-south",
+     "width": 6,
+     "pts": [
+      [
+       -3520,
+       5178
+      ],
+      [
+       -3070,
+       5182
+      ]
+     ]
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "central-axis",
+     "reason": "中央景观轴、铺装与乔木，无楼体。",
+     "ring": [
+      [
+       -3306,
+       5064
+      ],
+      [
+       -3226,
+       5064
+      ],
+      [
+       -3226,
+       5146
+      ],
+      [
+       -3306,
+       5146
+      ]
+     ]
+    },
+    {
+     "id": "pond",
+     "reason": "东南角水塘，无楼体。",
+     "ring": [
+      [
+       -3162,
+       5244
+      ],
+      [
+       -3106,
+       5244
+      ],
+      [
+       -3106,
+       5296
+      ],
+      [
+       -3162,
+       5296
+      ]
+     ]
+    },
+    {
+     "id": "sw-sheds",
+     "reason": "西南侧临时棚屋与堆场，结构不完整，不重建。",
+     "ring": [
+      [
+       -3526,
+       5232
+      ],
+      [
+       -3442,
+       5232
+      ],
+      [
+       -3442,
+       5302
+      ],
+      [
+       -3526,
+       5302
+      ]
+     ]
+    }
+   ],
+   "greenBands": {
+    "fromOffset": 17,
+    "toOffset": 26
+   },
+   "reading": {
+    "observedBuildings": 46,
+    "type": "7 排 6–8 层板楼 + 2 层配套",
+    "typeConflict": false,
+    "unresolved": "清单占地 919 m² 与 OSM 地块 13.15 ha 差异大，按 OSM 地块建模；南侧临时棚屋不重建。"
+   }
+  }
+ ]
+}

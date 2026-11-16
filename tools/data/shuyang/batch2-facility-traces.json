@@ -1,0 +1,40 @@
+{
+ "reference": {
+  "id": "amap-satellite-z18-20261115-b2",
+  "provider": "高德地图卫星影像瓦片（GCJ-02）",
+  "imageAcquired": null,
+  "retrievedAt": "2026-11-15",
+  "coordinateNote": "瓦片为 GCJ-02 网格；经 tools/china-coordinates.py 反算 WGS84 后投影到项目米制坐标，与 OSM/Overture 同系。检索日期不是拍摄日期。",
+  "limitations": "影像约 0.494 m/px；树冠、阴影、在建工地与公交车列队会压低边界判读精度；高度为层数或照片推断，非测量值，轮廓水平误差约 ±5～8 m。"
+ },
+ "surfaceReview": "批2 只落影像上可分离的场站铺装与可核实建筑；查不到稳定边界的条目记入 notDoneFacilities，不用相邻建筑顶替。",
+ "facilities": [
+  {
+   "id": "station-bus",
+   "name": "火车站公交停保场",
+   "group": "门户设施",
+   "sourceRecord": "way/1466163079（清单来源；本地 OSM 快照未保存几何）",
+   "buildings": [],
+   "surfaces": [
+    {
+     "id": "station-bus-yard",
+     "kind": "parking",
+     "name": "火车站公交停保场停车坪",
+     "ring": [[-958.0, 2096.0], [-822.0, 2096.0], [-822.0, 2252.0], [-886.0, 2252.0]],
+     "geometryMethod": "imagery-inferred-yard-boundary",
+     "note": "按 2026-11-15 z18 影像取停车坪硬质边界：北侧贴场站建筑、东侧沿场内道路、南至河道、西侧退让铁路路堤约 8 m；场内公交列队与车位线未单独建模。"
+    }
+   ],
+   "overrides": [],
+   "notDone": ["场站调度楼与维修车间在影像上被公交列队遮挡，未能确认层数与体量，只落停车坪。"]
+  }
+ ],
+ "notDoneFacilities": [
+  {"id": "tianjin-bus", "name": "天津路公交停保场", "facilityId": "SY-022",
+   "reason": "POI 世界坐标 (-1453,-1234) 落在天津北路路面，影像两侧为住宅与在建空地，未见场站主体或成片停车坪；网络检索只找到马厂镇同名道路与南侧天津南路停车场，无法确认该停保场位置，按纪律跳过。"},
+  {"id": "changzhou-stop", "name": "常州路客运经停站", "facilityId": "SY-023",
+   "reason": "影像中 POI 位于常州路车行道，两侧为 7 m 住宅与沿街商铺，无站房/候车棚可分离；路侧站牌尺度不足以建模，跳过。"},
+  {"id": "jinlong-park", "name": "金隆游乐园", "facilityId": "SY-031",
+   "reason": "地址（经济开发区宁波路×永嘉路）与 POI 一致，影像围栏内为游乐设备与铺装场地、无稳定建筑主体；设备与售票小屋不足以按建筑层建模，跳过。"}
+ ]
+}

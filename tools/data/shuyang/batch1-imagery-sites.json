@@ -1,0 +1,19 @@
+{
+ "note": "批1 城市骨架影像核对站点；坐标为项目米制坐标（WGS84 同系），检索影像见 docs/acceptance/batch1-skeleton-2026-11-15/imagery。",
+ "sites": [
+  {"id": "zhongshan-hospital", "name": "中山医院", "x": -567.7, "z": 518.5, "half": 150},
+  {"id": "zhongxing-hospital", "name": "沭阳中兴医院", "x": -362.1, "z": 1987.1, "half": 150},
+  {"id": "renci-hospital", "name": "沭阳仁慈医院", "x": 1463.3, "z": 661.8, "half": 150},
+  {"id": "chengxi-hospital", "name": "沭阳医院（城西院区）", "x": -2086.9, "z": -302.8, "half": 160},
+  {"id": "nanguan-hospital", "name": "沭阳县中医院南关院区", "x": -211.1, "z": 804.7, "half": 140},
+  {"id": "brain-hospital", "name": "沭阳脑科医院", "x": -2290.4, "z": 2547.2, "half": 150},
+  {"id": "sports-center", "name": "沭阳体育中心", "x": -613.1, "z": 4674.6, "half": 230},
+  {"id": "railway-station", "name": "沭阳站", "x": -1387.3, "z": 1705.2, "half": 220},
+  {"id": "oceanarium", "name": "沭阳海洋馆（在建）", "x": -1750.0, "z": 4180.0, "half": 200},
+  {"id": "fire-command", "name": "消防指挥中心/救援大队", "x": 2853.0, "z": 2401.0, "half": 160},
+  {"id": "chengbei-bus", "name": "城北公交停保场", "x": 1704.6, "z": -1848.6, "half": 130},
+  {"id": "tianjin-bus", "name": "天津路公交停保场", "x": -1453.1, "z": -1233.6, "half": 120},
+  {"id": "station-bus", "name": "火车站公交停保场", "x": -893.1, "z": 2220.9, "half": 130},
+  {"id": "badminton", "name": "深呼吸羽毛球馆", "x": -1930.5, "z": 1022.5, "half": 110}
+ ]
+}

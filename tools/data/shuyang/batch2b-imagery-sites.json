@@ -1,0 +1,15 @@
+{
+ "reference": {
+  "id": "amap-satellite-z18-20261115-b2",
+  "provider": "高德地图卫星影像瓦片（GCJ-02）",
+  "imageAcquired": null,
+  "retrievedAt": "2026-11-15",
+  "coordinateNote": "沿苏州东路设点扫描，用于按门牌 119 号寻找消防救援大队；检索日期不是拍摄日期。",
+  "limitations": "影像约 0.494 m/px。"
+ },
+ "sites": [
+  {"id": "fire-suzhou-a", "name": "苏州东路西段（消防候选）", "x": 1600.0, "z": 1800.0, "half": 200},
+  {"id": "fire-suzhou-b", "name": "苏州东路中段（消防候选）", "x": 2350.0, "z": 2020.0, "half": 230},
+  {"id": "fire-suzhou-c", "name": "苏州东路东段（消防候选）", "x": 3150.0, "z": 2480.0, "half": 240}
+ ]
+}

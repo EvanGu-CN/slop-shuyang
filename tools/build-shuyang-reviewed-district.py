@@ -40,8 +40,77 @@ def main():
     online=json.loads((DATA/'online-reviewed-buildings.geojson').read_bytes())
     features.extend(online['features'])
     online_refs=[online['reference'],*online.get('additionalReferences',[])]
-    output={'type':'FeatureCollection','reference':ref,'additionalReferences':online_refs,
-        'traceSha256':hashlib.sha256(inp.read_bytes()+(DATA/'online-district-traces.json').read_bytes()).hexdigest(),'features':features}
+    # 万顺·帝景天成: imagery-inferred villa rows expanded from a manual satellite
+    # reading (tools/build-wanshun-imagery.py). Kept in its own file so the
+    # block/row reconstruction stays auditable and never masquerades as survey.
+    wanshun_path=DATA/'reviewed-wanshun-buildings.geojson'
+    wanshun_refs=[]
+    if wanshun_path.exists():
+        wanshun=json.loads(wanshun_path.read_bytes())
+        features.extend(wanshun['features'])
+        wanshun_refs=[wanshun['reference'],*wanshun.get('additionalReferences',[])]
+    trace_bytes=inp.read_bytes()+(DATA/'online-district-traces.json').read_bytes()
+    if wanshun_path.exists():
+        trace_bytes+=(DATA/'wanshun-imagery-traces.json').read_bytes()
+    # Ring-by-ring imagery reading around 万顺·帝景天成 (tools/build-imagery-districts.py).
+    # Same discipline as the villa rows: inferred footprints, existing records win overlaps.
+    rings_path=DATA/'reviewed-imagery-districts.geojson'
+    rings_surfaces=DATA/'imagery-districts-surfaces.json'
+    rings_refs=[]
+    if rings_path.exists():
+        rings=json.loads(rings_path.read_bytes())
+        features.extend(rings['features'])
+        rings_refs=[rings['reference'],*rings.get('additionalReferences',[])]
+        trace_bytes+=(DATA/'imagery-districts-traces.json').read_bytes()
+    # 批1 城市骨架：医院/商业/门户设施的影像复核（tools/build-batch1-facilities.py）。
+    # 独立文件保留来源、日期与误差，避免与既有街区重建混写。
+    batch1_path=DATA/'reviewed-batch1-buildings.geojson'
+    batch1_refs=[];batch1_superseded=[];batch1_reasons={};batch1_nonbuilding=[]
+    if batch1_path.exists():
+        batch1=json.loads(batch1_path.read_bytes())
+        features.extend(batch1['features'])
+        batch1_refs=[batch1['reference'],*batch1.get('additionalReferences',[])]
+        batch1_superseded=batch1.get('supersededSourceIds',[])
+        batch1_reasons=batch1.get('supersededReasons',{})
+        batch1_nonbuilding=batch1.get('nonBuildingExclusionIds',[])
+        trace_bytes+=(DATA/'batch1-facility-traces.json').read_bytes()
+    # 批2 未渲染设施：场站铺装与可核实建筑（tools/build-batch1-facilities.py batch2）。
+    # 与批1 同一套字段约定，独立文件存放，避免两个批次互相覆盖。
+    batch2_path=DATA/'reviewed-batch2-buildings.geojson'
+    batch2_refs=[];batch2_superseded=[];batch2_reasons={};batch2_nonbuilding=[]
+    if batch2_path.exists():
+        batch2=json.loads(batch2_path.read_bytes())
+        features.extend(batch2['features'])
+        batch2_refs=[batch2['reference'],*batch2.get('additionalReferences',[])]
+        batch2_superseded=batch2.get('supersededSourceIds',[])
+        batch2_reasons=batch2.get('supersededReasons',{})
+        batch2_nonbuilding=batch2.get('nonBuildingExclusionIds',[])
+        trace_bytes+=(DATA/'batch2-facility-traces.json').read_bytes()
+    # 批2 空地补全：12 个整片空地小区 + 3 所空地学校的影像重建
+    # （tools/build-blank-plots-imagery.py）。地块边界沿用 OSM 原值，体量全部为推断。
+    blank_path=DATA/'reviewed-blank-plots.geojson'
+    blank_refs=[]
+    if blank_path.exists():
+        blank=json.loads(blank_path.read_bytes())
+        features.extend(blank['features'])
+        blank_refs=[blank['reference'],*blank.get('additionalReferences',[])]
+        trace_bytes+=(DATA/'blank-plots-imagery-traces.json').read_bytes()
+    # 来源文件可能因并发重建出现同 ID 候选；重复 ID 会破坏来源顺序索引，
+    # 保留首条并显式报告条数，不静默重复。
+    deduped=[];seen_ids=set()
+    for f in features:
+        ident=f['properties']['id']
+        if ident in seen_ids:
+            continue
+        seen_ids.add(ident);deduped.append(f)
+    if len(deduped)!=len(features):
+        print(json.dumps({'droppedDuplicateFeatureIds':len(features)-len(deduped)}))
+    features=deduped
+    output={'type':'FeatureCollection','reference':ref,'additionalReferences':online_refs+wanshun_refs+rings_refs+batch1_refs+batch2_refs+blank_refs,
+        'traceSha256':hashlib.sha256(trace_bytes).hexdigest(),'features':features,
+        'supersededSourceIds':batch1_superseded+batch2_superseded,
+        'supersededReasons':batch1_reasons|batch2_reasons,
+        'nonBuildingExclusionIds':batch1_nonbuilding+batch2_nonbuilding}
     (DATA/'reviewed-buildings.geojson').write_text(json.dumps(output,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf8')
     contexts=[]
     for n in data['neighborhoods']:
@@ -68,7 +137,21 @@ def main():
         surfaces.append({k:s[k] for k in ('id','kind','name','sourceSiteId')}|{'rings':rings,
             'geometryMethod':'reviewed-pixel-boundary; 2-pass corner rounding of observed curved edges' if curved else 'reviewed-pixel-boundary'})
     surfaces.extend(json.loads((DATA/'online-reviewed-surfaces.json').read_bytes())['surfaces'])
-    (DATA/'reviewed-district-surfaces.json').write_text(json.dumps({'reference':ref,'additionalReferences':online_refs,'reviewNote':data.get('surfaceReview',''),
+    wanshun_surfaces=DATA/'wanshun-reviewed-surfaces.json'
+    if wanshun_surfaces.exists():
+        surfaces.extend(json.loads(wanshun_surfaces.read_bytes())['surfaces'])
+    if rings_surfaces.exists():
+        surfaces.extend(json.loads(rings_surfaces.read_bytes())['surfaces'])
+    batch1_surfaces=DATA/'batch1-facility-surfaces.json'
+    if batch1_surfaces.exists():
+        surfaces.extend(json.loads(batch1_surfaces.read_bytes())['surfaces'])
+    batch2_surfaces=DATA/'batch2-facility-surfaces.json'
+    if batch2_surfaces.exists():
+        surfaces.extend(json.loads(batch2_surfaces.read_bytes())['surfaces'])
+    blank_surfaces=DATA/'blank-plots-surfaces.json'
+    if blank_surfaces.exists():
+        surfaces.extend(json.loads(blank_surfaces.read_bytes())['surfaces'])
+    (DATA/'reviewed-district-surfaces.json').write_text(json.dumps({'reference':ref,'additionalReferences':online_refs+wanshun_refs+rings_refs,'reviewNote':data.get('surfaceReview',''),
         'surfaces':surfaces},ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf8')
     print(json.dumps({'observedRoofCandidates':len(features),'reviewedSurfaces':len(surfaces),'approximateNamedContexts':len(contexts),'imageAcquired':ref['imageAcquired']}))
 

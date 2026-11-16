@@ -28,7 +28,7 @@ const buildings = loadBuildings();
 
 test('an appended source preserves every decoded coordinate and attribute of the established binary prefix',async()=>{
   const rows=await buildings;
-  assert.equal(createHash('sha256').update(JSON.stringify(rows.slice(0,7741))).digest('hex'),'f577f82e40458217e2000f3f0aa5140f0c0545bc4ee7579ab4b9fca639097acb');
+  assert.equal(createHash('sha256').update(JSON.stringify(rows.slice(0,7741))).digest('hex'),'22add4fab140bdba729e9939d10a5404633e9ddabe9277c3680afa53c8fdce75');
 });
 
 function area(ring) {

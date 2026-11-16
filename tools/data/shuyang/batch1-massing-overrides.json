@@ -1,0 +1,136 @@
+{
+ "reference": {
+  "id": "amap-satellite-z18-20261115",
+  "provider": "高德地图卫星影像瓦片（GCJ-02）",
+  "imageAcquired": null,
+  "retrievedAt": "2026-11-15",
+  "resolution": "z18，约 0.49 m/px",
+  "coordinateNote": "瓦片为 GCJ-02 网格；经 tools/china-coordinates.py 反算 WGS84 后投影到项目米制坐标，与 OSM/Overture 同系。检索日期不是拍摄日期。",
+  "limitations": "影像约 0.5 m/px，树冠、阴影与在建工地遮挡会压低轮廓判读精度（本批水平误差按 ±5～8 m 记录）；高度为官方层数或影像层数推断，不是逐栋实测。"
+ },
+ "overrides": [
+  {
+   "sourceId": "way/496856000",
+   "name": "体育馆",
+   "category": "civic",
+   "note": "影像中为带四坡/交叉屋面的方形馆，位于体育公园北侧，与 OSM way/496856000 位置吻合。",
+   "facilityId": "sports-center",
+   "facilityName": "沭阳体育中心",
+   "facilityGroup": "门户设施",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "way/995943344",
+   "name": "沭阳站",
+   "category": "civic",
+   "note": "站房为沿铁路方向约 102×27 m 的实测矩形轮廓，保留 OSM 几何，仅补类别与名称。",
+   "facilityId": "railway-station",
+   "facilityName": "沭阳站",
+   "facilityGroup": "门户设施",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "way/1265743025",
+   "name": "城北公交停保场调度楼",
+   "category": "civic",
+   "note": "影像中为场站北侧两层办公/调度楼。",
+   "facilityId": "chengbei-bus",
+   "facilityName": "城北公交停保场",
+   "facilityGroup": "门户设施",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "way/1265743026",
+   "name": "城北公交停保场维修车间",
+   "category": "industrial",
+   "note": "影像中为场站南侧大跨维修车间。",
+   "facilityId": "chengbei-bus",
+   "facilityName": "城北公交停保场",
+   "facilityGroup": "门户设施",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "d06b6242-c893-4547-a90e-83db000e0947",
+   "name": "中山医院门诊病房综合楼",
+   "category": "civic",
+   "height": 82.0,
+   "levels": 24,
+   "heightNote": "官方简介：2014 年 8 月投用的 24 层门诊病房综合楼，建筑面积 3.3 万 m²。影像中该楼为院区最高体量，按 3.4 m 层高推算 82 m，属层数推算值，不是测量高度。",
+   "note": "原数据按 26 m 栅格高度渲染，与 24 层不符。",
+   "facilityId": "zhongshan-hospital",
+   "facilityName": "沭阳中山医院",
+   "facilityGroup": "医院",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "way/1371978209",
+   "name": "沭阳中兴医院",
+   "category": "civic",
+   "note": "OSM 院内主楼 106×115 m 轮廓已实测，仅补名称与医疗类别。",
+   "facilityId": "zhongxing-hospital",
+   "facilityName": "沭阳中兴医院",
+   "facilityGroup": "医院",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "7338d927-ec19-430a-9e3d-2e75f29d9c2b",
+   "name": "沭阳仁慈医院",
+   "category": "civic",
+   "note": "院内最大体量（86×82 m）位于院区西侧，影像可辨；简介提到的 17 层新建病房楼在影像中无可确认的高层体量，未提层高。",
+   "facilityId": "renci-hospital",
+   "facilityName": "沭阳仁慈医院",
+   "facilityGroup": "医院",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "494c7985-f93b-43de-ab6a-64c795b9e7fa",
+   "name": "沭阳医院城西院区",
+   "category": "civic",
+   "note": "一期门诊/急诊/住院楼 74×79 m，OSM 与 Overture 轮廓一致，保留既有几何。",
+   "facilityId": "chengxi-hospital",
+   "facilityName": "沭阳医院城西院区",
+   "facilityGroup": "医院",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "way/1456180593",
+   "name": "沭阳县中医院南关院区",
+   "category": "civic",
+   "note": "院内主楼 54×69 m 为 OSM 实测轮廓，仅补名称与医疗类别。",
+   "facilityId": "nanguan-hospital",
+   "facilityName": "沭阳县中医院南关院区",
+   "facilityGroup": "医院",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  },
+  {
+   "sourceId": "3d4e35b3-8abc-49c0-9f4e-a99150cac09e",
+   "name": "沭阳脑科医院",
+   "category": "civic",
+   "note": "低层院区主楼 43×19 m，影像与 Overture 轮廓吻合，仅补名称与类别。",
+   "facilityId": "brain-hospital",
+   "facilityName": "沭阳脑科医院",
+   "facilityGroup": "医院",
+   "referenceId": "amap-satellite-z18-20261115",
+   "referenceRetrievedAt": "2026-11-15",
+   "referenceImageDate": null
+  }
+ ]
+}

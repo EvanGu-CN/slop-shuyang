@@ -31,7 +31,7 @@ test('the named service centre retains its exact source and CNBH height separate
   const records=JSON.parse(gunzipSync(readFileSync(new URL('../tools/data/shuyang/buildings-enriched.json.gz',import.meta.url)))).buildings;
   assert.equal(records[r.sourceBuildingIndex].id,r.sourceId);assert.equal(b.n,r.name);assert.equal(b.h,25.7);
   assert.equal(applyPhotoBuildingEstimate(records[r.sourceBuildingIndex],r),records[r.sourceBuildingIndex]);
-  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'211ef701274c3124809f5fe0390b2fc949ce47c968b967b0d2c03d98fb79615f');
+  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'1c3e296f4c0a17ba7fa0801b1d44998f5ddeaf95481dcd234eb72e14566722a9');
   const {groups}=setup();assert.equal(groups.length,1);assert.equal(groups[0].userData.photoReview.retainedHeight,25.7);
   assert.ok(!groups[0].userData.replacesSource);assert.deepEqual(Array.from(r.modeledFaces),['south']);
 });

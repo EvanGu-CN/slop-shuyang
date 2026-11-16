@@ -1,0 +1,163 @@
+{
+ "provider": "高德地图卫星影像瓦片（GCJ-02）",
+ "tileUrl": "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+ "retrievedAt": "2026-11-15",
+ "resolutionMetersPerPixel": 0.494,
+ "coordinateNote": "瓦片为 GCJ-02 网格；经 tools/china-coordinates.py 反算 WGS84 后投影到项目米制坐标，与 OSM/Overture 同系。检索日期不是拍摄日期。",
+ "limitations": "影像约 0.5 m/px；树冠、阴影与在建工地遮挡会压低轮廓判读精度；高度为层数或照片推断，非测量值。",
+ "sites": [
+  {
+   "id": "fire-suzhou-a",
+   "name": "苏州东路西段（消防候选）",
+   "zoom": 18,
+   "worldCenter": [
+    1600.0,
+    1800.0
+   ],
+   "halfSizeM": 200,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2642,
+   "worldToPixel": {
+    "x0": 236.68,
+    "z0": 91.04
+   },
+   "image": "fire-suzhou-a.png"
+  },
+  {
+   "id": "fire-suzhou-b",
+   "name": "苏州东路中段（消防候选）",
+   "zoom": 18,
+   "worldCenter": [
+    2350.0,
+    2020.0
+   ],
+   "halfSizeM": 230,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2649,
+   "worldToPixel": {
+    "x0": 105.64,
+    "z0": 304.63
+   },
+   "image": "fire-suzhou-b.png"
+  },
+  {
+   "id": "fire-suzhou-c",
+   "name": "苏州东路东段（消防候选）",
+   "zoom": 18,
+   "worldCenter": [
+    3150.0,
+    2480.0
+   ],
+   "halfSizeM": 240,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2653,
+   "worldToPixel": {
+    "x0": 200.19,
+    "z0": 137.62
+   },
+   "image": "fire-suzhou-c.png"
+  },
+  {
+   "id": "tianjin-bus",
+   "name": "天津路公交停保场",
+   "zoom": 18,
+   "worldCenter": [
+    -1453.1,
+    -1233.6
+   ],
+   "halfSizeM": 190,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2611,
+   "worldToPixel": {
+    "x0": 227.12,
+    "z0": 56.68
+   },
+   "image": "tianjin-bus.png"
+  },
+  {
+   "id": "changzhou-stop",
+   "name": "常州路客运经停站",
+   "zoom": 18,
+   "worldCenter": [
+    1029.5,
+    2214.0
+   ],
+   "halfSizeM": 150,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2634,
+   "worldToPixel": {
+    "x0": 192.65,
+    "z0": 371.79
+   },
+   "image": "changzhou-stop.png"
+  },
+  {
+   "id": "station-bus",
+   "name": "火车站公交停保场",
+   "zoom": 18,
+   "worldCenter": [
+    -893.1,
+    2220.9
+   ],
+   "halfSizeM": 190,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2607,
+   "worldToPixel": {
+    "x0": 399.72,
+    "z0": 257.67
+   },
+   "image": "station-bus.png"
+  },
+  {
+   "id": "jinlong-park",
+   "name": "金隆游乐园",
+   "zoom": 18,
+   "worldCenter": [
+    2972.1,
+    -305.5
+   ],
+   "halfSizeM": 230,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2662,
+   "worldToPixel": {
+    "x0": 68.14,
+    "z0": 101.93
+   },
+   "image": "jinlong-park.png"
+  },
+  {
+   "id": "jinlong-park-close",
+   "name": "金隆游乐园（近景判边界）",
+   "zoom": 18,
+   "worldCenter": [
+    2960.0,
+    -285.0
+   ],
+   "halfSizeM": 110,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2662,
+   "worldToPixel": {
+    "x0": 7.07,
+    "z0": 151.01
+   },
+   "image": "jinlong-park-close.png"
+  },
+  {
+   "id": "fire-command",
+   "name": "沭阳县消防指挥中心/救援大队",
+   "zoom": 18,
+   "worldCenter": [
+    2853.0,
+    2401.0
+   ],
+   "halfSizeM": 200,
+   "imageScale": 1.6,
+   "pixelPerMeter": 3.2651,
+   "worldToPixel": {
+    "x0": 189.16,
+    "z0": 8.86
+   },
+   "image": "fire-command.png"
+  }
+ ]
+}

@@ -24,7 +24,7 @@ test('central plaza retains both source records and separates reported display h
   const records=JSON.parse(gunzipSync(readFileSync(new URL('../tools/data/shuyang/buildings-enriched.json.gz',import.meta.url)))).buildings;
   assert.equal(records[C.podiumIndex].id,C.podiumId);assert.equal(records[C.towerIndex].id,C.towerId);
   assert.equal(records[C.towerIndex].height,150);assert.equal(C.towerHeight,147.15);assert.equal(C.sourceTowerHeight,150);
-  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'211ef701274c3124809f5fe0390b2fc949ce47c968b967b0d2c03d98fb79615f');
+  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'1c3e296f4c0a17ba7fa0801b1d44998f5ddeaf95481dcd234eb72e14566722a9');
   const {bodies}=setup();assert.equal(bodies.length,2);assert.deepEqual(bodies.map(a=>a[0].s.sourceId),[C.podiumId,C.towerId]);assert.deepEqual(bodies.map(a=>a[2]),[26.9,147.15]);
 });
 test('window modules follow every rotated source edge and remain within the reported 42-storey envelope',()=>{

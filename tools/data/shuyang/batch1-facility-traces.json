@@ -1,0 +1,182 @@
+{
+ "reference": {
+  "id": "amap-satellite-z18-20261115",
+  "provider": "高德地图卫星影像瓦片（GCJ-02）",
+  "imageAcquired": null,
+  "retrievedAt": "2026-11-15",
+  "resolution": "z18，约 0.49 m/px",
+  "coordinateNote": "瓦片为 GCJ-02 网格；经 tools/china-coordinates.py 反算 WGS84 后投影到项目米制坐标，与 OSM/Overture 同系。检索日期不是拍摄日期。",
+  "limitations": "影像约 0.5 m/px，树冠、阴影与在建工地遮挡会压低轮廓判读精度（本批水平误差按 ±5～8 m 记录）；高度为官方层数或影像层数推断，不是逐栋实测。"
+ },
+ "surfaceReview": "跑道、内场与公交停保场停车区按 2026-11-15 检索的高德 z18 影像判读；形状受树冠与车辆遮挡，边界为近似值。",
+ "facilities": [
+  {
+   "id": "sports-center",
+   "group": "门户设施",
+   "name": "沭阳体育中心",
+   "overrides": [
+    {"sourceId": "way/496856000", "name": "体育馆", "category": "civic",
+     "note": "影像中为带四坡/交叉屋面的方形馆，位于体育公园北侧，与 OSM way/496856000 位置吻合。"}
+   ],
+   "excludeSourceIds": [
+    {"id": "way/1455053507",
+     "reason": "OSM 该多边形是体育公园用地边界（226×232 m），被当作 9 m 建筑挤出后覆盖整个园区；以看台环、跑道和内场分件替代，记录保留在索引中。"}
+   ],
+   "buildings": [
+    {
+     "id": "stadium-stands",
+     "name": "沭阳体育场看台",
+     "category": "civic",
+     "ellipse": {"cx": -493.5, "cz": 4726.0, "rx": 59.0, "rz": 94.0, "innerRx": 47.0, "innerRz": 82.0, "segments": 40},
+     "height": 16.0,
+     "levels": 0,
+     "roofShape": "flat",
+     "roofHeight": 0,
+     "geometrySource": "imagery-reviewed-stadium-ring",
+     "geometryAccuracyNote": "看台内外缘按 2026-11-15 z18 影像跑道白线拟合为同心椭圆（长轴南北向），水平误差约 ±5 m；未建观众席台阶细节。",
+     "heightNote": "看台顶棚高度按影像阴影与周边场馆层数推断约 16 m，不是测量高度。",
+     "note": "替代被误当作建筑的园区用地多边形。"
+    }
+   ],
+   "surfaces": [
+    {
+     "id": "stadium-track", "kind": "running-track", "name": "体育场跑道",
+     "ellipse": {"cx": -493.5, "cz": 4726.0, "rx": 46.0, "rz": 81.0, "innerRx": 34.0, "innerRz": 69.0, "segments": 48},
+     "widthEstimate": 12,
+     "geometryMethod": "imagery-inferred-stadium-track",
+     "note": "红色塑胶跑道环；宽度约 12 m（8 道），受白线清晰度限制按近似值记录。"
+    },
+    {
+     "id": "stadium-infield", "kind": "infield", "name": "体育场内场",
+     "ellipse": {"cx": -493.5, "cz": 4726.0, "rx": 33.0, "rz": 68.0, "segments": 40},
+     "geometryMethod": "imagery-inferred-stadium-infield",
+     "note": "内场草皮与两端缓冲区按影像拟合为椭圆，未区分足球场标线。"
+    }
+   ],
+   "notDone": []
+  },
+  {
+   "id": "railway-station",
+   "group": "门户设施",
+   "name": "沭阳站",
+   "overrides": [
+    {"sourceId": "way/995943344", "name": "沭阳站", "category": "civic",
+     "note": "站房为沿铁路方向约 102×27 m 的实测矩形轮廓，保留 OSM 几何，仅补类别与名称。"}
+   ],
+   "buildings": [],
+   "surfaces": [],
+   "notDone": ["站前广场与停车场被道路及绿化分割，影像中无稳定边界，未新增铺装面。",
+    "站台雨棚与站房屋面在 z18 影像上难以分离；OSM 站房轮廓已覆盖可见屋面，未单独建雨棚。"]
+  },
+  {
+   "id": "chengbei-bus",
+   "group": "门户设施",
+   "name": "城北公交停保场",
+   "overrides": [
+    {"sourceId": "way/1265743025", "name": "城北公交停保场调度楼", "category": "civic",
+     "note": "影像中为场站北侧两层办公/调度楼。"},
+    {"sourceId": "way/1265743026", "name": "城北公交停保场维修车间", "category": "industrial",
+     "note": "影像中为场站南侧大跨维修车间。"}
+   ],
+   "buildings": [],
+   "surfaces": [
+    {
+     "id": "chengbei-yard", "kind": "parking", "name": "城北公交停保场停车区",
+     "ring": [[1666.0, -1892.0], [1792.0, -1892.0], [1792.0, -1797.0], [1666.0, -1797.0]],
+     "geometryMethod": "imagery-inferred-bus-yard",
+     "note": "场站铺装范围按影像围墙与路缘量取，含停车位与回车道，水平误差约 ±5 m。"
+    }
+   ],
+   "notDone": []
+  },
+  {
+   "id": "zhongshan-hospital",
+   "group": "医院",
+   "name": "沭阳中山医院",
+   "overrides": [
+    {"sourceId": "d06b6242-c893-4547-a90e-83db000e0947", "name": "中山医院门诊病房综合楼", "category": "civic",
+     "height": 82.0, "levels": 24,
+     "heightNote": "官方简介：2014 年 8 月投用的 24 层门诊病房综合楼，建筑面积 3.3 万 m²。影像中该楼为院区最高体量，按 3.4 m 层高推算 82 m，属层数推算值，不是测量高度。",
+     "note": "原数据按 26 m 栅格高度渲染，与 24 层不符。"}
+   ],
+   "buildings": [],
+   "surfaces": [],
+   "notDone": ["院区内部道路与停车铺装未单独录入，避免与既有地块/道路图层重复。"]
+  },
+  {
+   "id": "zhongxing-hospital",
+   "group": "医院",
+   "name": "沭阳中兴医院",
+   "overrides": [
+    {"sourceId": "way/1371978209", "name": "沭阳中兴医院", "category": "civic",
+     "note": "OSM 院内主楼 106×115 m 轮廓已实测，仅补名称与医疗类别。"}
+   ],
+   "buildings": [],
+   "surfaces": [],
+   "notDone": []
+  },
+  {
+   "id": "renci-hospital",
+   "group": "医院",
+   "name": "沭阳仁慈医院",
+   "overrides": [
+    {"sourceId": "7338d927-ec19-430a-9e3d-2e75f29d9c2b", "name": "沭阳仁慈医院", "category": "civic",
+     "note": "院内最大体量（86×82 m）位于院区西侧，影像可辨；简介提到的 17 层新建病房楼在影像中无可确认的高层体量，未提层高。"}
+   ],
+   "buildings": [],
+   "surfaces": [],
+   "notDone": ["17 层新建病房楼：影像未见对应高层体量，按在建/未落成处理，不臆造轮廓。"]
+  },
+  {
+   "id": "chengxi-hospital",
+   "group": "医院",
+   "name": "沭阳医院城西院区",
+   "overrides": [
+    {"sourceId": "494c7985-f93b-43de-ab6a-64c795b9e7fa", "name": "沭阳医院城西院区", "category": "civic",
+     "note": "一期门诊/急诊/住院楼 74×79 m，OSM 与 Overture 轮廓一致，保留既有几何。"}
+   ],
+   "buildings": [],
+   "surfaces": [],
+   "notDone": []
+  },
+  {
+   "id": "nanguan-hospital",
+   "group": "医院",
+   "name": "沭阳县中医院南关院区",
+   "overrides": [
+    {"sourceId": "way/1456180593", "name": "沭阳县中医院南关院区", "category": "civic",
+     "note": "院内主楼 54×69 m 为 OSM 实测轮廓，仅补名称与医疗类别。"}
+   ],
+   "buildings": [],
+   "surfaces": [],
+   "notDone": []
+  },
+  {
+   "id": "brain-hospital",
+   "group": "医院",
+   "name": "沭阳脑科医院",
+   "overrides": [
+    {"sourceId": "3d4e35b3-8abc-49c0-9f4e-a99150cac09e", "name": "沭阳脑科医院", "category": "civic",
+     "note": "低层院区主楼 43×19 m，影像与 Overture 轮廓吻合，仅补名称与类别。"}
+   ],
+   "buildings": [],
+   "surfaces": [],
+   "notDone": []
+  }
+ ],
+ "notDoneFacilities": [
+  {"name": "城南换乘中心", "reason": "松江路/重庆南路交叉口在项目核心范围（z≤5000）以南约 370 m，超出渲染边界，不生成内容。"},
+  {"name": "南湖派出所", "reason": "位于智慧路 99 号（汽车客运南站西北角），超出核心范围。"},
+  {"name": "南部新城消防救援队", "reason": "位于南部新城，超出核心范围且缺精确坐标。"},
+  {"name": "沭阳县基督教合一堂", "reason": "位于智慧路（近松江路），超出核心范围。"},
+  {"name": "沭阳海洋馆", "reason": "影像为在建工地，仅见围挡与土方，无主体轮廓；按纪律不臆造建筑，保留 Overture 用地块并标注在建。"},
+  {"name": "消防指挥中心 / 消防救援大队", "reason": "POI 坐标处为住宅与道路，影像中找不到对应消防站，坐标存疑，暂不建模。"},
+  {"name": "深呼吸羽毛球馆", "reason": "POI 落在钢材/仓储大棚之间，无法确认哪一栋为球馆，暂不命名或改几何。"},
+  {"name": "金隆游乐园", "reason": "影像为林地与空地，无稳定建筑体量。"},
+  {"name": "沭水之阳雕塑", "reason": "为雕塑地标而非建筑，现有 POI 标注保留。"},
+  {"name": "五里公园运动场", "reason": "跑道、内场与球场已由既有 reviewed 图层覆盖，无新增。"},
+  {"name": "乡镇卫生院 13 处（SY-032～044）", "reason": "设施清单中无坐标、无本地影像范围，且多数位于乡镇（超出核心范围），本批不做。"},
+  {"name": "沭阳国际商贸城 / 苏北商贸城 / 建材市场 / 月星家居 / 苏奥国际广场", "reason": "设施清单标注为已有实测/公开轮廓（B/B2），无需重复生成；未做外观细化。"},
+  {"name": "大润发玛特购物中心", "reason": "与大润发（沭阳店，上海南路与苏州西路）为同一商业体，已由 rt-mart 街区模型覆盖。"}
+ ]
+}

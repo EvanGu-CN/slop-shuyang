@@ -373,7 +373,11 @@ function buildWodeDistrict(root) {
   const inside = (x, z) => rings.some((ring, i) =>
     pointInRing(ring, x, z) && !holes[i].some(h => pointInRing(h, x, z)));
 
-  const buildings = REAL_BUILDINGS.filter(b => b.category === 'residential' && inside(b.cx, b.cz));
+  // 只对 OSM/Overture 已记录、逐栋判读过的足迹做坡屋面与细部；
+  // 环状影像重建的行排（reviewed/imagery/*）保持 buildings.js 的通用渲染，
+  // 避免把推断体块当成实测轮廓追加精细构件。
+  const buildings = REAL_BUILDINGS.filter(b => b.category === 'residential'
+    && !String(b.id).startsWith('reviewed/imagery/') && inside(b.cx, b.cz));
   if (!buildings.length) return null;
 
   const group = new THREE.Group();

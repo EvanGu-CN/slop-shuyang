@@ -18,9 +18,9 @@ const all=streets.surfaces.flatMap(s=>s.polygons.map(poly));
 const hash=x=>createHash('sha256').update(x).digest('hex');
 
 test('cultural frontage work preserves the source building binary and every source road',()=>{
-  assert.equal(hash(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))),'211ef701274c3124809f5fe0390b2fc949ce47c968b967b0d2c03d98fb79615f');
+  assert.equal(hash(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))),'1c3e296f4c0a17ba7fa0801b1d44998f5ddeaf95481dcd234eb72e14566722a9');
   assert.equal(hash(JSON.stringify(GEO.roads)),streets.sourceRoadsDigest);assert.equal(streets.sourceRoadsDigest,'6340f84446791cc0646838b9c3e81c6d067888d8bc71fe7a3a26ba39a2f730da');
-  assert.equal(GEO.mapBuildings.length,7745);assert.equal(new Set(GEO.roadSourceIds).size,1104);assert.equal(GEO.mapPaths.length,92);
+  assert.equal(GEO.mapBuildings.length,9982);assert.equal(new Set(GEO.roadSourceIds).size,1104);assert.equal(GEO.mapPaths.length,92);
 });
 test('all new frontage polygons avoid actual rendered carriageway triangles and cultural bodies',()=>{
   const e=streets.extent,near=(x,z)=>x>e[0]-40&&x<e[2]+40&&z>e[1]-40&&z<e[3]+40;let roads=0;

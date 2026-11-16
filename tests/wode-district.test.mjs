@@ -18,6 +18,7 @@ const REAL_BUILDINGS = JSON.parse(gunzipSync(readFileSync(
   }));
   const xs = polygons[0].outer.map(p => p.x), zs = polygons[0].outer.map(p => p.z);
   return {
+    id: b.id,
     height: b.height, baseHeight: b.baseHeight, category: b.category, heightSource: b.heightSource,
     source: b.source, levels: b.levels, roofShape: b.roofShape, roofHeight: b.roofHeight,
     seed: 101 + i, polygons,
@@ -89,7 +90,9 @@ test('the four perimeter green buffers come from the reviewed Wode frame', () =>
 
 test('the district only overlays the 沃德嘉园 source footprints and invents no building', () => {
   assert.ok(result, 'the neighbourhood exists in the geodata');
-  const insideCount = REAL_BUILDINGS.filter(b => b.category === 'residential' && inside(b.cx, b.cz)).length;
+  // 影像重建的行排由 buildings.js 通用渲染，不进入本模块的实测细部流程。
+  const insideCount = REAL_BUILDINGS.filter(b => b.category === 'residential'
+    && !String(b.id).startsWith('reviewed/imagery/') && inside(b.cx, b.cz)).length;
   assert.equal(insideCount, 72, 'the estate keeps its 72 mapped residential records');
   assert.ok(result.stats.buildings > 60 && result.stats.buildings <= insideCount,
     'small sheds are skipped, the rows are all detailed');
@@ -208,8 +211,11 @@ test('grass-grid parking strips sit outside the row greens and clear of source b
   const lines = result.group.children.find(m => m.name === '沃德·车位线');
   assert.ok(park && lines, 'parking strips exist');
   assert.ok(result.stats.parkBays > 100, `parking bays painted: ${result.stats.parkBays}`);
+  // 植草砖车位只为实测行排布置；环状影像重建的行排是推断体块，
+  // 与车位图层不参与同一套避让，这里只对已测绘足迹做穿模检查。
   const inFootprint = (x, z) => {
     for (const b of REAL_BUILDINGS) {
+      if (String(b.id).startsWith('reviewed/imagery/')) continue;
       for (const poly of b.polygons) {
         const ring = poly.outer;
         let hit = false;

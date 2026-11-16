@@ -200,7 +200,12 @@ function buildCityBlocks(scene, landmarkColliders = []) {
     return { height: Infinity, x: t.x, z: t.z, x0: t.x - w / 2 - 3, x1: t.x + w / 2 + 3, z0: t.z - d / 2 - 3, z1: t.z + d / 2 + 3, ...(o || {}) };
   }).filter(Boolean);
   // Keep the authored landmark models; the survey supplies the surrounding buildings.
-  const sourceReplacements = new Set(Object.values(PHOTO_LANDMARK_SITES).flatMap(s => s.sourceBuildingIndices || []).map(i => REAL_BUILDINGS[i]));
+  // Coarse source massing superseded by the 万顺·帝景天成 imagery reconstruction is
+  // hidden here and on the map, in the same GEO-driven list.
+  const sourceReplacements = new Set([
+    ...Object.values(PHOTO_LANDMARK_SITES).flatMap(s => s.sourceBuildingIndices || []).map(i => REAL_BUILDINGS[i]),
+    ...(GEO.supersededSourceIndices || []).map(i => REAL_BUILDINGS[i])
+  ]);
   const coverage=preserveBuildingCoverage(REAL_BUILDINGS,sourceReplacements,landmarkColliders);
   const surveyedBuildings=coverage.rendered;
   group.userData.buildingCounts=coverage.audit;
@@ -293,6 +298,13 @@ function buildCityBlocks(scene, landmarkColliders = []) {
   const housingStyles = new Map();
   const housingPhotoStyles = new Map();
   const campusBuildings = new Set(Object.values(PHOTO_LANDMARK_SITES).flatMap(s=>s.campusBuildingIndices||[]).map(i => REAL_BUILDINGS[i]));
+  // 校区楼：落在 OSM amenity=school 实测校区轮廓内的楼体，统一按教学楼层高与窗带处理。
+  const schoolGroundPolys = (GEO.schoolGrounds || []).map((g) => {
+    const outer = [];
+    for (let i = 0; i + 1 < g.r.length; i += 2) outer.push({ x: g.r[i], z: g.r[i + 1] });
+    return { outer, holes: [], minX: Math.min(...outer.map((p) => p.x)), maxX: Math.max(...outer.map((p) => p.x)), minZ: Math.min(...outer.map((p) => p.z)), maxZ: Math.max(...outer.map((p) => p.z)) };
+  });
+  const insideSchoolGround = (x, z) => schoolGroundPolys.some((p) => x >= p.minX && x <= p.maxX && z >= p.minZ && z <= p.maxZ && polygonContains(p, x, z));
   const reviewedFrontages = new Map(reviewedSourceBindings().filter(r => GEO.mapBuildings[r.sourceBuildingIndex]?.id === r.sourceId).map(r => [REAL_BUILDINGS[r.sourceBuildingIndex],r]));
   for (const n of GEO.neighborhoods || []) for (const i of n.buildings) {
     housingStyles.set(REAL_BUILDINGS[i], n.paletteVariant);
@@ -305,7 +317,7 @@ function buildCityBlocks(scene, landmarkColliders = []) {
     const seed = b.seed ?? Math.round(b.cx * 31 + b.cz * 17);
     const rand = mulberry32(seed);
     const tone = rand();
-    const mat = campusBuildings.has(sourceRecord) ? 9 : buildingStyleIndex({ ...b, styleVariant: housingStyles.get(sourceRecord),photoStyle:housingPhotoStyles.get(sourceRecord) });
+    const mat = campusBuildings.has(sourceRecord) || insideSchoolGround(b.cx, b.cz) ? 9 : buildingStyleIndex({ ...b, styleVariant: housingStyles.get(sourceRecord),photoStyle:housingPhotoStyles.get(sourceRecord) });
     // Only tagged commercial buildings receive shopfronts, on walls facing a nearby public street.
     const shopEdges = [];
     if (b.category === 'commercial' && !reviewedFrontages.has(sourceRecord)) for (const p of b.polygons) {

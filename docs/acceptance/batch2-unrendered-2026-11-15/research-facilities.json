@@ -1,0 +1,292 @@
+{
+  "items": [
+    {
+      "name": "沭阳县城南换乘中心",
+      "status": "street-only",
+      "address": "沭阳县松江路（沭阳汽车客运南站东侧公交场站，公交站名“城南换乘中心/城南换乘中心松江路”）",
+      "lat": 34.079616,
+      "lon": 118.7440589,
+      "coordSystem": "wgs84",
+      "addressPrecision": "street-only",
+      "sources": [
+        "http://www.shuyang.gov.cn/shuyang/gjgs/202411/4b5f6634951a42a993415254b00188c2.shtml",
+        "https://sq.city8.com/transport/8ag84m7c1sv2b04379_traffic",
+        "https://www.openstreetmap.org/way/1370832000",
+        "https://m.baike.com/wiki/%E6%B2%AD%E9%98%B3%E5%AE%A2%E8%BF%90%E6%80%BB%E7%AB%99/20394540"
+      ],
+      "massing": "换乘中心本体未查到公开层数/建筑面积。紧邻的沭阳汽车客运南站为独立建筑（不可等同于换乘中心）：国家一级客运站，占地170.69亩，总建筑面积约1.5万平方米，主站楼3层、外观长150米×宽37米×高16.2米、站房约11000平方米，12个售票口、20个检票口、20个发车位。",
+      "notes": "坐标取自本地 OSM 快照 way/1370832000（amenity=bus_station，2026-11-11 抓取），实测距松江路中心线约41米、距重庆南路约340米，与“客运南站东侧”的相对关系一致；未查到门牌号，也未查到换乘中心自身的建筑规模，勿用客运南站主站楼顶替。"
+    },
+    {
+      "name": "沭阳县南湖派出所",
+      "status": "verified",
+      "address": "沭阳县智慧路99号",
+      "lat": 34.082436,
+      "lon": 118.7432654,
+      "coordSystem": "wgs84",
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://www.shuyang.gov.cn/sysfj/zdgz/202505/2a416d19647c43c2933df54ce43c92e8.shtml",
+        "https://www.openstreetmap.org/way/1460717253"
+      ],
+      "massing": "未查到公开层数、建筑面积；为独立院落式派出所（OSM 含 building=yes 面要素，本地快照未存轮廓几何）。",
+      "notes": "地址出自沭阳县司法局《沭阳县行政检查主体清单》（2025-04-30）第55项。坐标取 OSM way/1460717253，距智慧路约76米。"
+    },
+    {
+      "name": "沭阳县南部新城消防救援队（南部新城消防站）",
+      "status": "street-only",
+      "address": "沭阳县智慧路（南湖派出所东侧约200米；电话名录称“智慧路99号、南湖派出所旁”，与派出所门牌重复，未采信）",
+      "lat": 34.0820134,
+      "lon": 118.7454096,
+      "coordSystem": "wgs84",
+      "addressPrecision": "street-only",
+      "sources": [
+        "https://114.mingluji.com/name/%E6%B2%AD%E9%98%B3%E5%8E%BF%E5%8D%97%E9%83%A8%E6%96%B0%E5%9F%8E%E4%B8%93%E8%81%8C%E6%B6%88%E9%98%B2%E9%98%9F",
+        "http://www.shuyang.gov.cn/shuyang/zfbwj/201512/475e4ff9d2a24c009379a8d14d8232d6.shtml",
+        "http://www.shuyang.gov.cn/shuyang/zfbwj/202201/5725bfdda21843c7a98b403ade838ae2.shtml",
+        "https://www.openstreetmap.org/way/1460717252"
+      ],
+      "massing": "按《城市消防站建设标准》建设的二级政府专职消防站，2015年文件要求2016年11月底前具备使用条件，县“十四五”安全生产规划将其列为已建成3个消防站之一；层数、建筑面积未查到。",
+      "notes": "坐标取 OSM way/1460717252（amenity=fire_station），距智慧路约86米、距南湖派出所约200米，故不采用名录“派出所旁同一门牌”的说法；门牌号待实地核实。"
+    },
+    {
+      "name": "沭城派出所",
+      "status": "verified",
+      "address": "沭阳县杭州东路666号",
+      "lat": 34.086237,
+      "lon": 118.8401876,
+      "coordSystem": "wgs84",
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://www.shuyang.gov.cn/sysfj/zdgz/202505/2a416d19647c43c2933df54ce43c92e8.shtml",
+        "https://www.openstreetmap.org/way/1465666593"
+      ],
+      "massing": "未查到公开层数、建筑面积；独立院落（OSM building=yes 面要素）。",
+      "notes": "地址出自沭阳县司法局行政检查主体清单第62项。坐标取 OSM way/1465666593；另一来源（宿迁本地宝）仅写“迎宾大道附近”，与政府清单不符，不采用。"
+    },
+    {
+      "name": "沭阳县基督教合一堂",
+      "status": "street-only",
+      "address": "沭阳县智慧路（大唐世家西侧约190米，亦有“县第二人民医院东南侧约150米”描述）",
+      "lat": 34.0795954,
+      "lon": 118.7567757,
+      "coordSystem": "wgs84",
+      "addressPrecision": "street-only",
+      "sources": [
+        "https://sq.city8.com/scope/8agh177c1sxcb4f8f2",
+        "https://114.mingluji.com/name/%E6%B2%AD%E9%98%B3%E5%8E%BF%E5%9F%BA%E7%9D%A3%E6%95%99%E5%90%88%E4%B8%80%E5%A0%82",
+        "https://www.openstreetmap.org/way/1321791094"
+      ],
+      "massing": "未查到公开层数、建筑面积与建成年份。",
+      "notes": "未查到门牌号。坐标取 OSM way/1321791094（amenity=place_of_worship，denomination=united_methodist），距智慧路约110米，与两处地名参照的关系自洽。不要与“沭阳县水上教堂”（孙巷小区）混淆。"
+    },
+    {
+      "name": "沭阳沂北医院",
+      "status": "verified",
+      "address": "沭阳县扎下镇205国道与沭海路交汇处（新沂河大桥北首、扎下街东首）",
+      "lat": 34.1677526,
+      "lon": 118.7452118,
+      "coordSystem": "wgs84",
+      "addressPrecision": "intersection",
+      "sources": [
+        "https://m.map.360.cn/site/detail/6149e24803e1f703",
+        "https://y.dxy.cn/hospital/9681",
+        "https://www.thinkdid.com/hospitalInfo/city/hospital/17426.html",
+        "https://www.openstreetmap.org/way/1455056437"
+      ],
+      "massing": "新建病房楼12层、约2万平方米，床位350张，5间净化手术室、4部电梯；另名“沭阳扎下医院”。",
+      "notes": "坐标为 OSM way/1455056437（amenity=hospital，name=沂北医院）。未查到门牌号，但交叉口描述足够定位。该院与“沭阳中西医结合医院”疑为同一院区（详见下条）。"
+    },
+    {
+      "name": "沭阳中西医结合医院",
+      "status": "street-only",
+      "address": "沭阳县扎下镇扎下街（环评文件：西侧为沭海路）",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "street-only",
+      "sources": [
+        "https://ybj.suqian.gov.cn/ybj/tzgg/202503/b2af555e85d14a72a1db5471ff50374a/files/63478451d87d4aa3b0e0cc89e818b117.pdf",
+        "http://sthj.suqian.gov.cn/shbj/wrfz/202109/56e2e9248094435eb95518b5c7397422/files/dc15e0cce57a4db1bd103f6826437fea.pdf",
+        "https://y.dxy.cn/hospital/9681"
+      ],
+      "massing": "二级（医保名单 H32132200001）。丁香园“沭阳沂北医院”页把“中西医结合医院新建病房楼12层、约2万平方米、床位350张”写在该院名下，说明两者可能共用同一院区，但未见官方说明。",
+      "notes": "未取坐标：与沂北医院同在扎下镇扎下街，无法确认是否同一院区、哪一栋归属哪一名，按纪律留空，不借用沂北医院坐标。"
+    },
+    {
+      "name": "沭阳医院（城东院区）／沭阳县中医院城东院区",
+      "status": "street-only",
+      "address": "沭阳县迎宾大道东段（万景路／汇峰路一带；门牌未查到）",
+      "lat": 34.0970547,
+      "lon": 118.8468679,
+      "coordSystem": "wgs84",
+      "addressPrecision": "street-only",
+      "sources": [
+        "https://www.openstreetmap.org/way/1372571654",
+        "http://www.shuyang.gov.cn/shuyang/syyy/202608/e841acca5ba64d418e826b20840635b8.shtml"
+      ],
+      "massing": "未查到层数、床位与建成/启用时间。",
+      "notes": "名称不确定：沭阳医院（原沭阳县人民医院）官网介绍只列院本部、贤官分院与城西院区，未提城东院区；沭阳县中医院官网只列上海中路28号本部及庙头/陇集/湖东等乡镇分院。本条目沿用项目清单 SY-034 与 OSM way/1372571654 的命名，路段由该 POI 邻近道路（迎宾大道约231米、万景路约230米）推断，需实地/官方确认到底属哪家医院。"
+    },
+    {
+      "name": "沭阳华冲医院",
+      "status": "verified",
+      "address": "沭阳县华冲镇华冲街东首（招工信息另称“华冲街沭灌路1号”；天眼查购地信息为“老沭灌路北侧、龙青路东侧”）",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "street-end",
+      "sources": [
+        "http://www.shuyang.gov.cn/shuyang/jjdyyqfkzjz/202111/9554e074a1924dff9a552f22a235a348.shtml",
+        "https://ybj.suqian.gov.cn/ybj/tzgg/202503/b2af555e85d14a72a1db5471ff50374a/files/63478451d87d4aa3b0e0cc89e818b117.pdf",
+        "https://www.kq36.com/job/4101349"
+      ],
+      "massing": "始建于1958年；二级综合医院（部分招聘/名录写一级甲等、一甲），占地25～30亩，建筑面积约1.8万平方米，职工100余人。",
+      "notes": "未取坐标：本地 OSM 快照无该院点位，未找到可核实的经纬度来源；等级口径在“二级综合”与“一甲”间不一致，按来源分别记录。"
+    },
+    {
+      "name": "沭阳南关医院",
+      "status": "verified",
+      "address": "沭阳县上海南路65号（2025年医保名单写“上海南路20号”，两版政府名单冲突）",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://sqhrss.suqian.gov.cn/rlzyj/zdgz/202603/d1a79dbe4a054ceb9180ba55e1cff69f.shtml",
+        "https://ybj.suqian.gov.cn/ybj/tzgg/202503/b2af555e85d14a72a1db5471ff50374a/files/63478451d87d4aa3b0e0cc89e818b117.pdf",
+        "http://sthj.suqian.gov.cn/shbj/wrfz/202111/48146014c87b4f7c8ccae5453cbadb3c/files/08fdbbae9fcc41628dbf7a085302d848.pdf",
+        "http://wjw.suqian.gov.cn/swsj/bmfw/202601/adf13423b70d494b96bfb94ec4b15705.shtml"
+      ],
+      "massing": "始建于1956年，2000年产权制度改革，2007年晋二级，2021年3月通过二级甲等验收；占地1.38万平方米，建筑面积4.3万平方米，核定床位220张。",
+      "notes": "未取坐标：OSM 中“沭阳县中医院南关院区”（way/1372571598）是另一机构，不可挪用。门牌号两版政府文件不一致（65号/20号），建议以2026年人社局名单为准并实地核对。"
+    },
+    {
+      "name": "沭阳县妇幼保健院",
+      "status": "verified",
+      "address": "沭阳县沭城街道苏州东路15号",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://www.shuyang.gov.cn/shuyang/ggfybj/202409/c1a129adc191438d94010fbe312a43bd.shtml",
+        "http://wjw.suqian.gov.cn/swsj/zdgz/202401/b20633dcf50c491689f46dc5e734bd2e.shtml",
+        "https://ybj.suqian.gov.cn/ybj/tzgg/202503/b2af555e85d14a72a1db5471ff50374a/files/63478451d87d4aa3b0e0cc89e818b117.pdf"
+      ],
+      "massing": "二级甲等妇幼保健院（2024-01评审通过）；职工248人（卫技210人），设床位150张、开放108张。",
+      "notes": "未取坐标：未找到可核实经纬度来源。"
+    },
+    {
+      "name": "沭阳县第一人民医院",
+      "status": "verified",
+      "address": "沭阳县南湖街道智慧路1号（另有商业健康平台写“新城路18号”，未见官方来源，不采用）",
+      "lat": 34.0819791,
+      "lon": 118.7550602,
+      "coordSystem": "wgs84",
+      "addressPrecision": "doorplate",
+      "sources": [
+        "https://ybj.suqian.gov.cn/ybj/tzgg/202503/b2af555e85d14a72a1db5471ff50374a/files/63478451d87d4aa3b0e0cc89e818b117.pdf",
+        "https://www.openstreetmap.org/way/1321791093"
+      ],
+      "massing": "一级医疗机构（2025年医保名单）；层数、床位、建成年份未查到。",
+      "notes": "与“沭阳医院/原沭阳县人民医院”（迎宾大道9号，三级）是不同机构，勿混。坐标取 OSM way/1321791093，距北京南路约115米、智慧路约147米，与“智慧路1号”（位于智慧路西端）位置自洽。"
+    },
+    {
+      "name": "沭阳口腔医院",
+      "status": "verified",
+      "address": "沭阳县深圳西路287号",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "https://m.qcc.com/firm/s4b273ecd41e5bcd0b61a65ce66aa59f.html",
+        "https://ditu.city8.com/sq/healthcare/8agq357c2rdhbf3c23",
+        "https://3g.jobmd.cn/company/11396637.htm"
+      ],
+      "massing": "社会办口腔专科（民政局登记，业务范围“口腔科”）；由原县人民医院口腔科专家创办，投资1000余万元；层数与床位未查到。",
+      "notes": "门牌有企查查登记住所与地图站两处一致支持。未采地图站坐标：其标注点（BD-09 34.128789,118.780305，换算约 WGS84 34.1173,118.7751）落在沭师路/广州路一带，距深圳西路约700米，与地址及“靠近新康路、福州路”的描述不符，判为不可靠，故留空。"
+    },
+    {
+      "name": "沭阳广济医院",
+      "status": "verified",
+      "address": "沭阳县上海南路354号",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://sqhrss.suqian.gov.cn/rlzyj/zdgz/202603/d1a79dbe4a054ceb9180ba55e1cff69f.shtml",
+        "https://www.bjhyt.cn/productinfo/2160423.html",
+        "https://ybj.suqian.gov.cn/ybj/tzgg/202503/b2af555e85d14a72a1db5471ff50374a/files/63478451d87d4aa3b0e0cc89e818b117.pdf"
+      ],
+      "massing": "二级综合医院；设床位300余张、现开放约200张，职工270人（卫技225人）。",
+      "notes": "未取坐标：未找到可核实经纬度来源。"
+    },
+    {
+      "name": "沭阳建陵医院",
+      "status": "verified",
+      "address": "沭阳县广州路443号（登记另有第二地址：天津北路59号）",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://sqhrss.suqian.gov.cn/rlzyj/zdgz/202603/d1a79dbe4a054ceb9180ba55e1cff69f.shtml",
+        "https://www.qixin.com/verified/580c7a7c-b796-11e6-bf96-00163f00240b",
+        "http://wjw.suqian.gov.cn/swsj/bmfw/202601/adf13423b70d494b96bfb94ec4b15705.shtml",
+        "https://m.qcc.com/firm/s3bd3f67e56b85d0ff1eabb1809db625.html"
+      ],
+      "massing": "2006-03-05成立，二级（卫健委名单：专科、未定等），开放床位300余张，职工280余名（中高级职称40余名）。",
+      "notes": "两个院址（广州路443号、天津北路59号）是否同时使用未核实；未取得坐标。"
+    },
+    {
+      "name": "沭阳眼科医院",
+      "status": "verified",
+      "address": "沭阳县沭城镇沭师路1号",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "https://ybj.suqian.gov.cn/ybj/tzgg/202503/b2af555e85d14a72a1db5471ff50374a/files/63478451d87d4aa3b0e0cc89e818b117.pdf",
+        "https://permit.mee.gov.cn/register/library/registerShow.vm?enterid=00bd861d-75b9-4e60-97e5-9308812a8304"
+      ],
+      "massing": "二级专科医院；排污许可登记行业类别“专科医院”，层数、床位、建成年份未查到。",
+      "notes": "地址由医保名单与生态环境部排污许可登记两处独立来源一致支持；未取得坐标。"
+    },
+    {
+      "name": "沭阳铭和医院",
+      "status": "verified",
+      "address": "沭阳县沭城镇苏州东路3号",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://sqhrss.suqian.gov.cn/rlzyj/zdgz/202603/d1a79dbe4a054ceb9180ba55e1cff69f.shtml",
+        "https://cont.jd.com/hospital/16011392866?hospitalId=16011392866",
+        "http://wjw.suqian.gov.cn/swsj/bmfw/202601/adf13423b70d494b96bfb94ec4b15705.shtml"
+      ],
+      "massing": "2006年4月成立，二级甲等综合医院；占地3.7万平方米，床位400张，13个病区、29个临床科室、14个医技科室，职工500余名。",
+      "notes": "未取坐标：未找到可核实经纬度来源。"
+    },
+    {
+      "name": "沭阳铭和康复医院",
+      "status": "verified",
+      "address": "沭阳县曙光路4号",
+      "lat": null,
+      "lon": null,
+      "coordSystem": null,
+      "addressPrecision": "doorplate",
+      "sources": [
+        "http://sqhrss.suqian.gov.cn/rlzyj/zdgz/202603/d1a79dbe4a054ceb9180ba55e1cff69f.shtml",
+        "https://y.dxy.cn/hospital/12629/",
+        "http://wjw.suqian.gov.cn/swsj/bmfw/202601/adf13423b70d494b96bfb94ec4b15705.shtml"
+      ],
+      "massing": "2014年创办（原沭阳协和康复医院），二级康复专科；核定床位120张，在职职工207人；与铭和养老服务中心同址运营。",
+      "notes": "未取坐标：未找到可核实经纬度来源。地址与铭和医院（苏州东路3号）不同址，勿合并。"
+    }
+  ]
+}

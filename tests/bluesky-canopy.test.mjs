@@ -12,7 +12,7 @@ const area=m=>m.reduce((s,p)=>s+ar(p[0])-p.slice(1).reduce((s,r)=>s+ar(r),0),0);
 test('Bluesky canopy preserves its source geometry and separates display estimates from source height',()=>{
   const records=JSON.parse(gunzipSync(readFileSync(new URL('../tools/data/shuyang/buildings-enriched.json.gz',import.meta.url)))).buildings;
   assert.equal(records[C.sourceIndex].id,C.sourceId);assert.equal(records[C.sourceIndex].height,C.sourceHeight);assert.equal(C.sourceHeight,19.3);
-  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'211ef701274c3124809f5fe0390b2fc949ce47c968b967b0d2c03d98fb79615f');
+  assert.equal(createHash('sha256').update(readFileSync(new URL('../js/building-geodata.bin.gz',import.meta.url))).digest('hex'),'1c3e296f4c0a17ba7fa0801b1d44998f5ddeaf95481dcd234eb72e14566722a9');
   assert.equal(createHash('sha256').update(JSON.stringify(GEO.roads)).digest('hex'),'6340f84446791cc0646838b9c3e81c6d067888d8bc71fe7a3a26ba39a2f730da');
 });
 test('one circular oculus and rectangular sky slots are disjoint holes inside a single roof plate',()=>{

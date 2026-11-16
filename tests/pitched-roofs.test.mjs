@@ -34,9 +34,9 @@ test('concave notches, courtyards and ridge-crossing holes retain precisely thei
   const court=gableRoofPlan(cases[1],15,2);close(court.faces.reduce((s,f)=>s+footprintArea(f),0),540);
 });
 
-test('all 71 existing gabled sources receive finite clipped roof planes without mutating records',()=>{
+test('all 601 existing gabled sources receive finite clipped roof planes without mutating records',()=>{
   const buildings=JSON.parse(gunzipSync(readFileSync(new URL('../tools/data/shuyang/buildings-enriched.json.gz',import.meta.url)))).buildings;
-  const sources=buildings.filter(b=>b.roofShape==='gabled');assert.equal(sources.length,71);
+  const sources=buildings.filter(b=>b.roofShape==='gabled');assert.equal(sources.length,601);
   for(const b of sources)for(const p of b.polygons){
     const polygon={outer:p.outer.map(([x,z])=>({x,z})),holes:(p.holes||[]).map(r=>r.map(([x,z])=>({x,z})))},before=JSON.stringify(b);
     const roof=gableRoofPlan(polygon,b.height,b.roofHeight);assert.ok(roof,b.id);

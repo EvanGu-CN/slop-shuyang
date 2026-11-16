@@ -21,7 +21,13 @@ test('reviewed additions retain image acquisition date and estimated heights, se
   assert.equal(refs.reference.imageAcquired,'2021-01-29');assert.match(refs.reference.serviceRelease,/2026/);
   for(const b of added){assert.ok(ids.has(b.id));
     assert.equal(b.geometryReference.imageDate,refs.features.find(f=>f.properties.id===b.id).properties.referenceImageDate);
-    assert.equal(b.heightSource,'estimate');assert.equal(b.heightMatch,undefined);assert.equal(b.levels,0);
+    assert.equal(b.heightSource,'estimate');assert.equal(b.heightMatch,undefined);
+    // 万顺·帝景天成 的 3 层来自公开小区描述（一复二带花园），在 heightNote 中明确标为推断；
+    // 其余审查轮廓不声明层数。
+    if(b.id.startsWith('reviewed/wanshun/villa/')){assert.ok(b.levels>=1);assert.match(b.heightNote,/推断/);}
+    // 环状影像重建的行排按可见层数推断，heightNote 必须写明"推断/不是测量"。
+    else if(b.id.startsWith('reviewed/imagery/')){assert.ok(b.levels>=1);assert.match(b.heightNote,/推断/);assert.match(b.geometryReference.accuracyNote,/±\d+ m/);}
+    else assert.equal(b.levels,0);
     assert.ok(GEO.mapBuildings.some(p=>p.id===b.id&&p.s==='ReviewedImagery'))}
   assert.equal(enriched.buildings.filter(b=>b.source!=='ReviewedImagery').length,7558,'existing pinned source records remain present');
 });
@@ -59,7 +65,13 @@ test('online outlines retain unknown imagery date and converted coordinates, wit
 });
 
 test('supplemental roofprints do not duplicate existing buildings or each other after quantization',()=>{
-  const records=enriched.buildings.map(b=>({b,bounds:bound(b)}));
+  // 被影像重建明确取代的粗略体块已在三维与矢量图同时隐藏（GEO.supersededSourceIndices），
+  // 不再构成可见重复；这里只检查仍然渲染的记录。
+  const superseded=new Set((GEO.supersededSourceIndices||[]).map(i=>enriched.buildings[i].id));
+  // 批1 将 OSM 的体育公园用地多边形排除出建筑层（记录保留、仅隐藏渲染），它不是实测建筑。
+  const nonBuilding=new Set(GEO.buildingAudit.reviewedImagery.nonBuildingExclusionIds||[]);
+  for(const id of superseded)assert.ok(enriched.buildings.find(b=>b.id===id).source!=='OSM'||nonBuilding.has(id),'OSM 实测记录不得被影像推断取代');
+  const records=enriched.buildings.filter(b=>!superseded.has(b.id)).map(b=>({b,bounds:bound(b)}));
   for(const a of added){const ab=bound(a),ag=shape(a);
     for(const {b,bounds:bb} of records){if(a===b||ab[0]>=bb[2]||ab[2]<=bb[0]||ab[1]>=bb[3]||ab[3]<=bb[1])continue;
       const bg=shape(b),overlap=multiArea(clip.intersection(ag,bg));

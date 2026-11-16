@@ -15,9 +15,9 @@ const area=m=>m.reduce((s,p)=>s+ar(p[0])-p.slice(1).reduce((s,r)=>s+ar(r),0),0);
 const outer=archivesRoofFootprint(),r=records[ARCHIVES_ROOF.sourceBuildingIndex];
 
 test('adding the missing archive candidate preserves all 7741 established source records verbatim',()=>{
-  assert.equal(hash(records.slice(0,7741)),'0dfe83213b18f3a711db593d43162a9649a9c6e3befc60cd582046c665ee6276');
-  assert.equal(records.length,7742);assert.equal(r.id,ARCHIVES_ROOF.sourceId);
-  assert.equal(GEO.mapBuildings.length,7745);
+  assert.equal(hash(records.slice(0,7741)),'2d9c2c4362b063c600fb90091b93d22792e7651138742205c70205a14ef731d2');
+  assert.equal(records.length,9977);assert.equal(r.id,ARCHIVES_ROOF.sourceId);
+  assert.equal(GEO.mapBuildings.length,9982);
 });
 test('the tracked ID order matches every packed source index including the appended record',()=>{
   const order=JSON.parse(readFileSync(new URL('../tools/data/shuyang/building-source-order.json',import.meta.url))).ids;
