@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-16",
+  "baselineCommit": "667742adc6392ecdf296415e91d049837d618366",
+  "localMarkdownLinksChecked": 64,
+  "runtimeSourceToolTestLicenseFilesUnchanged": 314,
+  "comparison": "Git blob bytes; allow only CRLF-to-LF checkout normalization for text",
+  "bootTests": { "passed": 2, "failed": 0 },
+  "scratchDirectoriesAbsent": 6,
+  "recycledFiles": 4873,
+  "recycledBytes": 1394152038,
+  "additionalRemovedWorktree": ".releases/core-frontage-release-83ac8f3",
+  "preservedLocalDirectories": [".venv", "tools/data/shuyang/reference"],
+  "fullRegression": "Same-day baseline: 430 Node and 2 Python passed; not repeated for documentation-only changes",
+  "overpassTestsRun": false,
+  "pagesDeploymentRun": false
+}

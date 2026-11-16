@@ -1,0 +1,27 @@
+{
+  "repository": "EvanGu-CN/slop-shuyang",
+  "before": {
+    "description": "u6cadu9633u57ceu533au4e09u7ef4u6f2bu6e38uff1au5b9eu666fu5f15u5bfcu5efau7b51u4e0eu9053u8defu7ec6u5316uff0cu57fau4e8e Three.js WebGPU / TSLu3002",
+    "homepage": "https://evangu-cn.github.io/evans-github-pages/slop-shuyang/",
+    "topics": [],
+    "default_branch": "main"
+  },
+  "after": {
+    "description": "沭阳城区三维漫游：基于 Three.js WebGPU / TSL，支持步行、驾车、骑行与直升机，结合开放地理数据、卫星影像判读和实拍持续还原城市。",
+    "homepage": "https://evangu-cn.github.io/evans-github-pages/slop-shuyang/",
+    "topics": [
+      "3d-city",
+      "city-explorer",
+      "digital-twin",
+      "javascript",
+      "openstreetmap",
+      "overture-maps",
+      "shuyang",
+      "threejs",
+      "tsl",
+      "webgpu"
+    ],
+    "default_branch": "main"
+  },
+  "verified": true
+}

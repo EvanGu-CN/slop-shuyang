@@ -1,0 +1,32 @@
+[
+  {
+    "path": ".releases",
+    "files": 185,
+    "bytes": 1013947942
+  },
+  {
+    "path": ".screenshots",
+    "files": 241,
+    "bytes": 87998909
+  },
+  {
+    "path": ".trae-html-share-packages",
+    "files": 2,
+    "bytes": 1395945
+  },
+  {
+    "path": ".workbuddy",
+    "files": 4436,
+    "bytes": 290735108
+  },
+  {
+    "path": "tools/__pycache__",
+    "files": 7,
+    "bytes": 69832
+  },
+  {
+    "path": "tests/__pycache__",
+    "files": 2,
+    "bytes": 4302
+  }
+]
